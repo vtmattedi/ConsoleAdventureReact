@@ -19,8 +19,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "python src/copygame.py",
-    "prebuild": "python src/copygame.py --update",
+    "prestart": "python src/copygame.py --update",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
