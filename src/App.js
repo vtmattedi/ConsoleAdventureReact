@@ -2,7 +2,7 @@ import './Mystyles.css';
 import { useState } from 'react';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { useEffect, useRef } from 'react';
-import ConsoleAdventure from './ConsoleAdventureWeb';
+import ConsoleAdventure from './Components/ConsoleAdventureWeb';
 function App() {
   const [mouseHover, setMouseHover] = useState(false);
   const fphoto = require('./Frontphoto.png');
@@ -46,8 +46,7 @@ function App() {
         position:  (width < 1040) && mouseHover ? 'sticky' : 'relative',
         display: 'flex',
         top: 0,
-
-      }}>
+        }}>
         <img src={fphoto} className="image" alt="logo"
           style={{ visibility: mouseHover ? 'hidden' : 'visible' }}
           onMouseEnter={onMouseEnter} />
@@ -58,11 +57,11 @@ function App() {
           onMouseLeave={onMouseLeave} >
           <img src={fphoto} className="image" alt="logo"
           />
-          <a href='https://github.com/vtmattedi' target="_blank">
+          <a href='https://github.com/vtmattedi' target="_blank" rel="noreferrer">
             <FaGithub className='icon'
               color='black' />
           </a>
-          <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank">
+          <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank" rel="noreferrer">
             <FaLinkedin className='icon'
               color='#0077B5' />
           </a>
@@ -86,9 +85,9 @@ function App() {
         <p className = "noSizeDescription">
           Console Adventure is a game that started as an OOP project for my Software Engineering course, 
           I decided to take it further and make it a full game. 
-          The game is a console game that runs on the terminal, and here you can plat it on the web.
+          The game is a console game that runs on the terminal, and here you can play it on the web.
           It was ported using Xterm.js and React.
-          You can check the console game at <a href ="https://www.github.com/vtmattedi/consoleadventure" target='_blank'> github</a>.
+          You can check the console game at <a href ="https://www.github.com/vtmattedi/consoleadventure" target='_blank' rel="noreferrer"> github</a>.
         </p>
         <div className='imageList'>
           {imgs.map((img, index) => {

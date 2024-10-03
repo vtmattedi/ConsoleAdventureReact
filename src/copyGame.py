@@ -10,11 +10,10 @@ args = parser.parse_args()
 
 # Update git submodules if --update flag is provided
 if args.update:
-    git = subprocess.run(["git", "pull", "--recurse-submodules"], capture_output=True)
+    git = subprocess.run(["git", "submodule", "update", "--recursive", "--remote"], capture_output=True)
     print(f'Git submodule update: {git.stdout.decode()}')
 
 # Define source and destination directories
-
 current_dir = os.getcwd()
 print(f'Current directory: {current_dir}')
 source_dir = os.path.join(current_dir, 'consoleadventure')

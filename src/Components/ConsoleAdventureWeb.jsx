@@ -1,14 +1,14 @@
 import { FitAddon } from '@xterm/addon-fit'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import Assets from './Game/Assets/Assets'
-import { BasicConsole, DefaultColors } from './Game/Base/ConsoleHelp'
-import { Game, GameStates } from './Game/Game'
-import { GameColors } from './Game/Base/GameColors'
-import { DevMode } from './Game/Base/DevMode'
-import './Mystyles.css'
-import { Genie } from './Game/Genie'
-import { GameState } from './Game/GameState'
+import Assets from '../Game/Assets/Assets'
+import { BasicConsole, DefaultColors } from '../Game/Base/ConsoleHelp'
+import { Game, GameStates } from '../Game/Game'
+import { GameColors } from '../Game/Base/GameColors'
+import { DevMode } from '../Game/Base/DevMode'
+import '../Mystyles.css'
+import { Genie } from '../Game/Genie'
+import { GameState } from '../Game/GameState'
 
 
 const ConsoleAdventure = () => {
@@ -22,8 +22,6 @@ const ConsoleAdventure = () => {
         // Load the fit addon
         if (!setupOnce.current && instance) {
             instance?.loadAddon(fitAddon)
-            fitAddon.fit()
-            //instance?.resize(120, 35)
             instance.options = {
                 convertEol: true,
                 fontSize: 18,
@@ -37,44 +35,20 @@ const ConsoleAdventure = () => {
                 screenReaderMode: false,
 
             }
-            const test = false;
+
             CH.getWidth = () => {
                 fitAddon.fit();
-                console.log("w", instance?.cols)
                 return instance?.cols
             }
-            // const s = "#".repeat(156) + "00"
-            // instance?.writeln(s)
-            // instance?.writeln(CH.getWidth().toFixed())
-            // instance?.writeln(CH.hcenter("Console Adventure", CH.getWidth()))
-            // console.log("w", instance?.cols)
-            // console.log (fitAddon.proposeDimensions())
-           
-            if (test) {
-                for (let i = 0; i < 256; i++) {
-                    const w = CH.getWidth();
-                    let s = CH.insert_color(DefaultColors.custom_colors(i), "Color: " + i)
-                    s += CH.insert_color(DefaultColors.custom_colors(i++), "    Color: " + i)
-                    s += CH.insert_color(DefaultColors.custom_colors(i++), "    Color: " + i)
-                    s += CH.insert_color(DefaultColors.custom_colors(i++), "    Color: " + i)
-                    s += CH.insert_color(DefaultColors.custom_colors(i++), "    Color: " + i)
-                    s += CH.insert_color(DefaultColors.custom_colors(i++), "    Color: " + i)
-
-
-                    instance?.writeln(CH.hcenter(s, w))
-                }
-                return;
-            }
-
-       
             CH.write = (text) => {
-                //console.log("w", text)
                 instance?.write(text)
             }
+
             CH.clear_screen = () => {
                 instance?.clear()
-                CH.clear_line()
+
             }
+
             CH.show_cursor(false);
             game.current = new Game();
             //Change some pallets
@@ -84,13 +58,9 @@ const ConsoleAdventure = () => {
             DefaultColors.MAGENTA = DefaultColors.custom_colors(201)
             DefaultColors.CYAN = DefaultColors.custom_colors(123)
             GameColors.Reload()
-            GameColors.class_colors[0].color = DefaultColors.custom_colors(215)
+            GameColors.class_colors[0].color = DefaultColors.custom_colors(215);
 
-
-
-            setupOnce.current = true
-
-
+            setupOnce.current = true;
             instance?.onKey(key => {
                 if (key.key === `\x02`) {
                     DevMode.getInstance().setValue()
@@ -137,11 +107,10 @@ const ConsoleAdventure = () => {
                 { color: DefaultColors.GREEN, index: Assets.Logos.ca_cutoff, bgcolor: DefaultColors.YELLOW },
                 true,
                 () => {
-                    instance?.reset()
-                    setTimeout(() => {
+                    setTimeout(() => {                        
                         GameStates.getInstance().currentState = game.current.mainMenu;
                         GameStates.getInstance().currentState.rerender();
-                    }, 5)
+                    }, 1000)
 
                 }
             )
@@ -150,7 +119,7 @@ const ConsoleAdventure = () => {
 
 
         }
-    }, [ref, instance])
+    }, [ref, instance, fitAddon])
 
     return <div className='terminalDiv'>
         <div ref={ref} className='terminal' />

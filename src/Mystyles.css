@@ -110,6 +110,8 @@
     font-size: 1.3em;
     font-family: "Inter", sans-serif;
     color: #ccc;
+    background-color: #555;
+    border-radius: 2%;
     padding: 5%;
 }
 
