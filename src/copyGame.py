@@ -34,6 +34,8 @@ for filename in os.listdir(source_dir):
     source_file = os.path.join(source_dir, filename)
     destination_file = os.path.join(destination_dir, filename)
     if os.path.isfile(source_file):
+        if os.path.exists(destination_file):
+            os.remove(destination_file)
         shutil.copy(source_file, destination_file)
         print(f'Copied {source_file} to {destination_file}')
     elif os.path.isdir(source_file):

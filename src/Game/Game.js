@@ -221,6 +221,9 @@ class Game {
         this.isRunning = false;// Stop game loop
         //goodbye message
         CH.show_cursor(true);
+        CH.clear_screen();
+        genie.goodbye(this.player.name);
+        
     }
     generateEnemy(level) {
         if (typeof level !== "number") {
@@ -440,6 +443,7 @@ class Game {
     playerCreation = new GameState(
         //on create
         () => {
+            Game.inputState.index = 0;
             if (!Game.introState.init) {
                 Game.introState.init = true;
                 Game.introState.pname = "";
@@ -596,6 +600,8 @@ I shall call you ${CH.insert_format(
     gauntletGame = new GameState(
         () => {
             Game.inputState.vertical = false;
+            Game.inputState.index = 0;
+
             if (Game.battleMenu.current_menu === BattleStage.Encounter) {
                 this.encounterNewEnemy();
                 CH.pressSpace();
@@ -851,6 +857,7 @@ I shall call you ${CH.insert_format(
     /// Controls the inital menu
     mainMenu = new GameState(
         () => {
+            Game.inputState.index = 0
             if (Game.MainMenuStage.current_menu === MainMenuStage.PreMenu) {
                 CH.clear_screen();
                 CH.print(Assets.Logos.paintedConsoleAdventure())
@@ -1165,7 +1172,7 @@ I shall call you ${CH.insert_format(
                 GameStates.getInstance().currentState = this.mainMenu
             }
 
-            if (sel === StartMenuOptions.Exit) {
+            else  {
                 this.exitTheGame();
             }
 
@@ -1176,6 +1183,7 @@ I shall call you ${CH.insert_format(
     //Controls the game Menu
     gameMenu = new GameState(
         () => {
+            Game.inputState.index = 0;
             //Main Menu
             if (Game.gameMenu.current_menu === GameMenuStage.MainMenu) {
                 Game.inputState.vertical = true;

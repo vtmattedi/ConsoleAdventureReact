@@ -1,14 +1,14 @@
 import { FitAddon } from '@xterm/addon-fit'
 import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import Assets from '../Game/Assets/Assets'
-import { BasicConsole, DefaultColors } from '../Game/Base/ConsoleHelp'
-import { Game, GameStates } from '../Game/Game'
-import { GameColors } from '../Game/Base/GameColors'
-import { DevMode } from '../Game/Base/DevMode'
-import '../Mystyles.css'
-import { Genie } from '../Game/Genie'
-import { GameState } from '../Game/GameState'
+import Assets from '../../Game/Assets/Assets'
+import { BasicConsole, DefaultColors } from '../../Game/Base/ConsoleHelp'
+import { Game, GameStates } from '../../Game/Game'
+import { GameColors } from '../../Game/Base/GameColors'
+import { DevMode } from '../../Game/Base/DevMode'
+import './Terminal.css'
+import { Genie } from '../../Game/Genie'
+import { GameState } from '../../Game/GameState'
 
 
 const ConsoleAdventure = () => {
