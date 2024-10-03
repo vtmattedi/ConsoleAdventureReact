@@ -1,0 +1,3 @@
+[submodule "ConsoleAdventure"]
+	path = ConsoleAdventure
+	url = https://github.com/vtmattedi/ConsoleAdventure
