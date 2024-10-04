@@ -14,13 +14,15 @@ import { GameState } from '../../Game/GameState'
 const ConsoleAdventure = () => {
     const { instance, ref } = useXTerm()
     const fitAddon = new FitAddon()
-    const CH = new BasicConsole();
     const setupOnce = useRef(false)
     const game = useRef(null)
+    const linesToClear = useRef(0)//lines printed outside of the game
+    //They need to be deleted after every render to keep the console in the proper state
 
     useEffect(() => {
         // Load the fit addon
         if (!setupOnce.current && instance) {
+            const CH = new BasicConsole(); //Singleton Setup the port overloads
             instance?.loadAddon(fitAddon)
             instance.options = {
                 convertEol: true,
@@ -57,7 +59,7 @@ const ConsoleAdventure = () => {
             DefaultColors.YELLOW = DefaultColors.custom_colors(227)
             DefaultColors.MAGENTA = DefaultColors.custom_colors(201)
             DefaultColors.CYAN = DefaultColors.custom_colors(123)
-            GameColors.Reload()
+            GameColors.Reload() // Reaload Every color with the new values
             GameColors.class_colors[0].color = DefaultColors.custom_colors(215);
 
             setupOnce.current = true;
@@ -66,6 +68,7 @@ const ConsoleAdventure = () => {
                     DevMode.getInstance().setValue()
                     GameStates.getInstance().currentState?.rerender();
                     CH.print("Dev Mode: " + DevMode.getInstance().value)
+                    linesToClear.current++;
                 }
                 else {
                     // console.log(key.domEvent.key.toLowerCase());
@@ -75,6 +78,10 @@ const ConsoleAdventure = () => {
                             game.current.handleInput("space");
                         else
                             game.current.handleInput(key.domEvent.key.toLowerCase());
+                    }
+                    if ( linesToClear.current > 0) {
+                        CH.clear_last_line( linesToClear.current);
+                        linesToClear.current = 0;
                     }
                     GameStates.getInstance().currentState?.render();
                 }
@@ -107,7 +114,7 @@ const ConsoleAdventure = () => {
                 { color: DefaultColors.GREEN, index: Assets.Logos.ca_cutoff, bgcolor: DefaultColors.YELLOW },
                 true,
                 () => {
-                    setTimeout(() => {                        
+                    setTimeout(() => {
                         GameStates.getInstance().currentState = game.current.mainMenu;
                         GameStates.getInstance().currentState.rerender();
                     }, 1000)
