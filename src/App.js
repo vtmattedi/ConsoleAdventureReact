@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import ConsoleAdventure from './Components/ConsoleAdVentureWeb/ConsoleAdventureWeb';
 import Header from './Components/Header/Header';
 import Info from './Components/Info/Info';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
 
@@ -30,7 +31,9 @@ function App() {
       <div style={{ display: width > 1040 ? 'flex' : 'none', }} >
         <ConsoleAdventure />
       </div>
+    <SpeedInsights/>
     </div >
+
   );
 }
 
