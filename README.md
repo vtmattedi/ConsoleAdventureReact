@@ -12,7 +12,7 @@ The Site is fully responsive, however it need at least 1040 px to display the te
 ![widthwarning](/Assets/responsive.gif)
 ## Game Development
 This repository is for the development of the website only, not for the game development itself.
-However it obviously need to keep up with the game  but I want them to be as much detached as possible from each other. To acomplish this, I'm using git submodules and a little Python [script](/src/copyGame.py) to automatically update the game from its repository
+However it obviously need to keep up with the game  but I want them to be as much detached as possible from each other. To accomplish this, I'm using git submodules and a little Python [script](/src/copyGame.py) to automatically update the game from its repository.
 
 ## Future of the projects
 There is two stages in the near future:
