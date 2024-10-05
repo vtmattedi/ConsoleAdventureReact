@@ -1,6 +1,3 @@
-[submodule "ConsoleAdventure"]
-	path = src/ConsoleAdventure
-	url = https://github.com/vtmattedi/ConsoleAdventure
 [submodule "src/ConsoleAdventure"]
 	path = src/ConsoleAdventure
 	url = https://github.com/vtmattedi/ConsoleAdventure

@@ -1,14 +1,14 @@
 import { FitAddon } from '@xterm/addon-fit'
 import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import Assets from '../../Game/Assets/Assets'
-import { BasicConsole, DefaultColors } from '../../Game/Base/ConsoleHelp'
-import { Game, GameStates } from '../../Game/Game'
-import { GameColors } from '../../Game/Base/GameColors'
-import { DevMode } from '../../Game/Base/DevMode'
+import Assets from '../../ConsoleAdventure/Game/Assets/Assets'
+import { BasicConsole, DefaultColors } from '../../ConsoleAdventure/Game/Base/ConsoleHelp'
+import { Game, GameStates } from '../../ConsoleAdventure/Game/Game'
+import { GameColors } from '../../ConsoleAdventure/Game/Base/GameColors'
+import { DevMode } from '../../ConsoleAdventure/Game/Base/DevMode'
 import './Terminal.css'
-import { Genie } from '../../Game/Genie'
-import { GameState } from '../../Game/GameState'
+import { Genie } from '../../ConsoleAdventure/Game/Genie'
+import { GameState } from '../../ConsoleAdventure/Game/GameState'
 
 
 const ConsoleAdventure = () => {
@@ -16,6 +16,7 @@ const ConsoleAdventure = () => {
     const fitAddon = new FitAddon()
     const setupOnce = useRef(false)
     const game = useRef(null)
+    //const debugCount = useRef(0)
     const linesToClear = useRef(0)//lines printed outside of the game
     //They need to be deleted after every render to keep the console in the proper state
 
@@ -53,6 +54,8 @@ const ConsoleAdventure = () => {
 
             CH.show_cursor(false);
             game.current = new Game();
+            //Set the game to run with at least 25 ms bewteen renders.
+            GameStates.setSlowRunning(20);
             //Change some pallets
             DefaultColors.BLUE = DefaultColors.custom_colors(75)
             DefaultColors.GREEN = DefaultColors.custom_colors(83)
@@ -66,14 +69,14 @@ const ConsoleAdventure = () => {
             instance?.onKey(key => {
                 if (key.key === `\x02`) {
                     DevMode.getInstance().setValue()
-                    GameStates.getInstance().currentState?.rerender();
+                    GameStates.rerender();
                     CH.print("Dev Mode: " + DevMode.getInstance().value)
                     linesToClear.current++;
                 }
                 else {
                     // console.log(key.domEvent.key.toLowerCase());
                     if (key.key) {
-
+                        //console.log(key, debug.current++, Date.now());
                         if (key.domEvent.key.toLowerCase() === " ")
                             game.current.handleInput("space");
                         else
@@ -83,7 +86,7 @@ const ConsoleAdventure = () => {
                         CH.clear_last_line( linesToClear.current);
                         linesToClear.current = 0;
                     }
-                    GameStates.getInstance().currentState?.render();
+                    GameStates.render();
                 }
             })
             game.current.exitTheGame = () => {
@@ -105,7 +108,7 @@ const ConsoleAdventure = () => {
             }
             window.onresize = () => {
                 fitAddon.fit()
-                GameStates.getInstance().currentState?.rerender();
+                GameStates?.rerender();
             }
 
             Assets.Logos.animate(
@@ -116,7 +119,7 @@ const ConsoleAdventure = () => {
                 () => {
                     setTimeout(() => {
                         GameStates.getInstance().currentState = game.current.mainMenu;
-                        GameStates.getInstance().currentState.rerender();
+                        GameStates.rerender();
                     }, 1000)
 
                 }

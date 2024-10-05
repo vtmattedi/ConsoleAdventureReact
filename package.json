@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "python src/copygame.py --update",
+    "prebuild": "git submodule update --recursive --remote",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -4,11 +4,11 @@ import "./Info.css";
 const Info = ({styles}) => {
 
     const imgs = [
-        require('../../Game/Assets/Adventure.png'),
-        require('../../Game/Assets/Adventure2.png'),
-        require('../../Game/Assets/Genies.png'),
-        require('../../Game/Assets/Slain.png'),
-        require('../../Game/Assets/Slain2.png'),
+        require('../../ConsoleAdventure/Game/Assets/Adventure.png'),
+        require('../../ConsoleAdventure/Game/Assets/Adventure2.png'),
+        require('../../ConsoleAdventure/Game/Assets/Genies.png'),
+        require('../../ConsoleAdventure/Game/Assets/Slain.png'),
+        require('../../ConsoleAdventure/Game/Assets/Slain2.png'),
       ];
     return (
         <div style={styles}>
