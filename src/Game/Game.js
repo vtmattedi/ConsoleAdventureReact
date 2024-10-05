@@ -474,7 +474,7 @@ class Game {
                 CH.clear_screen();
                 genie.speak(
                     this.#genieSpeech === "" ?
-                        'Hello again Adventurer!\nI didn\'t catch your name. What was it?' :
+                        'You look like an Adventurer!\nI didn\'t catch your name. What was it?' :
                         this.#genieSpeech);
                 CH.show_cursor(true);
                 Game.inputState.vertical = false;
@@ -558,6 +558,11 @@ I shall call you ${CH.insert_format(
                 );
                 CH.pressSpace();
             }
+            else if (stage === 5) {
+                CH.clear_screen();
+                genie.introduce();
+                CH.pressSpace();
+            }
         },
         //on render
         () => {
@@ -608,6 +613,9 @@ I shall call you ${CH.insert_format(
                 Game.inputState.index = 0;
                 Game.battleState = BattleStage.Encounter;
                 GameStates.getInstance().currentState = this.gauntletGame;
+            }
+            else if (stage === 5) {
+                Game.introState.stage = 0;
             }
             else {
                 Game.introState.stage++;
@@ -1021,6 +1029,7 @@ I shall call you ${CH.insert_format(
                 }
                 else if (sel === 1) {
                     Game.inputState.string = "";
+                    Game.introState.stage = 5;
                     GameStates.getInstance().currentState = this.playerCreation
                     Game.inputState.index = 0;
                 }
