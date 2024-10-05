@@ -4,7 +4,7 @@ import ConsoleAdventure from './Components/ConsoleAdVentureWeb/ConsoleAdventureW
 import Header from './Components/Header/Header';
 import Info from './Components/Info/Info';
 import { SpeedInsights } from "@vercel/speed-insights/react"
-
+import { Analytics } from "@vercel/analytics/react"
 function App() {
 
   const [width, setWidth] = useState(window.innerWidth);
@@ -32,6 +32,7 @@ function App() {
         <ConsoleAdventure />
       </div>
     <SpeedInsights/>
+    <Analytics/>
     </div >
 
   );
