@@ -35,7 +35,7 @@ const Header = ({ width }) => {
                 <img src={fphoto} className="image" alt="logo" />
                 <a href='https://github.com/vtmattedi' target="_blank" rel="noreferrer">
                     <FaGithub className='icon'
-                        color='black' />
+                        color='white' />
                 </a>
                 <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank" rel="noreferrer">
                     <FaLinkedin className='icon'
