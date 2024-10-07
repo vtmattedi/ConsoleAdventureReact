@@ -111,19 +111,9 @@ const ConsoleAdventure = () => {
                 GameStates?.rerender();
             }
 
-            Assets.Logos.animate(
-                Assets.Logos.ConsoleAdventure,
-                15,
-                { color: DefaultColors.GREEN, index: Assets.Logos.ca_cutoff, bgcolor: DefaultColors.YELLOW },
-                true,
-                () => {
-                    setTimeout(() => {
-                        GameStates.getInstance().currentState = game.current.mainMenu;
-                        GameStates.rerender();
-                    }, 1000)
-
-                }
-            )
+            
+            GameStates.getInstance().currentState = game.current.mainMenu;
+            GameStates.rerender();
             // GameStates.getInstance().currentState = game.current.mainMenu;
             // GameStates.getInstance().currentState.rerender();
 
