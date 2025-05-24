@@ -10,7 +10,6 @@ const Rtsim = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundColor: '#333',
             overflowX: 'hidden'
         }}>
             <h3>RTSim</h3>
