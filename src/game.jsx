@@ -17,19 +17,23 @@ const Game = () => {
         };
     }, []);
     return (
-        <div 
-            
+        <div
+
         >
-        <div className="ca-title" style={{
-            marginTop: '2vh',
-        }}>
-            <h3>Console Adventure</h3>
-        </div>
-            <Info styles={{ display: width > 1040 ? 'none' : 'flex', flexDirection: `column` }} />
-            <div style={{ display: width > 1040 ? 'flex' : 'none', }} >
-                <ConsoleAdventure />
+            <div className="ca-title" style={{
+                marginTop: '2vh',
+            }}>
+                <h3>Console Adventure</h3>
+
+                <Info styles={{ display: width > 1040 ? 'none' : 'flex', flexDirection: `column` }} />
+                <div style={{ display: width > 1040 ? 'flex' : 'none', }} >
+                    <ConsoleAdventure />
+                </div>
+                <div className='github-link'>
+                    <span className='bi bi-github' ></span>/vtmattedi/ConsoleAdventure
+                </div>
+                <H />
             </div>
-            <H/>
         </div>
     );
 };

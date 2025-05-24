@@ -23,7 +23,7 @@ function App({ children }) {
     }
   }, []);
 
-  if (width < 900) {
+  if (width > Infinity) {
     return (
       <div className='bgDiv'>
         <div style={{
