@@ -12,3 +12,121 @@ code {
     monospace;
 }
 
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.home-container button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 2em;
+  height: 20vh;
+  width: 40vw;
+  background-color: #1b497a7f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 1px 1px 10px 1px #696969;
+}
+
+@media screen and (max-width: 768px) {
+  .home-container button {
+    width: 80vw;
+    height: 10vh;
+    font-size: 1.5em;
+  }
+
+}
+
+.home-container button:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 1px 1px 10px 1px #168d24;
+}
+
+.home-container span {
+  font-size: 1.5em;
+  color: #eee;
+}
+
+.ca-title {
+
+  font-family: "Homenaje", sans-serif;
+  margin: 0 auto;
+
+}
+
+
+.ca-title h3 {
+  font-family: "Homenaje", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 3em;
+  text-align: center;
+  margin: 0 auto;
+  color: #eee;
+}
+
+.hh-container {
+  display: flex;
+  position: absolute;
+  left: 5vw;
+  top: 1vh;
+
+}
+
+
+.hh-container img {
+  width: 100px;
+  height: 100px;
+  box-shadow: 1px 1px 10px 1px #696969;
+  border-radius: 50%;
+
+}
+.hh-container span:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+}
+.hh-container img:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 1px 1px 10px 1px #bababa;
+
+}
+
+.hh-container span {
+  font-size: 3em;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.hh-social {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+  color: white;
+}
+
+.bgDiv{
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #333 20%, #707274 100%);
+  height: 100vh;
+}

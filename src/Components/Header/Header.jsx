@@ -2,9 +2,21 @@ import React from 'react';
 import { useState } from 'react';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import './Header.css';
-const Header = ({ width }) => {
+const Header = ({ title }) => {
 
     const [mouseHover, setMouseHover] = useState(false);
+    const [width, setWidth] = useState(window.innerWidth);
+    React.useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
     const fphoto = require('./Frontphoto.png');
 
     const onMouseEnter = () => {
@@ -16,7 +28,7 @@ const Header = ({ width }) => {
 
 
     return (
-        <div className='headerDiv' style={{
+        <div className='m_headerDiv' style={{
             flexDirection: (width < 1040) && mouseHover ? 'column' : 'row',
             transition: 'flex-direction 1s',
             textAlign: 'center',
@@ -24,30 +36,40 @@ const Header = ({ width }) => {
             display: 'flex',
             top: 0,
         }}>
-            <img src={fphoto} className="image" alt="logo"
-                style={{ visibility: mouseHover ? 'hidden' : 'visible' }}
-                onMouseEnter={onMouseEnter} />
-            <div className='card' style={{
+            <div className='m_img_c' onMouseEnter={onMouseEnter}
+             style={{ visibility: mouseHover ? 'hidden' : 'visible',
+                width: '20vw',
+                height: '10vw',
+                
+
+
+              }}
+            >
+                <img src={fphoto} className="m_image" alt="logo"
+                    style={{ visibility: mouseHover ? 'hidden' : 'visible' }}
+                   />
+            </div>
+            <div className='m_card' style={{
                 display: mouseHover ? 'flex' : 'none',
                 margin: width < 1040 ? 'auto' : '0px',
             }}
                 onMouseLeave={onMouseLeave} >
-                <img src={fphoto} className="image" alt="logo" />
+                <img src={fphoto} className="m_image" alt="logo" />
                 <a href='https://github.com/vtmattedi' target="_blank" rel="noreferrer">
-                    <FaGithub className='icon'
+                    <FaGithub className='m_icon'
                         color='white' />
                 </a>
                 <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank" rel="noreferrer">
-                    <FaLinkedin className='icon'
+                    <FaLinkedin className='m_icon'
                         color='#0077B5' />
                 </a>
-                <span className='cardText'>
+                <span className='m_cardText'>
                     Dev Jr | Software Engineer Student
                 </span>
             </div>
-            <div className='titleDiv'>
-                <h1 className='title'>
-                    {width > 1040 ? 'The Console Adventure Game' : 'Console Adventure'}
+            <div className='m_titleDiv'>
+                <h1 className='m_title'>
+                    {title}
                 </h1>
             </div>
         </div>

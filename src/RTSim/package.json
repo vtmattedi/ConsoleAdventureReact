@@ -1,0 +1,31 @@
+{
+  "name": "rtsim",
+  "version": "0.2.2",
+  "description": "Real Time Scheduler Simulator",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "github.com/vtmattedi/RTSim"
+  },
+  "keywords": [
+    "Real Time",
+    "Scheduler",
+    "Simulation"
+  ],
+  "author": "Vitor Mattedi",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "esbuild": "^0.25.3",
+    "globals": "^15.10.0"
+  },
+  "dependencies": {
+    "eslint": "^9.25.1",
+    "readline-sync": "^1.4.10"
+  }
+}

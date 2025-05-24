@@ -12,6 +12,7 @@ const Info = ({styles}) => {
       ];
     return (
         <div style={styles}>
+         
         <p className="noSize">
           You need at least 1040 px of width to see the terminal.
         </p>

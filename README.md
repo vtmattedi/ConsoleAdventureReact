@@ -12,11 +12,7 @@ The Site is fully responsive, however it need at least 1040 px to display the te
 ## Game Development
 
 This repository is for the development of the website only, not for the game development itself.
-However it obviously need to keep up with the game  but I want them to be as much detached as possible from each other. To accomplish this, I'm using git submodules and I added a prebuild script to get the latest from the Game repository before the build. 
-
-## Gameplay Performance
-Xterm is a great tool but it is not as fast a console in a modern computer. animations look
-way better on true console, check the actual game [repo](www.github.com/vtmattedi/consoleadventure).
+However it obviously need to keep up with the game  but I want them to be as much detached as possible from each other. To accomplish this, I'm using git submodules and I added a prebuild script to get the latest from the Game repository before the build.
 
 ## Future of the projects
 
