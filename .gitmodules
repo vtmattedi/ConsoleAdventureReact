@@ -1,3 +1,6 @@
 [submodule "src/ConsoleAdventure"]
 	path = src/ConsoleAdventure
 	url = https://github.com/vtmattedi/ConsoleAdventure
+[submodule "src/RTSim"]
+	path = src/RTSim
+	url = https://github.com/vtmattedi/rtsim.git
