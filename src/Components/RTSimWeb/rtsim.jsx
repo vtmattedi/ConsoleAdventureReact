@@ -1,9 +1,9 @@
 import { FitAddon } from '@xterm/addon-fit'
 import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import { BasicConsole } from '../../RTSim/Simulator/Engine/ConsoleHelp'
+import { BasicConsole } from '../../RTsim/Simulator/Engine/ConsoleHelp'
+import { Simulator } from '../../RTsim/Simulator/Simulator'
 import './Terminal.css'
-import { Simulator } from '../../RTSim/Simulator/Simulator'
 
 
 const RTSim = () => {
@@ -53,6 +53,8 @@ const RTSim = () => {
             CH.show_cursor(false);
             sim.current = new Simulator();
             sim.current.setupExit(() => {
+                sim.current.Engine.scenes = [];
+                sim.current.Engine.scene_history = [];
                 sim.current = new Simulator();
             });
             setupOnce.current = true;
@@ -82,7 +84,7 @@ const RTSim = () => {
                 }
                 if (input === '\x03')
                 {
-                    sim.current = new Simulator();
+                    sim.current.Engine.onExit?.();
                 }
 
                 if (input === "\x1B[B"){
