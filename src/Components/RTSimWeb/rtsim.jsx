@@ -1,8 +1,8 @@
 import { FitAddon } from '@xterm/addon-fit'
 import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import { BasicConsole } from '../../RTsim/Simulator/Engine/ConsoleHelp'
-import { Simulator } from '../../RTsim/Simulator/Simulator'
+import { BasicConsole } from '../../RTSim/Simulator/Engine/ConsoleHelp'
+import { Simulator } from '../../RTSim/Simulator/Simulator'
 import './Terminal.css'
 
 
