@@ -69,9 +69,9 @@ The router renders `App` as the root layout route.
 
 Task 6 replaced the old pass-through `src/App.jsx` branches with a single shell:
 
-- It imports Bootstrap CSS and Bootstrap Icons globally.
+- It imports Bootstrap Icons globally.
 - It wraps routes in `<div className="bgDiv">`.
-- It renders `src/Components/AppShell/AppShell.jsx`, which owns shared brand, primary route navigation, back control, disabled theme/language placeholders, asset preloading, and the route outlet.
+- It renders `src/Components/AppShell/AppShell.jsx`, which owns shared brand, primary route navigation, back control, theme selector, disabled language placeholder, asset preloading, and the route outlet.
 - Terminal-specific responsive behavior remains in terminal pages.
 
 This is the main path for future branding, theme, i18n, and loading integration.
@@ -136,10 +136,21 @@ This is the main path for future branding, theme, i18n, and loading integration.
 
 `src/Components/AppShell/AppShell.jsx` and `src/Components/AppShell/AppShell.css` currently:
 
-- Provide the shared brand/home control, route navigation, back control, and disabled theme/language placeholders.
+- Provide the shared brand/home control, route navigation, back control, theme selector, and disabled language placeholder.
 - Navigate to `/`, `/console-adventure`, and `/rtsim`.
 - Keep `/game` as a redirect-only legacy alias.
 - Use Bootstrap icon class names already loaded by the app shell.
+- Integrate the MattediWorks `ThemeSelector` for light, dark, and system theme preferences.
+
+## Theme System
+
+Task 8 added `src/MattediWorks/hooks/useTheme.tsx` with `ThemeProvider`, `useTheme`, and document-theme application helpers. Supported preferences are `light`, `dark`, and `system`; resolved themes are `light` and `dark`.
+
+The selected preference persists in `localStorage` under `terminal-applications-theme`. `index.html` includes an early inline theme bootstrap that reads that key, resolves `system` through `prefers-color-scheme`, and applies `data-theme`, `data-theme-preference`, a `light`/`dark` class, and `color-scheme` on `document.documentElement` before the React app loads.
+
+Theme CSS variables live in `src/index.css` and cover page background/text, muted text, surfaces, borders, focus ring, MattediWorks brand orange, terminal frame/shadow, and link color.
+
+The app shell, current home/catalog styles, Console Adventure fallback, header legacy component, and terminal frames now read from those variables. Xterm foreground/background colors remain explicitly set inside each terminal wrapper so theme work does not change terminal app readability before the later terminal hardening tasks.
 
 ## Terminal Wrappers
 
@@ -249,10 +260,10 @@ The `src/MattediWorks/` folder currently includes:
 
 Integration risks:
 
-- `ThemeSelector.tsx` imports `lucide-react` and `../hooks/useTheme`; `lucide-react` is installed, but the theme hook is still a future task.
+- `ThemeSelector.tsx` imports `lucide-react` and the task 8 `../hooks/useTheme` provider/hook module.
 - `LanguageSelector.tsx` imports `../translation/i18n`; that module is missing.
 - `MWLoading.tsx` imports `gsap`, `@gsap/react`, `lucide-react`, and `logoWithName.svg?raw`; task 5 installed those packages and added `src/vite-env.d.ts` so Vite raw/static asset imports have project-level type support.
-- These assets should still be treated as future integration inputs until the app shell/theme/i18n tasks wire them into visible UI.
+- Theme and loading assets are now wired into the app shell/runtime; language assets remain future integration inputs until the i18n task.
 
 ## Dependency And Script Inventory
 
@@ -286,9 +297,9 @@ Current scripts after task 4:
 - `preview`: previews the Vite production bundle.
 - `test`: runs Vitest route/shell smoke tests.
 - `lint`: runs ESLint against the root Vite app and local integration files.
-- `typecheck`: runs TypeScript against the active MattediWorks loading TypeScript entry.
+- `typecheck`: runs TypeScript against the active MattediWorks loading and theme TypeScript entries.
 
-TypeScript checking is intentionally narrow until the later theme and i18n tasks add the missing MattediWorks provider modules. ESLint ignores the Console Adventure and RTSim submodule source trees because those are separately-owned upstream packages.
+TypeScript checking is intentionally narrow until the later i18n task adds the missing MattediWorks language provider modules. ESLint ignores the Console Adventure and RTSim submodule source trees because those are separately-owned upstream packages.
 
 `npm run lint` exits with two warnings about `FitAddon` objects changing the dependencies of terminal wrapper effects. Those warnings align with the later Console Adventure and RTSim port-hardening tasks and were not fixed during dependency hygiene to avoid behavior changes.
 
@@ -302,7 +313,7 @@ Task 3 updated the root project identity baseline:
 - Root `index.html` title, description, theme color, and canonical URL target `Terminal Applications`.
 - `public/manifest.json` and `public/site.webmanifest` use `Terminal Applications` / `Terminal Apps`.
 - Source submodule readmes may still contain their own historical web links until those upstream projects are updated.
-- README no longer presents Vercel as the host; Vercel Analytics/Speed Insight packages and imports still exist in app code for a later metadata/analytics cleanup task.
+- README no longer presents Vercel as the host; task 7 removed the unused Vercel Analytics and Speed Insight packages/imports.
 
 New WOI direction:
 
@@ -336,8 +347,8 @@ Stackport risk:
 - `/game` is now a legacy redirect to `/console-adventure`.
 - `/console-adventure` is the canonical Console Adventure route.
 - A `*` not-found route now exists under the app shell.
-- App tests are the default CRA placeholder and do not represent current UI.
-- MattediWorks theme/language/loading files are present. Loading dependencies are installed; theme/language provider modules are still scheduled for later tasks.
+- App tests now run Vitest route/shell/theme smoke tests.
+- MattediWorks theme/language/loading files are present. Loading dependencies are installed, and task 8 wired the theme provider; language provider modules are still scheduled for later tasks.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -374,7 +385,8 @@ Every later task should preserve or intentionally replace the following behavior
 - Terminal wrapper unmount/remount does not accumulate key handlers, resize handlers, render intervals, or stale singleton state.
 - Console Adventure screenshots/assets still render in fallback/content areas.
 - RTSim readme screenshots/assets remain available for future content model usage.
-- MattediWorks logo/font/loading assets are integrated only when their dependencies and providers exist.
+- MattediWorks logo/font/loading assets continue to resolve through the Vite asset registry.
+- Theme switching persists and keeps the app readable in light/dark/system modes.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.

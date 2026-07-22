@@ -1,12 +1,15 @@
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import AppShell from './Components/AppShell/AppShell';
+import { ThemeProvider } from './MattediWorks/hooks/useTheme';
 
 function App() {
   return (
-    <div className='bgDiv'>
-      <AppShell />
-    </div>
+    <ThemeProvider>
+      <div className='bgDiv'>
+        <AppShell />
+      </div>
+    </ThemeProvider>
   );
 }
 

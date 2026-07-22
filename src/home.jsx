@@ -48,7 +48,7 @@ const Home = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     overflowX: 'hidden',
-                    color: 'white',
+                    color: 'var(--app-text)',
                     fontSize: '1.2em',
                     margin: '2vh 2vw',
                     textAlign: 'center',
@@ -83,7 +83,7 @@ const Home = () => {
                 <div
                     style={{
                         marginTop: '2vh',
-                        color: 'white',
+                        color: 'var(--app-text)',
                         fontSize: '1.1rem',
                     }}>
                     {getDescription(hover)}
@@ -113,7 +113,7 @@ const Home = () => {
                             justifyContent: 'center',
                             height: '100%',
                             margin: '0px 5%',
-                            color: 'white',
+                            color: 'var(--app-text)',
                             fontSize: '2em',
                             textAlign: 'center',
                         }}>
@@ -150,7 +150,7 @@ const Home = () => {
                             justifyContent: 'center',
                             height: '100%',
                             margin: '0px 5%',
-                            color: 'white',
+                            color: 'var(--app-text)',
                             fontSize: '1.5em',
                             textAlign: 'center',
                         }}>

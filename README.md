@@ -61,4 +61,10 @@ See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic s
 
 The root app keeps runtime dependencies focused on React, React Router, xterm.js with the Fit addon, `react-xtermjs`, Bootstrap Icons, and the MattediWorks loading/icon stack (`lucide-react`, `gsap`, `@gsap/react`). React is on the current stable major. `@xterm/xterm` intentionally stays on the `5.5.x` line because `react-xtermjs` currently peers on `@xterm/xterm ^5.5.0`.
 
-Lint covers the root Vite app and local MattediWorks integration files while ignoring the `src/ConsoleAdventure` and `src/RTSim` submodule sources. It currently exits successfully with two warnings for known `FitAddon` lifecycle cleanup in the terminal wrappers, which is scheduled for the terminal hardening tasks. TypeScript checking currently covers the active MattediWorks loading TypeScript entry; future theme and i18n tasks will expand it after their missing provider modules are added.
+Lint covers the root Vite app and local MattediWorks integration files while ignoring the `src/ConsoleAdventure` and `src/RTSim` submodule sources. It currently exits successfully with two warnings for known `FitAddon` lifecycle cleanup in the terminal wrappers, which is scheduled for the terminal hardening tasks. TypeScript checking currently covers the active MattediWorks loading and theme TypeScript entries; the future i18n task will expand it after the missing language provider module is added.
+
+## Theme System
+
+The app supports `light`, `dark`, and `system` theme preferences through the MattediWorks `ThemeSelector`. The selected preference is stored in `localStorage` under `terminal-applications-theme`. On load, `index.html` applies `data-theme`, `data-theme-preference`, and a `light`/`dark` class to `document.documentElement` before the React bundle runs, which keeps first paint readable and lets CSS plus `MWLoading` react to theme changes.
+
+Terminal emulator foreground/background palettes remain controlled inside the terminal wrappers for now, while the surrounding page and terminal frame use shared CSS variables.

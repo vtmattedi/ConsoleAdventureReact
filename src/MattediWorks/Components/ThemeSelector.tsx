@@ -1,5 +1,6 @@
 import { Sun, Moon, Monitor } from 'lucide-react'
 import { useTheme, type Theme } from '../hooks/useTheme'
+import './ThemeSelector.css'
 
 const OPTIONS = [
   { value: 'light', Icon: Sun, label: 'Light' },
@@ -64,6 +65,7 @@ export default function ThemeSelector({ compact = false }: ThemeSelectorProps) {
       <button
         type="button"
         onClick={() => changeTheme(next.value)}
+        aria-label={`Theme: ${current.label}; switch to ${next.label}`}
         title={`Theme: ${current.label} - click for ${next.label}`}
         className={COMPACT_CLASS_NAMES[theme]}
       >
@@ -79,6 +81,7 @@ export default function ThemeSelector({ compact = false }: ThemeSelectorProps) {
           key={value}
           type="button"
           onClick={() => changeTheme(value)}
+          aria-label={label}
           title={label}
           aria-pressed={theme === value}
           className={getOptionClassName(value, theme)}

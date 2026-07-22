@@ -1,8 +1,57 @@
+html {
+  background: #101317;
+}
+
+:root {
+  color-scheme: dark;
+  --brand-orange: #ff9849;
+  --app-background: linear-gradient(135deg, #25292d 0%, #62686d 100%);
+  --app-background-fallback: #25292d;
+  --app-text: #f5f7fa;
+  --app-muted: #c9d1d9;
+  --app-surface: rgba(25, 29, 33, 0.78);
+  --app-surface-strong: rgba(19, 22, 25, 0.92);
+  --app-border: rgba(255, 255, 255, 0.16);
+  --app-shadow: rgba(0, 0, 0, 0.34);
+  --control-bg: rgba(255, 255, 255, 0.07);
+  --control-hover-bg: rgba(255, 152, 73, 0.18);
+  --focus-ring: rgba(255, 152, 73, 0.62);
+  --terminal-frame: #050607;
+  --terminal-frame-shadow: rgba(0, 0, 0, 0.72);
+  --title-shadow: rgba(0, 0, 0, 0.82);
+  --link-color: #ffd1ac;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --app-background: linear-gradient(135deg, #f5f8fa 0%, #cad8df 100%);
+  --app-background-fallback: #eef4f7;
+  --app-text: #111820;
+  --app-muted: #4f5d67;
+  --app-surface: rgba(255, 255, 255, 0.78);
+  --app-surface-strong: rgba(255, 255, 255, 0.94);
+  --app-border: rgba(17, 24, 32, 0.18);
+  --app-shadow: rgba(40, 51, 60, 0.2);
+  --control-bg: rgba(17, 24, 32, 0.06);
+  --control-hover-bg: rgba(229, 105, 38, 0.16);
+  --focus-ring: rgba(229, 105, 38, 0.52);
+  --terminal-frame: #0a0c0f;
+  --terminal-frame-shadow: rgba(25, 34, 42, 0.34);
+  --title-shadow: rgba(255, 255, 255, 0.72);
+  --link-color: #90480f;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  color: var(--app-text);
+  background: var(--app-background-fallback);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -26,16 +75,16 @@ code {
   font-size: 2em;
   height: 20vh;
   width: 40vw;
-  background-color: #1b497a7f;
-  color: white;
-  border: none;
+  background-color: var(--control-bg);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
   border-radius: 10px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  box-shadow: 1px 1px 10px 1px #696969;
+  box-shadow: 1px 1px 10px 1px var(--app-shadow);
 }
 
 @media screen and (max-width: 768px) {
@@ -50,12 +99,12 @@ code {
 .home-container button:hover {
   transform: scale(1.1);
   transition: all 0.3s ease-in-out;
-  box-shadow: 1px 1px 10px 1px #168d24;
+  box-shadow: 1px 1px 10px 1px var(--focus-ring);
 }
 
 .home-container span {
   font-size: 1.5em;
-  color: #eee;
+  color: var(--app-text);
 }
 
 .ca-title {
@@ -73,7 +122,7 @@ code {
   font-size: 3em;
   text-align: center;
   margin: 0 auto;
-  color: #eee;
+  color: var(--app-text);
 }
 
 .hh-container {
@@ -102,13 +151,13 @@ code {
   transform: scale(1.1);
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  box-shadow: 1px 1px 10px 1px #bababa;
+  box-shadow: 1px 1px 10px 1px var(--app-shadow);
 
 }
 
 .hh-container span {
   font-size: 3em;
-  color: #eee;
+  color: var(--app-text);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,17 +171,18 @@ code {
   align-items: center;
   gap: 10px;
   margin-left: 20px;
-  color: white;
+  color: var(--app-text);
 }
 
 .bgDiv{
   overflow-x: hidden;
-  background: linear-gradient(135deg, #333 20%, #707274 100%);
+  background: var(--app-background);
   min-height: 100vh;
+  color: var(--app-text);
 }
 
 .github-link{
-  color: white;
+  color: var(--app-text);
   text-decoration: none;
   font-size: 1.5em;
   display: flex;

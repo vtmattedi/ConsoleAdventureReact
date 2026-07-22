@@ -5,9 +5,9 @@
     text-align: center;
     font-size: 1.5em;
     font-family: "Inter", sans-serif;
-    color: #ccc;
-    background-color: #555;
-    box-shadow: 0px 0px 10px 5px #111;
+    color: var(--app-muted);
+    background-color: var(--app-surface);
+    box-shadow: 0px 0px 10px 5px var(--app-shadow);
     border-radius: 10px;
     padding: 5%;
 }
@@ -18,10 +18,14 @@
     text-align: left;
     font-size: 1.3em;
     font-family: "Inter", sans-serif;
-    color: #ccc;
-    background-color: #555;
+    color: var(--app-muted);
+    background-color: var(--app-surface);
     border-radius: 2%;
     padding: 5%;
+}
+
+.noSizeDescription a {
+    color: var(--link-color);
 }
 
 .imageList

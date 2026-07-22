@@ -17,6 +17,9 @@
   },
   "include": [
     "src/vite-env.d.ts",
+    "src/MattediWorks/Components/ThemeSelector.tsx",
+    "src/MattediWorks/hooks/**/*.ts",
+    "src/MattediWorks/hooks/**/*.tsx",
     "src/MattediWorks/MWLoading/**/*.ts",
     "src/MattediWorks/MWLoading/**/*.tsx"
   ]

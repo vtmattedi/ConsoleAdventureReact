@@ -72,6 +72,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['src/**/hooks/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
     files: ['*.config.js', '*.config.mjs', 'eslint.config.mjs', 'vite.config.js'],
     languageOptions: {
       globals: {

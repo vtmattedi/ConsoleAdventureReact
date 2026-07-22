@@ -14,12 +14,12 @@
 
 .m_title {
     font-size: 3em;
-    color: #eee;
+    color: var(--app-text);
     position: relative;
     font-family: "Homenaje", sans-serif;
     font-weight: 400;
     font-style: normal;
-    text-shadow: #000 0px 0px 10px;
+    text-shadow: var(--title-shadow) 0px 0px 10px;
 }
 
 .m_image {
@@ -35,18 +35,18 @@
     justify-content: center;
     align-items: center;
     align-items: center;
-    background-color: #272727;
+    background-color: var(--app-surface-strong);
     opacity: 0.9;
     display: none;
     position: absolute;
     z-index: 1;
     border-radius: 10px;
     visibility: visible;
-    box-shadow: 0px 0px 10px 5px #111;
+    box-shadow: 0px 0px 10px 5px var(--app-shadow);
 }
 
 .m_cardText {
-    color: #fff;
+    color: var(--app-text);
     font-family: "Inter", sans-serif;
     font-size: 1.5em;
     padding: 5px;
@@ -64,6 +64,6 @@
     transform: scale(1.1);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    box-shadow: 1px 1px 10px 1px #bababa;
+    box-shadow: 1px 1px 10px 1px var(--app-shadow);
 
 }

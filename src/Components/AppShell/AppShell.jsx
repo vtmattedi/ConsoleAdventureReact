@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AssetPreload from '../AssetPreload/AssetPreload'
 import { terminalAssets } from '../../assets/terminalAssets'
+import ThemeSelector from '../../MattediWorks/Components/ThemeSelector'
 import './AppShell.css'
 
 const navItems = [
@@ -73,15 +74,7 @@ export default function AppShell() {
               <span className="bi bi-arrow-left" aria-hidden="true" />
             </button>
           )}
-          <button
-            type="button"
-            className="app-shell-icon-button"
-            aria-label="Theme controls"
-            title="Theme"
-            disabled
-          >
-            <span className="bi bi-circle-half" aria-hidden="true" />
-          </button>
+          <ThemeSelector />
           <button
             type="button"
             className="app-shell-icon-button"

@@ -6,7 +6,8 @@
 .terminalDiv {
     overflow-y: hidden;
     overflow-x: hidden;
-    box-shadow: 0px 0px 10px 5px #000000;
+    background: var(--terminal-frame);
+    box-shadow: 0px 0px 10px 5px var(--terminal-frame-shadow);
     width: 90vw;
     height: 711px;
     display: flex;
