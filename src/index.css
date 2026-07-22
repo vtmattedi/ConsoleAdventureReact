@@ -128,7 +128,7 @@ code {
 .bgDiv{
   overflow-x: hidden;
   background: linear-gradient(135deg, #333 20%, #707274 100%);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .github-link{

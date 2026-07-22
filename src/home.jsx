@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './Components/Header/Header';
 import { useNavigate } from 'react-router-dom';
 import { terminalAssets } from './assets/terminalAssets';
 
@@ -40,14 +39,9 @@ const Home = () => {
 
     return (
         <div>
-            {
-                width > 768 ?
-                    <Header title={'Terminal Applications'} /> :
-                    <div className='ca-title'>
-                        <h3>Terminal Applications</h3>
-                    </div>
-
-            }
+            <div className='ca-title'>
+                <h3>Terminal Applications</h3>
+            </div>
             <div
                 style={{
                     display: 'flex',
@@ -67,7 +61,7 @@ const Home = () => {
                     onMouseEnter={mEnter}
                     onMouseLeave={mLeave} onClick={
                         () => {
-                            nav('/game');
+                            nav('/console-adventure');
                         }
                     }>
                     Play Console Adventure

@@ -40,16 +40,17 @@ Task 2 source ownership decision is recorded in `docs/source-ownership.md`: keep
 
 ## Current Routes
 
-Routes are defined directly in `src/index.js` with `createBrowserRouter`.
+Routes are defined in `src/index.jsx` with `createBrowserRouter`.
 
 | Path | Component | Notes |
 | --- | --- | --- |
 | `/` | `src/home.jsx` | Home/catalog page with buttons for Console Adventure and RTSim. |
-| `/game` | `src/game.jsx` | Console Adventure route. This is currently the canonical route. |
+| `/console-adventure` | `src/game.jsx` | Canonical Console Adventure route. |
+| `/game` | redirect | Legacy alias that redirects to `/console-adventure`. |
 | `/rtsim` | `src/rtsim.jsx` | RTSim route. |
-| any route error | current route's page or Home | Each route sets an `errorElement`, but there is no explicit not-found route. |
+| `*` | `src/Components/AppShell/NotFound.jsx` | Simple not-found page with home navigation. |
 
-There is no current `/console-adventure` route. The proposed modernization route map is:
+The current modernization route map is:
 
 - `/`: Terminal Applications home/catalog.
 - `/console-adventure`: canonical Console Adventure page.
@@ -62,20 +63,18 @@ There is no current `/console-adventure` route. The proposed modernization route
 `src/index.jsx` renders:
 
 - `React.StrictMode`
-- `App`
 - `RouterProvider`
 
-`src/App.js` currently behaves as a pass-through shell:
+The router renders `App` as the root layout route.
+
+Task 6 replaced the old pass-through `src/App.jsx` branches with a single shell:
 
 - It imports Bootstrap CSS and Bootstrap Icons globally.
-- It stores `window.innerWidth` in state and listens for `resize`.
-- The active return wraps route children in `<div className="bgDiv">`.
-- The `if (width > Infinity)` branch is unreachable.
-- A second return block after the active return is dead code.
-- Dead/unreachable code references `Header`, `SpeedInsights`, and `Analytics`.
-- `RTSim`, `Header`, `Info`, and `H` are imported but not used by the active return.
+- It wraps routes in `<div className="bgDiv">`.
+- It renders `src/Components/AppShell/AppShell.jsx`, which owns shared brand, primary route navigation, back control, disabled theme/language placeholders, asset preloading, and the route outlet.
+- Terminal-specific responsive behavior remains in terminal pages.
 
-This is the main place to create a real app shell in a later task.
+This is the main path for future branding, theme, i18n, and loading integration.
 
 ## Current Pages And Shared Components
 
@@ -84,8 +83,8 @@ This is the main place to create a real app shell in a later task.
 `src/home.jsx` currently:
 
 - Displays `Terminal Applications` as the page title.
-- Uses `Header` on desktop and a local mobile title on smaller widths.
-- Navigates to `/game` for Console Adventure.
+- Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
+- Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
 - Uses inline styles and Bootstrap icon classes.
 - Uses `src/Frontphoto.png` for mobile visual/profile treatment.
@@ -102,7 +101,7 @@ This is the main place to create a real app shell in a later task.
 - Shows `Info` when width is `<= 1040`.
 - Shows the terminal wrapper when width is `> 1040`.
 - Shows a text-like GitHub label, but it is not an actual link.
-- Uses `/game` as the route.
+- Uses `/console-adventure` as the canonical route while `/game` redirects to it.
 
 ### RTSim Page
 
@@ -133,15 +132,14 @@ This is the main place to create a real app shell in a later task.
 - Links to `https://www.github.com/vtmattedi/consoleadventure`.
 - Contains old Console Adventure-focused publication copy.
 
-### Floating Nav
+### App Shell Navigation
 
-`src/h.jsx` and `src/h.module.css` currently:
+`src/Components/AppShell/AppShell.jsx` and `src/Components/AppShell/AppShell.css` currently:
 
-- Provide fixed floating navigation/social controls.
-- Navigate to `/game`, `/rtsim`, and `/`.
-- Open GitHub and LinkedIn.
-- Use Bootstrap icon class names.
-- Need replacement with cohesive app-shell navigation.
+- Provide the shared brand/home control, route navigation, back control, and disabled theme/language placeholders.
+- Navigate to `/`, `/console-adventure`, and `/rtsim`.
+- Keep `/game` as a redirect-only legacy alias.
+- Use Bootstrap icon class names already loaded by the app shell.
 
 ## Terminal Wrappers
 
@@ -314,7 +312,7 @@ Stackport risk:
 - Root `index.html` is now the Vite entry point; `public/index.html` was removed.
 - The old root `prebuild` could change submodule code unexpectedly during production builds; task 2 removed it, and future tasks should not reintroduce floating source fetches.
 - Submodule source may be missing in non-recursive clones and Stackport checkouts.
-- `src/App.js` contains unreachable/dead branches and unused imports.
+- Task 6 removed the unreachable/dead `src/App.jsx` branches and unused shell imports.
 - Task 5 removed the invalid unused `{ use }` import from `src/game.jsx`.
 - Task 5 added `src/assets/terminalAssets.js` to centralize browser image/font/SVG paths and keep Vite resolution explicit.
 - Vite migration replaced runtime `require(...)` image usage in active React components; remaining `require(...)` calls are in legacy/source files not imported by the site.
@@ -323,9 +321,9 @@ Stackport risk:
 - `new FitAddon()` is created during render in both terminal wrappers.
 - RTSim wrapper logs every input to the browser console.
 - Terminal apps rely on singleton console/game/engine state, so remounts can leak state if not reset carefully.
-- The current `/game` route must not be removed without a legacy alias/redirect.
-- `/console-adventure` does not exist yet.
-- The active not-found behavior is only route-level `errorElement`, not a real catch-all route.
+- `/game` is now a legacy redirect to `/console-adventure`.
+- `/console-adventure` is the canonical Console Adventure route.
+- A `*` not-found route now exists under the app shell.
 - App tests are the default CRA placeholder and do not represent current UI.
 - MattediWorks theme/language/loading files are present. Loading dependencies are installed; theme/language provider modules are still scheduled for later tasks.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
@@ -353,7 +351,8 @@ Task order should stay sequential:
 Every later task should preserve or intentionally replace the following behavior:
 
 - `/` renders a usable home/catalog.
-- `/game` still reaches Console Adventure until the legacy alias is explicitly implemented.
+- `/console-adventure` reaches Console Adventure.
+- `/game` still reaches Console Adventure through the legacy redirect.
 - `/rtsim` renders RTSim.
 - Console Adventure starts in xterm, renders the main menu, accepts keyboard input, supports arrow/WASD-style navigation, accepts space/enter, and keeps Ctrl+B Dev Mode behavior.
 - Console Adventure narrow-width fallback appears below the supported width threshold until a better responsive treatment replaces it.

@@ -12,7 +12,8 @@ The underlying terminal/runtime work is tracked as the **Terminal Engine** proje
 ## Current Routes
 
 - `/`: app catalog.
-- `/game`: current Console Adventure route. A later task will keep this as a legacy alias for `/console-adventure`.
+- `/console-adventure`: canonical Console Adventure route.
+- `/game`: legacy alias that redirects to `/console-adventure`.
 - `/rtsim`: RTSim route.
 
 ## Local Development

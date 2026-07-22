@@ -1,7 +1,6 @@
 import React from 'react';
 import Info from './Components/Info/Info';
 import ConsoleAdventure from './Components/ConsoleAdVentureWeb/ConsoleAdventureWeb';
-import H from './h';
 const Game = () => {
     const [width, setWidth] = React.useState(window.innerWidth);
     React.useEffect(() => {
@@ -31,7 +30,6 @@ const Game = () => {
                 <div className='github-link'>
                     <span className='bi bi-github' ></span>/vtmattedi/ConsoleAdventure
                 </div>
-                <H />
             </div>
         </div>
     );

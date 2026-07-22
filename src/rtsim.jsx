@@ -1,6 +1,5 @@
 import React from 'react';
 import RTSim from './Components/RTSimWeb/rtsim';
-import H from './h';
 const Rtsim = () => {
     return (
 
@@ -19,7 +18,6 @@ const Rtsim = () => {
                     <span className='bi bi-github' ></span>/vtmattedi/rtsim
                 
             </div>
-            <H />
         </div>
     );
 };
