@@ -1,38 +1,65 @@
 
-.noSize
-{
-    margin: 5%;
-    text-align: center;
-    font-size: 1.5em;
-    font-family: "Inter", sans-serif;
-    color: var(--app-muted);
-    background-color: var(--app-surface);
-    box-shadow: 0px 0px 10px 5px var(--app-shadow);
-    border-radius: 10px;
-    padding: 5%;
+.info-panel {
+    width: min(980px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.noSizeDescription
-{
-    margin: 5%;
-    text-align: left;
-    font-size: 1.3em;
-    font-family: "Inter", sans-serif;
+.noSize,
+.noSizeDescription {
+    margin: 0;
+    border: 1px solid var(--app-border);
+    border-radius: 8px;
     color: var(--app-muted);
     background-color: var(--app-surface);
-    border-radius: 2%;
-    padding: 5%;
+    box-shadow: 0 12px 28px var(--app-shadow);
+    font-family: var(--font-body);
+    line-height: 1.5;
+}
+
+.noSize {
+    padding: clamp(18px, 4vw, 32px);
+    text-align: left;
+    font-size: clamp(1.1rem, 3vw, 1.45rem);
+    font-weight: 700;
+}
+
+.noSizeDescription {
+    padding: clamp(18px, 4vw, 30px);
+    text-align: left;
+    font-size: clamp(1rem, 2.5vw, 1.18rem);
 }
 
 .noSizeDescription a {
     color: var(--link-color);
 }
 
-.imageList
-{
+.imageList {
     display: flex;
     width: 100%;
-    padding: 5%;
+    gap: 14px;
+    padding: 6px 0 10px;
     flex-direction: row;
-    overflow-x: scroll;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+}
+
+.info-panel__screenshot {
+    flex: 0 0 min(82vw, 520px);
+    width: min(82vw, 520px);
+    aspect-ratio: 16 / 10;
+    display: block;
+    object-fit: cover;
+    border: 1px solid var(--app-border);
+    border-radius: 8px;
+    background: var(--terminal-frame);
+    scroll-snap-align: start;
+}
+
+@media screen and (max-width: 620px) {
+    .noSize,
+    .noSizeDescription {
+        text-align: left;
+    }
 }

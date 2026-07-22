@@ -87,20 +87,21 @@ This is the main path for branding, theme, i18n, and loading integration.
 - Shows a MattediWorks wordmark strip with localized brand-support copy.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
-- Uses inline styles and Bootstrap icon classes.
+- Uses shared page/home/action classes and Bootstrap icon classes.
 - Task 9 moved visible catalog copy into the i18n baseline and removed the old `developped` typo from the active page.
 - Task 10 removed the old active mobile personal photo/profile block from the home page.
+- Task 11 removed the active home inline layout styles and moved the old hover-button layout onto stable CSS classes.
 
 ### Console Adventure Page
 
 `src/game.jsx` currently:
 
-- Imports `Info`, `ConsoleAdventure`, and floating nav `H`.
-- Imports `use` from React even though it is unused/invalid for this project.
+- Imports `Info` and `ConsoleAdventure`.
 - Tracks width with a local `resize` listener.
 - Shows `Info` when width is `<= 1040`.
 - Shows the terminal wrapper when width is `> 1040`.
 - Shows a localized GitHub source link.
+- Uses shared terminal page/source-link classes.
 - Uses `/console-adventure` as the canonical route while `/game` redirects to it.
 
 ### RTSim Page
@@ -109,8 +110,8 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 - Renders title `RTSim`.
 - Renders the RTSim terminal wrapper unconditionally.
-- Shows floating nav `H`.
 - Shows a localized GitHub source link.
+- Uses shared terminal page/source-link classes.
 - Has no top-level narrow-width fallback equivalent to Console Adventure.
 
 ### Header
@@ -129,6 +130,7 @@ This is the main path for branding, theme, i18n, and loading integration.
 - Provides the Console Adventure narrow-width fallback.
 - Uses the shared asset registry for five Console Adventure screenshots.
 - Links to `https://www.github.com/vtmattedi/consoleadventure`.
+- Uses class-driven panel and screenshot sizing.
 - Contains old Console Adventure-focused publication copy.
 
 ### App Shell Navigation
@@ -257,12 +259,12 @@ Current tracked/public assets:
 
 Current styling:
 
-- `src/index.css` owns most global page styles.
-- Terminal wrappers have duplicated `Terminal.css` files.
-- `Header`, `Info`, and `H` have separate CSS/module files.
-- The current palette is mostly dark gray/blue with gradient background.
-- There are many inline style blocks in page components.
-- Cards/buttons currently use rounded 10px styling.
+- `src/index.css` owns global theme tokens plus shared page, home, terminal-page, and source-link classes.
+- Terminal wrappers have duplicated `Terminal.css` files, now normalized to the same bounded terminal-frame constraints.
+- `Header` and `Info` have separate CSS/module files; the old floating `H` component is no longer part of the active shell.
+- The current palette uses neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent.
+- Active home, Console Adventure, RTSim, Info, and legacy Header layout styles are class-driven rather than inline layout blocks.
+- Cards/buttons/panels use 8px radii or smaller.
 
 ## MattediWorks Local Assets
 
@@ -370,6 +372,7 @@ Stackport risk:
 - App tests now run Vitest route/shell/theme/i18n smoke tests.
 - MattediWorks theme/language/loading files are present. Loading dependencies are installed, task 8 wired the theme provider, and task 9 wired the language provider.
 - Task 10 wired local MattediWorks fonts, public SVG icon metadata, visible shell/home logos, and the initial `MWLoading` boot overlay.
+- Task 11 moved active page layout styles out of inline JSX, normalized terminal/fallback frames, and replaced the old gradient-heavy page background with neutral theme surfaces plus orange/cyan accents.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -386,10 +389,19 @@ Task order should stay sequential:
 7. Clean dependencies and developer scripts.
 8. Add theme infrastructure.
 9. Add i18n infrastructure.
-10. Integrate MattediWorks branding and visual system.
-11. Clarify engine content before the home page claims are rewritten.
-12. Harden terminal wrappers after the shared terminal page shell exists.
-13. Finish metadata, docs, Docker/Stackport handoff, and release QA.
+10. Integrate MattediWorks branding assets.
+11. Clean up the visual system.
+12. Clarify engine content before the home page claims are rewritten.
+13. Add a shared project content model.
+14. Revamp the home page.
+15. Add the shared terminal page shell.
+16. Harden the Console Adventure port.
+17. Harden the RTSim port.
+18. Finish metadata, SEO, and PWA assets.
+19. Refresh the README.
+20. Prepare Docker/Stackport deployment.
+21. Write the Stackport handoff.
+22. Run release QA.
 
 ## Must-Still-Work Checklist
 
@@ -411,6 +423,7 @@ Every later task should preserve or intentionally replace the following behavior
 - Theme switching persists and keeps the app readable in light/dark/system modes.
 - Language switching persists, updates `document.documentElement.lang`, and keeps current shell/home/terminal/not-found copy localized in `en` and `pt-BR`.
 - Initial MattediWorks loading treatment respects reduced-motion preferences and does not reappear on normal route navigation.
+- Shared page, home action, fallback panel, external-link, and terminal-frame classes keep controls and text inside their containers across mobile and desktop widths.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.

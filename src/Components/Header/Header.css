@@ -2,6 +2,15 @@
     display: flex;
     margin: auto;
     align-items: center;
+    position: relative;
+    top: 0;
+    text-align: center;
+    transition: flex-direction 160ms ease;
+}
+
+.m_headerDiv--stacked {
+    flex-direction: column;
+    position: sticky;
 }
 
 .m_titleDiv {
@@ -13,7 +22,7 @@
 }
 
 .m_title {
-    font-size: 3em;
+    font-size: 3rem;
     color: var(--app-text);
     position: relative;
     font-family: var(--font-brand);
@@ -24,25 +33,48 @@
 
 .m_image {
     border-radius: 50%;
-    left: 10%;
+    display: block;
+    object-fit: contain;
+    background: var(--brand-panel-bg);
     padding: 5px;
     width: 100px;
     height: 100px;
+}
+
+.m_img_c {
+    width: min(20vw, 140px);
+    min-width: 84px;
+    height: 120px;
+    display: grid;
+    place-items: center;
+    visibility: visible;
+}
+
+.m_img_c--hidden {
+    visibility: hidden;
 }
 
 .m_card {
     top: 10px;
     justify-content: center;
     align-items: center;
-    align-items: center;
     background-color: var(--app-surface-strong);
     opacity: 0.9;
     display: none;
     position: absolute;
     z-index: 1;
-    border-radius: 10px;
+    border: 1px solid var(--app-border);
+    border-radius: 8px;
     visibility: visible;
-    box-shadow: 0px 0px 10px 5px var(--app-shadow);
+    box-shadow: 0 12px 28px var(--app-shadow);
+}
+
+.m_card--visible {
+    display: flex;
+}
+
+.m_card--centered {
+    margin: auto;
 }
 
 .m_cardText {

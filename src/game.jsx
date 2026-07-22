@@ -1,11 +1,12 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Info from './Components/Info/Info';
 import ConsoleAdventure from './Components/ConsoleAdVentureWeb/ConsoleAdventureWeb';
 import { useI18n } from './MattediWorks/hooks/useI18n';
 const Game = () => {
     const { t } = useI18n();
-    const [width, setWidth] = React.useState(window.innerWidth);
-    React.useEffect(() => {
+    const [width, setWidth] = useState(window.innerWidth);
+    const showTerminal = width > 1040;
+    useEffect(() => {
         const handleResize = () => {
             setWidth(window.innerWidth);
         };
@@ -17,23 +18,19 @@ const Game = () => {
         };
     }, []);
     return (
-        <div
+        <section className="terminal-page">
+            <header className="page-heading">
+                <h1 className="page-title">{t.consoleAdventure.title}</h1>
+            </header>
 
-        >
-            <div className="ca-title" style={{
-                marginTop: '2vh',
-            }}>
-                <h3>{t.consoleAdventure.title}</h3>
-
-                <Info styles={{ display: width > 1040 ? 'none' : 'flex', flexDirection: `column` }} />
-                <div style={{ display: width > 1040 ? 'flex' : 'none', }} >
-                    <ConsoleAdventure />
-                </div>
-                <a className='github-link' href="https://github.com/vtmattedi/ConsoleAdventure" target="_blank" rel="noreferrer" aria-label={t.consoleAdventure.sourceAria}>
-                    <span className='bi bi-github' aria-hidden="true"></span>{t.consoleAdventure.sourceLabel}
-                </a>
+            <Info hidden={showTerminal} />
+            <div className={showTerminal ? 'terminal-page__stage' : 'terminal-page__stage terminal-page__stage--hidden'}>
+                <ConsoleAdventure />
             </div>
-        </div>
+            <a className='github-link terminal-page__source' href="https://github.com/vtmattedi/ConsoleAdventure" target="_blank" rel="noreferrer" aria-label={t.consoleAdventure.sourceAria}>
+                <span className='bi bi-github' aria-hidden="true"></span>{t.consoleAdventure.sourceLabel}
+            </a>
+        </section>
     );
 };
 

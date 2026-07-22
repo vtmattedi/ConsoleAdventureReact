@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { terminalAssets } from './assets/terminalAssets';
 import { useI18n } from './MattediWorks/hooks/useI18n';
@@ -6,7 +6,7 @@ import { useI18n } from './MattediWorks/hooks/useI18n';
 const Home = () => {
     const nav = useNavigate();
     const { t } = useI18n();
-    const [hover, setHover] = React.useState("");
+    const [hover, setHover] = useState("");
     const mEnter = (e) => {
         setHover(e.target.id);
     }
@@ -26,23 +26,13 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <div className='ca-title'>
-                <h3>{t.shell.productName}</h3>
-            </div>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    overflowX: 'hidden',
-                    color: 'var(--app-text)',
-                    fontSize: '1.2em',
-                    margin: '2vh 2vw',
-                    textAlign: 'center',
-                }}>
+        <div className="home-page">
+            <header className="page-heading">
+                <h1 className="page-title">{t.shell.productName}</h1>
+            </header>
+            <p className="home-intro">
                 {t.home.intro}
-            </div>
+            </p>
             <section className="home-brand-strip" aria-label={t.home.brandPanelLabel}>
                 <img
                     className="home-brand-wordmark"
@@ -51,9 +41,11 @@ const Home = () => {
                 />
                 <p>{t.home.brandPanelCopy}</p>
             </section>
-            <div className='home-container'>
+            <div className="home-actions">
                 <button
                     id={'ca'}
+                    type="button"
+                    className="home-action-button"
                     onMouseEnter={mEnter}
                     onMouseLeave={mLeave} onClick={
                         () => {
@@ -61,11 +53,13 @@ const Home = () => {
                         }
                     }>
                     {t.home.consoleAdventureCta}
-                    <span className='bi bi-play'></span>
+                    <span className='bi bi-play' aria-hidden="true"></span>
                 </button>
 
                 <button
                     id={'rs'}
+                    type="button"
+                    className="home-action-button home-action-button--secondary"
                     onMouseEnter={mEnter}
                     onMouseLeave={mLeave}
                     onClick={
@@ -74,16 +68,11 @@ const Home = () => {
                         }
                     }>
                     {t.home.rtsimCta}
-                    <span className='bi bi-pc-display-horizontal'></span>
+                    <span className='bi bi-pc-display-horizontal' aria-hidden="true"></span>
                 </button>
-                <div
-                    style={{
-                        marginTop: '2vh',
-                        color: 'var(--app-text)',
-                        fontSize: '1.1rem',
-                    }}>
+                <p className="home-action-description" aria-live="polite">
                     {getDescription(hover)}
-                </div>
+                </p>
             </div>
         </div>
     );

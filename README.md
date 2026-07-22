@@ -80,3 +80,9 @@ The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSele
 MattediWorks branding is served from local repository assets. `src/index.css` defines `@font-face` rules for the Sansation font files under `src/MattediWorks/assets/fonts/` and exposes shared font tokens used by the shell, home page, legacy header, and loading overlay.
 
 The shell uses the MattediWorks mark, the home catalog includes the MattediWorks wordmark, and browser/manifest icons point to `/mattediworks-icon.svg`. The initial app boot uses `MWLoading` briefly on first render, with reduced-motion users receiving a static logo treatment instead of the SVG drawing animation. Old personal photo branding is no longer imported by the active shell/home asset graph.
+
+## Visual System
+
+The active app uses shared CSS variables for neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent. Common page headings, home action controls, terminal page layout, source links, narrow-width fallback panels, and terminal frames are class-driven rather than inline-styled.
+
+Terminal frames use bounded width/height constraints and 8px radii so the xterm surfaces remain predictable across desktop and narrow viewports. The home and terminal pages intentionally stay modest until the later content-model and home-page revamp tasks.
