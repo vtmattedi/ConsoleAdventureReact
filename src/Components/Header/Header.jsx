@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState } from 'react';
-import { FaLinkedin, FaGithub } from "react-icons/fa";
 import './Header.css';
 import { terminalAssets } from '../../assets/terminalAssets';
 
@@ -57,12 +56,10 @@ const Header = ({ title }) => {
                 onMouseLeave={onMouseLeave} >
                 <img src={fphoto} className="m_image" alt="logo" />
                 <a href='https://github.com/vtmattedi' target="_blank" rel="noreferrer">
-                    <FaGithub className='m_icon'
-                        color='white' />
+                    <span className='bi bi-github m_icon' aria-hidden="true"></span>
                 </a>
                 <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank" rel="noreferrer">
-                    <FaLinkedin className='m_icon'
-                        color='#0077B5' />
+                    <span className='bi bi-linkedin m_icon' style={{ color: '#0077B5' }} aria-hidden="true"></span>
                 </a>
                 <span className='m_cardText'>
                     Dev Jr | Software Engineer Student

@@ -117,7 +117,7 @@ This is the main path for future branding, theme, i18n, and loading integration.
 
 `src/Components/Header/Header.jsx` currently:
 
-- Uses `react-icons/fa` for GitHub and LinkedIn icons.
+- Uses Bootstrap Icon class names for GitHub and LinkedIn icons.
 - Uses the shared asset registry for `Frontphoto.png`.
 - Tracks width with a local `resize` listener.
 - Uses hover state to reveal a personal/profile card.
@@ -260,13 +260,22 @@ Current root dependencies:
 
 - React: `react`, `react-dom`
 - Routing: `react-router-dom`
-- Terminal: `@xterm/xterm`, `@xterm/addon-fit`, `@xterm/addon-attach`, `@xterm/addon-webgl`, `react-xtermjs`
-- Styling/icons: `bootstrap`, `bootstrap-icons`, `react-icons`
-- Animation: `framer-motion`
+- Terminal: `@xterm/xterm`, `@xterm/addon-fit`, `react-xtermjs`
+- Styling/icons: `bootstrap-icons`
 - Vite: `vite`, `@vitejs/plugin-react`
-- Test packages still present for later cleanup: `@testing-library/*`
-- Vercel: `@vercel/analytics`, `@vercel/speed-insights`
 - MattediWorks loading/icons: `lucide-react`, `gsap`, `@gsap/react`
+- Testing/tooling: `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`, `eslint`, `typescript`, `typescript-eslint`
+
+Task 7 dependency decisions:
+
+- Removed unused CRA-era/testing placeholder package `@testing-library/user-event`.
+- Removed old hosting-specific Vercel Analytics and Speed Insights packages because the app shell no longer imports them and Stackport hosting will choose analytics later.
+- Removed unused Bootstrap CSS, React Icons, Framer Motion, and unused xterm attach/webgl addons.
+- Updated React and React DOM to the current stable major.
+- Updated React Router, `react-xtermjs`, and the xterm Fit addon within compatible ranges.
+- Kept `@xterm/xterm` on the `5.5.x` line because `react-xtermjs` currently peers on `@xterm/xterm ^5.5.0`.
+- Pinned TypeScript to the newest compiler range currently accepted by `typescript-eslint`; npm latest TypeScript is newer than that peer range.
+- `npm outdated` intentionally reports only `@xterm/xterm` and `typescript` after task 7 because both are held for those compatibility reasons.
 
 Current scripts after task 4:
 
@@ -275,11 +284,13 @@ Current scripts after task 4:
 - `start`: aliases the Vite dev server.
 - `build`: builds with Vite.
 - `preview`: previews the Vite production bundle.
-- `test`: placeholder until a test runner is configured.
-- `lint`: placeholder until a lint runner is configured.
-- `typecheck`: placeholder until a typecheck runner is configured.
+- `test`: runs Vitest route/shell smoke tests.
+- `lint`: runs ESLint against the root Vite app and local integration files.
+- `typecheck`: runs TypeScript against the active MattediWorks loading TypeScript entry.
 
-There is no real lint, typecheck, or test runner yet.
+TypeScript checking is intentionally narrow until the later theme and i18n tasks add the missing MattediWorks provider modules. ESLint ignores the Console Adventure and RTSim submodule source trees because those are separately-owned upstream packages.
+
+`npm run lint` exits with two warnings about `FitAddon` objects changing the dependencies of terminal wrapper effects. Those warnings align with the later Console Adventure and RTSim port-hardening tasks and were not fixed during dependency hygiene to avoid behavior changes.
 
 ## Hosting And Publication Assumptions
 
@@ -309,6 +320,7 @@ Stackport risk:
 ## Known Modernization Risks
 
 - The app now builds with Vite; later tasks still need dependency hygiene and real lint/typecheck/test commands.
+- Task 7 added real lint, typecheck, and test commands. Lint currently exits successfully with two known terminal-wrapper lifecycle warnings that are scheduled for later hardening.
 - Root `index.html` is now the Vite entry point; `public/index.html` was removed.
 - The old root `prebuild` could change submodule code unexpectedly during production builds; task 2 removed it, and future tasks should not reintroduce floating source fetches.
 - Submodule source may be missing in non-recursive clones and Stackport checkouts.
