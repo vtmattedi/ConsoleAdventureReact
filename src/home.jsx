@@ -41,6 +41,15 @@ const Home = () => {
                 />
                 <p>{t.home.brandPanelCopy}</p>
             </section>
+            <section className="home-engine-summary" aria-labelledby="home-engine-title">
+                <span className="home-engine-summary__label">{t.home.engineLabel}</span>
+                <h2 id="home-engine-title">{t.home.engineTitle}</h2>
+                <p>{t.home.engineSummary}</p>
+                <ul>
+                    <li>{t.home.engineBoundary}</li>
+                    <li>{t.home.engineContract}</li>
+                </ul>
+            </section>
             <div className="home-actions">
                 <button
                     id={'ca'}

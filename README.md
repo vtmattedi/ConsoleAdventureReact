@@ -7,7 +7,7 @@ Terminal Applications is a MattediWorks web catalog for console applications por
 - **Console Adventure**: a terminal fantasy RPG.
 - **RTSim**: a discrete-time preemptive scheduler simulator.
 
-The underlying terminal/runtime work is tracked as the **Terminal Engine** project.
+The underlying terminal/runtime work is tracked as the **Terminal Engine** project. See [docs/terminal-engine.md](docs/terminal-engine.md) for the current engine boundary and browser/xterm port contract.
 
 ## Current Routes
 
@@ -86,3 +86,9 @@ The shell uses the MattediWorks mark, the home catalog includes the MattediWorks
 The active app uses shared CSS variables for neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent. Common page headings, home action controls, terminal page layout, source links, narrow-width fallback panels, and terminal frames are class-driven rather than inline-styled.
 
 Terminal frames use bounded width/height constraints and 8px radii so the xterm surfaces remain predictable across desktop and narrow viewports. The home and terminal pages intentionally stay modest until the later content-model and home-page revamp tasks.
+
+## Terminal Engine Boundary
+
+`docs/terminal-engine.md` documents the current source truth: RTSim contains the concrete `ConsoleEngine` implementation, while Console Adventure still uses its own `GameStates`/`GameState` runtime. Both apps share the same console/xterm porting contract for output, sizing, input, color handling, rendering, and resize behavior.
+
+The home page presents Terminal Engine as the core project without adding a separate engine route. Future content-model work should reuse that boundary instead of claiming both apps already share one extracted engine package.

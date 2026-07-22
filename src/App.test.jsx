@@ -75,6 +75,20 @@ describe('app shell routing', () => {
     }, { timeout: 2000 })
   })
 
+  it('presents Terminal Engine as core project copy without adding an engine route link', () => {
+    renderRoute('/')
+
+    expect(screen.getByRole('heading', { name: 'Terminal Engine' })).toBeInTheDocument()
+    expect(screen.getByText(/rtsim currently contains the scene engine/i)).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /terminal engine/i })).not.toBeInTheDocument()
+  })
+
+  it('keeps Terminal Engine out of the route map', () => {
+    renderRoute('/terminal-engine')
+
+    expect(screen.getByRole('heading', { name: /page not found/i })).toBeInTheDocument()
+  })
+
   it('redirects the legacy game route to Console Adventure', async () => {
     renderRoute('/game')
 

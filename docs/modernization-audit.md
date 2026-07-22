@@ -85,6 +85,7 @@ This is the main path for branding, theme, i18n, and loading integration.
 - Displays localized Terminal Applications catalog copy while keeping the product name unchanged.
 - Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
 - Shows a MattediWorks wordmark strip with localized brand-support copy.
+- Presents Terminal Engine as the core project without adding a route.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
 - Uses shared page/home/action classes and Bootstrap icon classes.
@@ -223,6 +224,8 @@ The exit reset currently mutates engine internals directly and should be reviewe
 
 RTSim contains the current engine implementation under `src/RTSim/Simulator/Engine/`.
 
+Task 12 added `docs/terminal-engine.md` as the durable boundary document for the engine narrative, current implementation facts, browser/xterm port contract, and home-page copy guidance.
+
 Key engine files:
 
 - `ConsoleHelp.js`
@@ -244,6 +247,8 @@ Key engine files:
   - ASCII/ANSI logo assets, custom small figlet data, and text rendering helpers.
 
 Important boundary: the current site should not claim both terminal apps use the same RTSim `ConsoleEngine`. RTSim does. Console Adventure uses its own `src/ConsoleAdventure/Game/Base/ConsoleHelp.js` and `GameStates` model. Both apps share a similar porting contract through a singleton `BasicConsole`, but they are not yet one shared engine.
+
+The home page now promotes Terminal Engine as the runtime/browser-porting effort behind the catalog while stating that RTSim currently contains the scene engine and Console Adventure uses a separate game-state runtime. No engine route was added.
 
 ## Assets And Styling
 
@@ -373,6 +378,7 @@ Stackport risk:
 - MattediWorks theme/language/loading files are present. Loading dependencies are installed, task 8 wired the theme provider, and task 9 wired the language provider.
 - Task 10 wired local MattediWorks fonts, public SVG icon metadata, visible shell/home logos, and the initial `MWLoading` boot overlay.
 - Task 11 moved active page layout styles out of inline JSX, normalized terminal/fallback frames, and replaced the old gradient-heavy page background with neutral theme surfaces plus orange/cyan accents.
+- Task 12 documented the Terminal Engine boundary and added a truthful no-route home presentation for the engine.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -424,6 +430,7 @@ Every later task should preserve or intentionally replace the following behavior
 - Language switching persists, updates `document.documentElement.lang`, and keeps current shell/home/terminal/not-found copy localized in `en` and `pt-BR`.
 - Initial MattediWorks loading treatment respects reduced-motion preferences and does not reappear on normal route navigation.
 - Shared page, home action, fallback panel, external-link, and terminal-frame classes keep controls and text inside their containers across mobile and desktop widths.
+- Terminal Engine appears on the home page as a core project narrative, but no standalone engine route exists.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.

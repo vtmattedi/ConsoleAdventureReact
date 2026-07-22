@@ -31,6 +31,11 @@ export type Translation = {
     brandPanelLabel: string
     brandPanelCopy: string
     mattediWorksLogoAlt: string
+    engineLabel: string
+    engineTitle: string
+    engineSummary: string
+    engineBoundary: string
+    engineContract: string
     consoleAdventureCta: string
     rtsimCta: string
     consoleAdventureDescription: string
@@ -91,6 +96,14 @@ export const translations: Record<Locale, Translation> = {
       brandPanelLabel: 'MattediWorks brand',
       brandPanelCopy: 'A compact systems catalog for terminal tools, browser ports, and automation experiments.',
       mattediWorksLogoAlt: 'MattediWorks logo',
+      engineLabel: 'Core project',
+      engineTitle: 'Terminal Engine',
+      engineSummary:
+        'The runtime and browser-porting effort behind this catalog: a reliable bridge between ANSI terminal applications and xterm.js surfaces.',
+      engineBoundary:
+        'RTSim currently contains the scene engine; Console Adventure uses a separate game-state runtime.',
+      engineContract:
+        'Both ports share the same console contract for output, sizing, input, colors, rendering, and resize behavior.',
       consoleAdventureCta: 'Play Console Adventure',
       rtsimCta: 'Scheduler Simulator',
       consoleAdventureDescription: 'Turn-based RPG where you explore a world full of adventures and challenges.',
@@ -145,6 +158,14 @@ export const translations: Record<Locale, Translation> = {
       brandPanelLabel: 'Marca MattediWorks',
       brandPanelCopy: 'Um catalogo compacto de sistemas para ferramentas de terminal, ports no navegador e experimentos de automacao.',
       mattediWorksLogoAlt: 'Logo MattediWorks',
+      engineLabel: 'Projeto central',
+      engineTitle: 'Terminal Engine',
+      engineSummary:
+        'O trabalho de runtime e port para navegador por tras deste catalogo: uma ponte confiavel entre aplicativos ANSI de terminal e superficies xterm.js.',
+      engineBoundary:
+        'RTSim contem hoje o engine de cenas; Console Adventure usa um runtime separado baseado em estados de jogo.',
+      engineContract:
+        'Os dois ports compartilham o mesmo contrato de console para saida, tamanho, entrada, cores, renderizacao e resize.',
       consoleAdventureCta: 'Jogar Console Adventure',
       rtsimCta: 'Simulador Escalonador',
       consoleAdventureDescription: 'RPG em turnos para explorar um mundo cheio de aventuras e desafios.',
