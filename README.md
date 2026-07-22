@@ -1,33 +1,49 @@
-# Console Adventure Web
+# Terminal Applications
 
-This is a website to play [Console Adventure](www.github.com/vtmattedi/consoleadventure) on the web.
-Check it out [here](https://www.consoleadventure.com).
+This repository publishes **Terminal Applications** at [terminal.mattediworks.com](https://terminal.mattediworks.com/).
 
-The Website was built in react and uses [xterm.js](https://xtermjs.org/) to simulate a terminal and then runs the console game on it.
+Terminal Applications is a MattediWorks web catalog for console applications ported to the browser with React and xterm.js. The current public apps are:
 
-The Site is fully responsive, however it need at least 1040 px to display the terminal properly, any lower than that the graphics are not properly displayed and thus I chose to just hide it.
+- **Console Adventure**: a terminal fantasy RPG.
+- **RTSim**: a discrete-time preemptive scheduler simulator.
 
-![widthwarning](Assets/responsive.gif)
+The underlying terminal/runtime work is tracked as the **Terminal Engine** project.
 
-## Game Development
+## Current Routes
 
-This repository is for the development of the website only, not for the game development itself.
-However it obviously need to keep up with the game  but I want them to be as much detached as possible from each other. To accomplish this, I'm using git submodules and I added a prebuild script to get the latest from the Game repository before the build.
+- `/`: app catalog.
+- `/game`: current Console Adventure route. A later task will keep this as a legacy alias for `/console-adventure`.
+- `/rtsim`: RTSim route.
 
-## Future of the projects
+## Local Development
 
-There is two stages in the near future:
+Install dependencies and initialize the pinned terminal app sources:
 
-* First I will add a backend in node.js to handle savegames and a leaderboard.
-* Then I will move the whole project into a Next.js instead of node + React (maybe).
+```sh
+npm install
+npm run sync:submodules
+```
 
-## Powered by
+Run the Vite dev server:
 
-<div style="display:flex; align-items: center;">
-<img src="./Assets/reactlogo.svg" width="100">
-<img src="./Assets/xtermlogo.svg" height ="100">
-</div>
+```sh
+npm run dev
+```
 
-## Host on:
+Build the production bundle:
 
-<img src="./Assets/vercellogo.svg" height ="50">
+```sh
+npm run build
+```
+
+Preview the production bundle:
+
+```sh
+npm run preview
+```
+
+## Source Ownership
+
+`src/ConsoleAdventure` and `src/RTSim` are git submodules pinned by the root repository. `npm run build` does not fetch moving submodule branches.
+
+See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic source strategy that later Docker/Stackport work must follow.

@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Terminal Apps",
+  "name": "Terminal Applications",
+  "description": "MattediWorks browser ports of console applications powered by xterm.js.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#101317",
+  "background_color": "#f7f3ed"
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import './Header.css';
+import fphoto from './Frontphoto.png';
 const Header = ({ title }) => {
 
     const [mouseHover, setMouseHover] = useState(false);
@@ -17,8 +18,6 @@ const Header = ({ title }) => {
             window.removeEventListener('resize', handleResize);
         }
     }, []);
-    const fphoto = require('./Frontphoto.png');
-
     const onMouseEnter = () => {
         setMouseHover(true);
     }

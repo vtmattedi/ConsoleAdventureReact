@@ -1,14 +1,19 @@
 import React from 'react';
 import "./Info.css";
+import adventureImage from '../../ConsoleAdventure/Game/Assets/Adventure.png';
+import adventure2Image from '../../ConsoleAdventure/Game/Assets/Adventure2.png';
+import geniesImage from '../../ConsoleAdventure/Game/Assets/Genies.png';
+import slainImage from '../../ConsoleAdventure/Game/Assets/Slain.png';
+import slain2Image from '../../ConsoleAdventure/Game/Assets/Slain2.png';
 
 const Info = ({styles}) => {
 
     const imgs = [
-        require('../../ConsoleAdventure/Game/Assets/Adventure.png'),
-        require('../../ConsoleAdventure/Game/Assets/Adventure2.png'),
-        require('../../ConsoleAdventure/Game/Assets/Genies.png'),
-        require('../../ConsoleAdventure/Game/Assets/Slain.png'),
-        require('../../ConsoleAdventure/Game/Assets/Slain2.png'),
+        adventureImage,
+        adventure2Image,
+        geniesImage,
+        slainImage,
+        slain2Image,
       ];
     return (
         <div style={styles}>
