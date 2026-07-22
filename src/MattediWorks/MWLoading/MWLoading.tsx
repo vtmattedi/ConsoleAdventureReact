@@ -16,6 +16,14 @@ export type MWLoadingProps = {
 const orange = '#ff9849'
 const exitDelayMs = 240
 
+function getPrefersReducedMotion() {
+  if (typeof window === 'undefined' || !window.matchMedia) {
+    return false
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 function syncLogoTheme(logo: HTMLDivElement | null) {
   if (!logo) {
     return
@@ -38,6 +46,7 @@ function syncLogoTheme(logo: HTMLDivElement | null) {
 export default function MWLoading({ show, repeat = false, label = 'Loading' }: MWLoadingProps) {
   const logoRef = useRef<HTMLDivElement>(null)
   const [shouldRender, setShouldRender] = useState(show)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(getPrefersReducedMotion)
 
   useEffect(() => {
     if (show) {
@@ -49,6 +58,22 @@ export default function MWLoading({ show, repeat = false, label = 'Loading' }: M
 
     return () => window.clearTimeout(timeout)
   }, [show])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) {
+      return
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const updatePreference = (event: MediaQueryListEvent | MediaQueryList) => {
+      setPrefersReducedMotion(event.matches)
+    }
+
+    updatePreference(mediaQuery)
+    mediaQuery.addEventListener('change', updatePreference)
+
+    return () => mediaQuery.removeEventListener('change', updatePreference)
+  }, [])
 
   useGSAP(
     () => {
@@ -62,8 +87,31 @@ export default function MWLoading({ show, repeat = false, label = 'Loading' }: M
       const mainLogoPaths = gsap.utils.toArray<SVGPathElement>('svg > path', logo)
       const logoInk = getComputedStyle(logo).getPropertyValue('--mw-loading-ink').trim() || '#101317'
 
+      if (prefersReducedMotion) {
+        paths.forEach((path) => {
+          const finalColor = path.classList.contains('cls-1') ? orange : logoInk
+
+          gsap.set(path, {
+            fill: finalColor,
+            strokeWidth: 0,
+            strokeDashoffset: 0,
+          })
+        })
+
+        gsap.set(logo, {
+          autoAlpha: 1,
+          filter: 'none',
+          rotateX: 0,
+          rotateY: 0,
+          scale: 1,
+          y: 0,
+        })
+
+        return
+      }
+
       paths.forEach((path) => {
-        const pathLength = path.getTotalLength()
+        const pathLength = typeof path.getTotalLength === 'function' ? path.getTotalLength() : 0
         const finalColor = path.classList.contains('cls-1') ? orange : logoInk
 
         gsap.set(path, {
@@ -137,7 +185,7 @@ export default function MWLoading({ show, repeat = false, label = 'Loading' }: M
       }
     },
     {
-      dependencies: [show, repeat, shouldRender],
+      dependencies: [show, repeat, shouldRender, prefersReducedMotion],
       scope: logoRef,
       revertOnUpdate: true,
     },

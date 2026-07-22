@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AssetPreload from '../AssetPreload/AssetPreload'
 import { terminalAssets } from '../../assets/terminalAssets'
 import LanguageSelector from '../../MattediWorks/Components/LanguageSelector'
+import MWLoading from '../../MattediWorks/MWLoading'
 import ThemeSelector from '../../MattediWorks/Components/ThemeSelector'
 import { useI18n } from '../../MattediWorks/hooks/useI18n'
 import './AppShell.css'
+
+const bootOverlayMs = 720
 
 const navItems = [
   {
@@ -30,6 +34,7 @@ export default function AppShell() {
   const location = useLocation()
   const { locale, setLocale, t } = useI18n()
   const isHome = location.pathname === '/'
+  const [isBooting, setIsBooting] = useState(true)
   const getNavLabel = (labelKey) => {
     const label = t.shell.nav[labelKey]
 
@@ -40,9 +45,16 @@ export default function AppShell() {
     return label
   }
 
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setIsBooting(false), bootOverlayMs)
+
+    return () => window.clearTimeout(timeout)
+  }, [])
+
   return (
     <div className="app-shell">
       <AssetPreload loadingLabel={t.common.loading} />
+      <MWLoading show={isBooting} label={t.common.loading} />
       <header className="app-shell-header">
         <button
           type="button"
@@ -50,11 +62,18 @@ export default function AppShell() {
           onClick={() => navigate('/')}
           aria-label={t.shell.homeAria}
         >
-          <img
-            className="app-shell-logo"
-            src={terminalAssets.mattediWorks.logo}
-            alt=""
-          />
+          <span className="app-shell-logo-stack" aria-hidden="true">
+            <img
+              className="app-shell-logo app-shell-logo--light"
+              src={terminalAssets.mattediWorks.logo}
+              alt=""
+            />
+            <img
+              className="app-shell-logo app-shell-logo--dark"
+              src={terminalAssets.mattediWorks.logoWhite}
+              alt=""
+            />
+          </span>
           <span className="app-shell-title">{t.shell.productName}</span>
         </button>
 

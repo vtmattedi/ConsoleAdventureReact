@@ -1,9 +1,60 @@
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Light.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Light_Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sansation';
+  src: url('./MattediWorks/assets/fonts/Sansation_Bold_Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
 html {
   background: #101317;
 }
 
 :root {
   color-scheme: dark;
+  --font-brand: 'Sansation', system-ui, sans-serif;
+  --font-body: 'Sansation', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   --brand-orange: #ff9849;
   --app-background: linear-gradient(135deg, #25292d 0%, #62686d 100%);
   --app-background-fallback: #25292d;
@@ -47,9 +98,7 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   color: var(--app-text);
   background: var(--app-background-fallback);
   -webkit-font-smoothing: antialiased;
@@ -57,8 +106,36 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: var(--font-mono);
+}
+
+.home-brand-strip {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(720px, calc(100vw - 32px));
+  margin: 18px auto 6px;
+  padding: 14px 18px;
+  border: 1px solid rgba(16, 19, 23, 0.14);
+  border-radius: 8px;
+  color: #20272d;
+  background: rgba(248, 240, 229, 0.96);
+  box-shadow: 0 12px 28px var(--app-shadow);
+}
+
+.home-brand-wordmark {
+  width: min(320px, 72vw);
+  height: auto;
+  display: block;
+}
+
+.home-brand-strip p {
+  max-width: 50rem;
+  margin: 0;
+  color: #3f4b55;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .home-container {
@@ -109,16 +186,16 @@ code {
 
 .ca-title {
 
-  font-family: "Homenaje", sans-serif;
+  font-family: var(--font-brand);
   margin: 0 auto;
 
 }
 
 
 .ca-title h3 {
-  font-family: "Homenaje", sans-serif;
+  font-family: var(--font-brand);
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 3em;
   text-align: center;
   margin: 0 auto;

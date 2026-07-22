@@ -56,7 +56,7 @@
   justify-items: center;
   gap: 10px;
   color: var(--mw-loading-copy);
-  font-family: "Inter Variable", Inter, system-ui, sans-serif;
+  font-family: var(--font-brand, system-ui, sans-serif);
   font-size: clamp(0.86rem, 1.6vw, 1rem);
   font-weight: 800;
   letter-spacing: 0;

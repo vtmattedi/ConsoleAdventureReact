@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './Header.css';
 import { terminalAssets } from '../../assets/terminalAssets';
 
-const fphoto = terminalAssets.header.frontPhoto;
+const brandLogo = terminalAssets.mattediWorks.logo;
 const Header = ({ title }) => {
 
     const [mouseHover, setMouseHover] = useState(false);
@@ -45,7 +45,7 @@ const Header = ({ title }) => {
 
               }}
             >
-                <img src={fphoto} className="m_image" alt="logo"
+                <img src={brandLogo} className="m_image" alt="MattediWorks logo"
                     style={{ visibility: mouseHover ? 'hidden' : 'visible' }}
                    />
             </div>
@@ -54,15 +54,9 @@ const Header = ({ title }) => {
                 margin: width < 1040 ? 'auto' : '0px',
             }}
                 onMouseLeave={onMouseLeave} >
-                <img src={fphoto} className="m_image" alt="logo" />
-                <a href='https://github.com/vtmattedi' target="_blank" rel="noreferrer">
-                    <span className='bi bi-github m_icon' aria-hidden="true"></span>
-                </a>
-                <a href='https://www.linkedin.com/in/vitor-mattedi-dev/' target="_blank" rel="noreferrer">
-                    <span className='bi bi-linkedin m_icon' style={{ color: '#0077B5' }} aria-hidden="true"></span>
-                </a>
+                <img src={brandLogo} className="m_image" alt="MattediWorks logo" />
                 <span className='m_cardText'>
-                    Dev Jr | Software Engineer Student
+                    MattediWorks
                 </span>
             </div>
             <div className='m_titleDiv'>

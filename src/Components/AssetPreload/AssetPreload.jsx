@@ -7,7 +7,6 @@ const preloadImages = [
   terminalAssets.mattediWorks.logoWithName,
   terminalAssets.mattediWorks.logoWhite,
   terminalAssets.mattediWorks.loadingLogo,
-  terminalAssets.mattediWorks.photo,
 ].flat()
 
 const preloadStyle = {

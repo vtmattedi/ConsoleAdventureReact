@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { terminalAssets } from './assets/terminalAssets';
 import { useI18n } from './MattediWorks/hooks/useI18n';
 
-const pic = terminalAssets.home.frontPhoto;
 const Home = () => {
     const nav = useNavigate();
     const { t } = useI18n();
     const [hover, setHover] = React.useState("");
-    const [width, setWidth] = React.useState(window.innerWidth);
     const mEnter = (e) => {
         setHover(e.target.id);
     }
@@ -26,18 +24,6 @@ const Home = () => {
                 return '';
         }
     };
-
-    React.useEffect(() => {
-        const handleResize = () => {
-            setWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     return (
         <div>
@@ -57,6 +43,14 @@ const Home = () => {
                 }}>
                 {t.home.intro}
             </div>
+            <section className="home-brand-strip" aria-label={t.home.brandPanelLabel}>
+                <img
+                    className="home-brand-wordmark"
+                    src={terminalAssets.mattediWorks.logoWithName}
+                    alt={t.home.mattediWorksLogoAlt}
+                />
+                <p>{t.home.brandPanelCopy}</p>
+            </section>
             <div className='home-container'>
                 <button
                     id={'ca'}
@@ -91,83 +85,6 @@ const Home = () => {
                     {getDescription(hover)}
                 </div>
             </div>
-            {
-                width < 768 &&
-                <div className='m_open'>
-                    <div style={{
-                        display: 'flex',
-                        width: '100%',
-                        justifyContent: 'center',
-                        marginTop: '2vh',
-                        gap: '2vw',
-                    }}>
-                        <img src={pic} alt={t.home.photoAlt} className='home-terminal'
-                            style={{
-                                width: 'auto',
-                                height: '24vh',
-                                borderRadius: '10px',
-                            }}
-                        />
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '100%',
-                            margin: '0px 5%',
-                            color: 'var(--app-text)',
-                            fontSize: '2em',
-                            textAlign: 'center',
-                        }}>
-                            <a
-                                href="https://www.github.com/vtmattedi"
-                                target="_blank"
-                                rel="noreferrer"
-                                aria-label={t.home.githubProfileLabel}
-                                style={{
-                                    fontSize: '2em',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                }}>
-
-                                <span className='bi bi-github' aria-hidden="true"></span>
-                            </a>
-
-                            <a
-                                href="https://www.linkedin.com/in/vitor-mattedi-dev/"
-                                target="_blank"
-                                rel="noreferrer"
-                                aria-label={t.home.linkedinProfileLabel}
-                                style={{
-                                    fontSize: '2em',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                }}
-                            >
-                                <span className='bi bi-linkedin'
-                                    style={{ color: '#0e76a8' }} aria-hidden="true"></span>
-
-
-
-                            </a>
-                        </div>
-                    </div>
-                    <span className='m_cardText'
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '100%',
-                            margin: '0px 5%',
-                            color: 'var(--app-text)',
-                            fontSize: '1.5em',
-                            textAlign: 'center',
-                        }}>
-                        {t.home.profileRole}
-                    </span>
-                </div>
-            }
         </div>
     );
 };

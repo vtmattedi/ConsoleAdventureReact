@@ -84,12 +84,12 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 - Displays localized Terminal Applications catalog copy while keeping the product name unchanged.
 - Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
+- Shows a MattediWorks wordmark strip with localized brand-support copy.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
 - Uses inline styles and Bootstrap icon classes.
-- Uses `src/Frontphoto.png` for mobile visual/profile treatment.
-- Uses a local `resize` listener.
 - Task 9 moved visible catalog copy into the i18n baseline and removed the old `developped` typo from the active page.
+- Task 10 removed the old active mobile personal photo/profile block from the home page.
 
 ### Console Adventure Page
 
@@ -117,10 +117,9 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 `src/Components/Header/Header.jsx` currently:
 
-- Uses Bootstrap Icon class names for GitHub and LinkedIn icons.
-- Uses the shared asset registry for `Frontphoto.png`.
+- Uses the shared asset registry for the MattediWorks logo.
 - Tracks width with a local `resize` listener.
-- Uses hover state to reveal a personal/profile card.
+- Uses hover state to reveal a compact MattediWorks brand card.
 - Uses fixed positioning for title layout in CSS.
 
 ### Info
@@ -161,6 +160,16 @@ The selected preference persists in `localStorage` under `terminal-applications-
 Theme CSS variables live in `src/index.css` and cover page background/text, muted text, surfaces, borders, focus ring, MattediWorks brand orange, terminal frame/shadow, and link color.
 
 The app shell, current home/catalog styles, Console Adventure fallback, header legacy component, and terminal frames now read from those variables. Xterm foreground/background colors remain explicitly set inside each terminal wrapper so theme work does not change terminal app readability before the later terminal hardening tasks.
+
+## Branding Assets
+
+Task 10 added local Sansation `@font-face` declarations in `src/index.css` and shared `--font-brand`, `--font-body`, and `--font-mono` tokens. The app no longer relies on Google Fonts for active brand typography.
+
+The app shell uses the MattediWorks mark from `src/MattediWorks/assets/images/logo.svg`, and the home catalog now includes the MattediWorks wordmark from `logoWithName.svg`. Active home copy remains localized through the i18n baseline.
+
+`public/mattediworks-icon.svg` is the public browser/app icon source. `index.html`, `public/manifest.json`, and `public/site.webmanifest` now reference it for favicon and manifest icon metadata.
+
+`MWLoading` is rendered as a short first-boot overlay by the app shell and remains preloaded through `AssetPreload`. The component now watches `prefers-reduced-motion`; reduced-motion users receive a static logo treatment rather than the GSAP path-drawing animation.
 
 ## Terminal Wrappers
 
@@ -238,13 +247,13 @@ Important boundary: the current site should not claim both terminal apps use the
 
 Current tracked/public assets:
 
-- Root `index.html`, public favicons, `manifest.json`, `site.webmanifest`, `robots.txt`, `logo192.png`, `logo512.png`, `logo-no-abackground.png`.
+- Root `index.html`, public MattediWorks SVG icon `mattediworks-icon.svg`, legacy public favicons/PNGs, `manifest.json`, `site.webmanifest`, and `robots.txt`.
 - Root `Assets/` contains React, xterm, Vercel, responsive, and width-warning assets used by old docs/copy.
-- `src/Frontphoto.png` and `src/Components/Header/Frontphoto.png` support the current personal/header UI.
+- `src/Frontphoto.png` and `src/Components/Header/Frontphoto.png` remain legacy personal photo assets but are no longer imported by the active shared asset registry.
 - Console Adventure image assets live in the `src/ConsoleAdventure` submodule.
 - RTSim readme images live in the `src/RTSim` submodule.
 - MattediWorks assets exist under `src/MattediWorks/`.
-- `src/assets/terminalAssets.js` is the shared browser asset registry for current/future route assets: home/header front photos, Console Adventure screenshots and logo art, RTSim readme screenshots, MattediWorks logos/photo/fonts, and public favicon/manifest URLs.
+- `src/assets/terminalAssets.js` is the shared browser asset registry for current/future route assets: Console Adventure screenshots and logo art, RTSim readme screenshots, MattediWorks logos/fonts/loading assets, and public favicon/manifest URLs.
 
 Current styling:
 
@@ -274,6 +283,7 @@ Integration risks:
 - `LanguageSelector.tsx` imports the task 9 `../translation/i18n` module and receives locale state from `useI18n`.
 - `MWLoading.tsx` imports `gsap`, `@gsap/react`, `lucide-react`, and `logoWithName.svg?raw`; task 5 installed those packages and added `src/vite-env.d.ts` so Vite raw/static asset imports have project-level type support.
 - Theme, language, and loading assets are now wired into the app shell/runtime.
+- Task 10 wired Sansation fonts into global CSS tokens, added the MattediWorks wordmark to the home catalog, and moved public favicon/manifest metadata to a MattediWorks SVG icon.
 
 ## Dependency And Script Inventory
 
@@ -321,7 +331,7 @@ Task 3 updated the root project identity baseline:
 - Root README states that the repo publishes to `https://terminal.mattediworks.com/`.
 - Root `package.json` and `package-lock.json` use package name `terminal-applications`.
 - Root `index.html` title, description, theme color, and canonical URL target `Terminal Applications`.
-- `public/manifest.json` and `public/site.webmanifest` use `Terminal Applications` / `Terminal Apps`.
+- `public/manifest.json` and `public/site.webmanifest` use `Terminal Applications` / `Terminal Apps` and point their icons at the MattediWorks SVG mark.
 - Source submodule readmes may still contain their own historical web links until those upstream projects are updated.
 - README no longer presents Vercel as the host; task 7 removed the unused Vercel Analytics and Speed Insight packages/imports.
 
@@ -359,6 +369,7 @@ Stackport risk:
 - A `*` not-found route now exists under the app shell.
 - App tests now run Vitest route/shell/theme/i18n smoke tests.
 - MattediWorks theme/language/loading files are present. Loading dependencies are installed, task 8 wired the theme provider, and task 9 wired the language provider.
+- Task 10 wired local MattediWorks fonts, public SVG icon metadata, visible shell/home logos, and the initial `MWLoading` boot overlay.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -399,6 +410,7 @@ Every later task should preserve or intentionally replace the following behavior
 - MattediWorks logo/font/loading assets continue to resolve through the Vite asset registry.
 - Theme switching persists and keeps the app readable in light/dark/system modes.
 - Language switching persists, updates `document.documentElement.lang`, and keeps current shell/home/terminal/not-found copy localized in `en` and `pt-BR`.
+- Initial MattediWorks loading treatment respects reduced-motion preferences and does not reappear on normal route navigation.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.

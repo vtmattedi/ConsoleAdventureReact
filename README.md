@@ -74,3 +74,9 @@ Terminal emulator foreground/background palettes remain controlled inside the te
 The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSelector`. The selected locale is stored in `localStorage` under `terminal-applications-locale`; when no saved preference exists, the app chooses `pt-BR` for Portuguese browser languages and `en` otherwise.
 
 `index.html` applies `document.documentElement.lang` before the React bundle runs, and the React `I18nProvider` keeps that value synchronized after language changes. Translation data lives in `src/MattediWorks/translation/i18n.ts` as a typed `Record<Locale, Translation>` so missing locale fields are caught by TypeScript. Current shell, home/catalog, terminal page, loading, source-link, and not-found copy reads from the translation provider while project names remain unchanged.
+
+## Branding Assets
+
+MattediWorks branding is served from local repository assets. `src/index.css` defines `@font-face` rules for the Sansation font files under `src/MattediWorks/assets/fonts/` and exposes shared font tokens used by the shell, home page, legacy header, and loading overlay.
+
+The shell uses the MattediWorks mark, the home catalog includes the MattediWorks wordmark, and browser/manifest icons point to `/mattediworks-icon.svg`. The initial app boot uses `MWLoading` briefly on first render, with reduced-motion users receiving a static logo treatment instead of the SVG drawing animation. Old personal photo branding is no longer imported by the active shell/home asset graph.

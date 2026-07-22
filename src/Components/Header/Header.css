@@ -16,8 +16,8 @@
     font-size: 3em;
     color: var(--app-text);
     position: relative;
-    font-family: "Homenaje", sans-serif;
-    font-weight: 400;
+    font-family: var(--font-brand);
+    font-weight: 700;
     font-style: normal;
     text-shadow: var(--title-shadow) 0px 0px 10px;
 }
@@ -47,7 +47,7 @@
 
 .m_cardText {
     color: var(--app-text);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-body);
     font-size: 1.5em;
     padding: 5px;
 }

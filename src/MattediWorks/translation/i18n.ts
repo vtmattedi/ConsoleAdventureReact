@@ -28,14 +28,13 @@ export type Translation = {
   }
   home: {
     intro: string
+    brandPanelLabel: string
+    brandPanelCopy: string
+    mattediWorksLogoAlt: string
     consoleAdventureCta: string
     rtsimCta: string
     consoleAdventureDescription: string
     rtsimDescription: string
-    githubProfileLabel: string
-    linkedinProfileLabel: string
-    profileRole: string
-    photoAlt: string
   }
   consoleAdventure: {
     title: string
@@ -67,7 +66,7 @@ export const translations: Record<Locale, Translation> = {
     languageLabel: 'Language',
     common: {
       github: 'GitHub',
-      loading: 'Loading',
+      loading: 'Booting up',
     },
     theme: {
       label: 'Theme',
@@ -89,14 +88,13 @@ export const translations: Record<Locale, Translation> = {
     },
     home: {
       intro: 'These are console applications built for Node.js and ported to run in the browser with xterm.js.',
+      brandPanelLabel: 'MattediWorks brand',
+      brandPanelCopy: 'A compact systems catalog for terminal tools, browser ports, and automation experiments.',
+      mattediWorksLogoAlt: 'MattediWorks logo',
       consoleAdventureCta: 'Play Console Adventure',
       rtsimCta: 'Scheduler Simulator',
       consoleAdventureDescription: 'Turn-based RPG where you explore a world full of adventures and challenges.',
       rtsimDescription: 'Discrete-time preemptive scheduler simulator that shows how scheduling algorithms work.',
-      githubProfileLabel: 'Open Vitor Mattedi on GitHub',
-      linkedinProfileLabel: 'Open Vitor Mattedi on LinkedIn',
-      profileRole: 'Developer | Engineering Student',
-      photoAlt: 'Terminal profile photo',
     },
     consoleAdventure: {
       title: 'Console Adventure',
@@ -122,7 +120,7 @@ export const translations: Record<Locale, Translation> = {
     languageLabel: 'Idioma',
     common: {
       github: 'GitHub',
-      loading: 'Carregando',
+      loading: 'Inicializando',
     },
     theme: {
       label: 'Tema',
@@ -144,14 +142,13 @@ export const translations: Record<Locale, Translation> = {
     },
     home: {
       intro: 'Estes sao aplicativos de console criados para Node.js e portados para rodar no navegador com xterm.js.',
+      brandPanelLabel: 'Marca MattediWorks',
+      brandPanelCopy: 'Um catalogo compacto de sistemas para ferramentas de terminal, ports no navegador e experimentos de automacao.',
+      mattediWorksLogoAlt: 'Logo MattediWorks',
       consoleAdventureCta: 'Jogar Console Adventure',
       rtsimCta: 'Simulador Escalonador',
       consoleAdventureDescription: 'RPG em turnos para explorar um mundo cheio de aventuras e desafios.',
       rtsimDescription: 'Simulador de escalonamento preemptivo em tempo discreto que mostra algoritmos em funcionamento.',
-      githubProfileLabel: 'Abrir Vitor Mattedi no GitHub',
-      linkedinProfileLabel: 'Abrir Vitor Mattedi no LinkedIn',
-      profileRole: 'Desenvolvedor | Estudante de Engenharia',
-      photoAlt: 'Foto de perfil no terminal',
     },
     consoleAdventure: {
       title: 'Console Adventure',

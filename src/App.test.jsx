@@ -63,6 +63,18 @@ describe('app shell routing', () => {
     expect(screen.getByRole('button', { name: /scheduler simulator/i })).toBeInTheDocument()
   })
 
+  it('renders MattediWorks branding and clears the initial boot overlay', async () => {
+    renderRoute('/')
+
+    expect(screen.getByAltText('MattediWorks logo')).toBeInTheDocument()
+    expect(screen.getByText(/compact systems catalog/i)).toBeInTheDocument()
+    expect(screen.getByText('Booting up')).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.queryByText('Booting up')).not.toBeInTheDocument()
+    }, { timeout: 2000 })
+  })
+
   it('redirects the legacy game route to Console Adventure', async () => {
     renderRoute('/game')
 
