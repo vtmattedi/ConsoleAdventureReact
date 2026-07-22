@@ -17,6 +17,27 @@
   <link rel="manifest" href="/manifest.json" />
   <script>
     (() => {
+      const storageKey = 'terminal-applications-locale';
+      const validLocales = ['en', 'pt-BR'];
+      let locale = 'en';
+
+      try {
+        const storedLocale = window.localStorage.getItem(storageKey);
+        if (validLocales.includes(storedLocale)) {
+          locale = storedLocale;
+        } else {
+          const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+          locale = languages.some((language) => language?.toLowerCase().startsWith('pt')) ? 'pt-BR' : 'en';
+        }
+      } catch {
+        locale = 'en';
+      }
+
+      document.documentElement.lang = locale;
+    })();
+  </script>
+  <script>
+    (() => {
       const storageKey = 'terminal-applications-theme';
       const validThemes = ['light', 'dark', 'system'];
       let theme = 'system';

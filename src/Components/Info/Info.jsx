@@ -1,26 +1,25 @@
 import React from 'react';
 import "./Info.css";
 import { consoleAdventureFallbackImages } from '../../assets/terminalAssets';
+import { useI18n } from '../../MattediWorks/hooks/useI18n';
 
 const Info = ({styles}) => {
+    const { t } = useI18n();
 
     const imgs = consoleAdventureFallbackImages;
     return (
         <div style={styles}>
          
         <p className="noSize">
-          You need at least 1040 px of width to see the terminal.
+          {t.consoleAdventure.widthWarning}
         </p>
         <p className="noSizeDescription">
-          Console Adventure is a game that started as an OOP project for my Software Engineering course,
-          I decided to take it further and make it a full game.
-          The game is a console game that runs on the terminal, and here you can play it on the web.
-          It was ported using Xterm.js and React.
-          You can check the console game at <a href="https://www.github.com/vtmattedi/consoleadventure" target='_blank' rel="noreferrer"> github</a>.
+          {t.consoleAdventure.description}{' '}
+          <a href="https://www.github.com/vtmattedi/consoleadventure" target='_blank' rel="noreferrer" aria-label={t.consoleAdventure.sourceAria}>{t.common.github}</a>.
         </p>
         <div className='imageList'>
           {imgs.map((img, index) => {
-            return (<img key={index} src={img}
+            return (<img key={index} src={img} alt={`${t.consoleAdventure.screenshotAlt} ${index + 1}`}
               style={
                 {
                   margin: '10px',

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
@@ -48,7 +48,9 @@ function renderRoute(path) {
 describe('app shell routing', () => {
   beforeEach(() => {
     window.localStorage.clear()
+    window.localStorage.setItem('terminal-applications-locale', 'en')
     document.documentElement.className = ''
+    document.documentElement.lang = 'en'
     delete document.documentElement.dataset.theme
     delete document.documentElement.dataset.themePreference
   })
@@ -98,5 +100,18 @@ describe('app shell routing', () => {
 
     expect(window.localStorage.getItem('terminal-applications-theme')).toBe('system')
     expect(document.documentElement.dataset.themePreference).toBe('system')
+  })
+
+  it('persists Portuguese and translates the visible shell and catalog copy', async () => {
+    renderRoute('/')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Language: PT' }))
+
+    expect(window.localStorage.getItem('terminal-applications-locale')).toBe('pt-BR')
+    await waitFor(() => expect(document.documentElement.lang).toBe('pt-BR'))
+    expect(screen.getByRole('button', { name: /jogar console adventure/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /simulador escalonador/i })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: /principal/i })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: /tema/i })).toBeInTheDocument()
   })
 })

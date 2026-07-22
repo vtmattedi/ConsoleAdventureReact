@@ -1,15 +1,15 @@
 import { Sun, Moon, Monitor } from 'lucide-react'
+import { useI18n } from '../hooks/useI18n'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import './ThemeSelector.css'
 
 const OPTIONS = [
-  { value: 'light', Icon: Sun, label: 'Light' },
-  { value: 'dark', Icon: Moon, label: 'Dark' },
-  { value: 'system', Icon: Monitor, label: 'System' },
+  { value: 'light', Icon: Sun },
+  { value: 'dark', Icon: Moon },
+  { value: 'system', Icon: Monitor },
 ] satisfies Array<{
   value: Theme
   Icon: typeof Sun
-  label: string
 }>
 
 const OPTION_CLASS_NAMES = {
@@ -55,18 +55,22 @@ type ThemeSelectorProps = {
 
 export default function ThemeSelector({ compact = false }: ThemeSelectorProps) {
   const { theme, changeTheme } = useTheme()
+  const { t } = useI18n()
+  const getThemeLabel = (value: Theme) => t.theme[value]
 
   if (compact) {
     const current = getCurrentTheme(theme)
     const next = getNextTheme(theme)
     const { Icon } = current
+    const currentLabel = getThemeLabel(current.value)
+    const nextLabel = getThemeLabel(next.value)
 
     return (
       <button
         type="button"
         onClick={() => changeTheme(next.value)}
-        aria-label={`Theme: ${current.label}; switch to ${next.label}`}
-        title={`Theme: ${current.label} - click for ${next.label}`}
+        aria-label={`${t.theme.label}: ${currentLabel}; ${t.theme.switchTo} ${nextLabel}`}
+        title={`${t.theme.label}: ${currentLabel} - ${t.theme.switchTo} ${nextLabel}`}
         className={COMPACT_CLASS_NAMES[theme]}
       >
         <Icon aria-hidden="true" size={18} />
@@ -75,20 +79,24 @@ export default function ThemeSelector({ compact = false }: ThemeSelectorProps) {
   }
 
   return (
-    <div className="theme-selector" aria-label="Theme">
-      {OPTIONS.map(({ value, Icon, label }) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => changeTheme(value)}
-          aria-label={label}
-          title={label}
-          aria-pressed={theme === value}
-          className={getOptionClassName(value, theme)}
-        >
-          <Icon aria-hidden="true" size={15} />
-        </button>
-      ))}
+    <div className="theme-selector" aria-label={t.theme.label} role="group">
+      {OPTIONS.map(({ value, Icon }) => {
+        const label = getThemeLabel(value)
+
+        return (
+          <button
+            key={value}
+            type="button"
+            onClick={() => changeTheme(value)}
+            aria-label={label}
+            title={label}
+            aria-pressed={theme === value}
+            className={getOptionClassName(value, theme)}
+          >
+            <Icon aria-hidden="true" size={15} />
+          </button>
+        )
+      })}
     </div>
   )
 }

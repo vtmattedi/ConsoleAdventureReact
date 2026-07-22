@@ -19,7 +19,7 @@ The root project was migrated from Create React App to Vite in task 4:
 - `npm start` is kept as an alias for `vite`.
 - Production script is `npm run build`, backed by `vite build`.
 - Production preview script is `npm run preview`, backed by `vite preview`.
-- `test`, `lint`, and `typecheck` are placeholders until dependency hygiene.
+- `test`, `lint`, and `typecheck` are real quality gates added during dependency hygiene.
 - At audit time, root `prebuild` ran `git submodule update --recursive --remote`. Task 2 removed that floating build hook and added `npm run sync:submodules` for explicit pinned submodule initialization.
 - The lockfile is `package-lock.json`.
 
@@ -71,10 +71,10 @@ Task 6 replaced the old pass-through `src/App.jsx` branches with a single shell:
 
 - It imports Bootstrap Icons globally.
 - It wraps routes in `<div className="bgDiv">`.
-- It renders `src/Components/AppShell/AppShell.jsx`, which owns shared brand, primary route navigation, back control, theme selector, disabled language placeholder, asset preloading, and the route outlet.
+- It renders `src/Components/AppShell/AppShell.jsx`, which owns shared brand, primary route navigation, back control, theme selector, language selector, asset preloading, and the route outlet.
 - Terminal-specific responsive behavior remains in terminal pages.
 
-This is the main path for future branding, theme, i18n, and loading integration.
+This is the main path for branding, theme, i18n, and loading integration.
 
 ## Current Pages And Shared Components
 
@@ -82,14 +82,14 @@ This is the main path for future branding, theme, i18n, and loading integration.
 
 `src/home.jsx` currently:
 
-- Displays `Terminal Applications` as the page title.
+- Displays localized Terminal Applications catalog copy while keeping the product name unchanged.
 - Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
 - Uses inline styles and Bootstrap icon classes.
 - Uses `src/Frontphoto.png` for mobile visual/profile treatment.
 - Uses a local `resize` listener.
-- Contains visible copy typo/risk: `developped`.
+- Task 9 moved visible catalog copy into the i18n baseline and removed the old `developped` typo from the active page.
 
 ### Console Adventure Page
 
@@ -100,7 +100,7 @@ This is the main path for future branding, theme, i18n, and loading integration.
 - Tracks width with a local `resize` listener.
 - Shows `Info` when width is `<= 1040`.
 - Shows the terminal wrapper when width is `> 1040`.
-- Shows a text-like GitHub label, but it is not an actual link.
+- Shows a localized GitHub source link.
 - Uses `/console-adventure` as the canonical route while `/game` redirects to it.
 
 ### RTSim Page
@@ -110,7 +110,7 @@ This is the main path for future branding, theme, i18n, and loading integration.
 - Renders title `RTSim`.
 - Renders the RTSim terminal wrapper unconditionally.
 - Shows floating nav `H`.
-- Shows a text-like GitHub label, but it is not an actual link.
+- Shows a localized GitHub source link.
 - Has no top-level narrow-width fallback equivalent to Console Adventure.
 
 ### Header
@@ -136,11 +136,21 @@ This is the main path for future branding, theme, i18n, and loading integration.
 
 `src/Components/AppShell/AppShell.jsx` and `src/Components/AppShell/AppShell.css` currently:
 
-- Provide the shared brand/home control, route navigation, back control, theme selector, and disabled language placeholder.
+- Provide the shared brand/home control, route navigation, back control, theme selector, and language selector.
 - Navigate to `/`, `/console-adventure`, and `/rtsim`.
 - Keep `/game` as a redirect-only legacy alias.
 - Use Bootstrap icon class names already loaded by the app shell.
 - Integrate the MattediWorks `ThemeSelector` for light, dark, and system theme preferences.
+
+### I18n Baseline
+
+Task 9 added `src/MattediWorks/translation/i18n.ts` and `src/MattediWorks/hooks/useI18n.tsx`. Supported locales are `en` and `pt-BR`; the selected locale persists in `localStorage` under `terminal-applications-locale`.
+
+When no saved preference exists, the provider uses the browser language list to choose `pt-BR` for Portuguese users and `en` otherwise. `index.html` sets `document.documentElement.lang` before the React bundle loads, and the provider keeps it synchronized after UI language changes.
+
+The app shell, home/catalog page, Console Adventure page and narrow-width fallback, RTSim page, loading label, not-found route, theme control labels, language control labels, and source-link labels now read visible copy from the translation table. Source project names remain untranslated.
+
+The translation table is typed as `Record<Locale, Translation>` so missing fields fail TypeScript checking when new keys are added.
 
 ## Theme System
 
@@ -261,9 +271,9 @@ The `src/MattediWorks/` folder currently includes:
 Integration risks:
 
 - `ThemeSelector.tsx` imports `lucide-react` and the task 8 `../hooks/useTheme` provider/hook module.
-- `LanguageSelector.tsx` imports `../translation/i18n`; that module is missing.
+- `LanguageSelector.tsx` imports the task 9 `../translation/i18n` module and receives locale state from `useI18n`.
 - `MWLoading.tsx` imports `gsap`, `@gsap/react`, `lucide-react`, and `logoWithName.svg?raw`; task 5 installed those packages and added `src/vite-env.d.ts` so Vite raw/static asset imports have project-level type support.
-- Theme and loading assets are now wired into the app shell/runtime; language assets remain future integration inputs until the i18n task.
+- Theme, language, and loading assets are now wired into the app shell/runtime.
 
 ## Dependency And Script Inventory
 
@@ -297,9 +307,9 @@ Current scripts after task 4:
 - `preview`: previews the Vite production bundle.
 - `test`: runs Vitest route/shell smoke tests.
 - `lint`: runs ESLint against the root Vite app and local integration files.
-- `typecheck`: runs TypeScript against the active MattediWorks loading and theme TypeScript entries.
+- `typecheck`: runs TypeScript against the active MattediWorks loading, theme, and i18n TypeScript entries.
 
-TypeScript checking is intentionally narrow until the later i18n task adds the missing MattediWorks language provider modules. ESLint ignores the Console Adventure and RTSim submodule source trees because those are separately-owned upstream packages.
+TypeScript checking is intentionally scoped to active local TypeScript integration files. ESLint ignores the Console Adventure and RTSim submodule source trees because those are separately-owned upstream packages.
 
 `npm run lint` exits with two warnings about `FitAddon` objects changing the dependencies of terminal wrapper effects. Those warnings align with the later Console Adventure and RTSim port-hardening tasks and were not fixed during dependency hygiene to avoid behavior changes.
 
@@ -330,7 +340,7 @@ Stackport risk:
 
 ## Known Modernization Risks
 
-- The app now builds with Vite; later tasks still need dependency hygiene and real lint/typecheck/test commands.
+- The app now builds with Vite, and task 7 added real lint/typecheck/test commands.
 - Task 7 added real lint, typecheck, and test commands. Lint currently exits successfully with two known terminal-wrapper lifecycle warnings that are scheduled for later hardening.
 - Root `index.html` is now the Vite entry point; `public/index.html` was removed.
 - The old root `prebuild` could change submodule code unexpectedly during production builds; task 2 removed it, and future tasks should not reintroduce floating source fetches.
@@ -347,8 +357,8 @@ Stackport risk:
 - `/game` is now a legacy redirect to `/console-adventure`.
 - `/console-adventure` is the canonical Console Adventure route.
 - A `*` not-found route now exists under the app shell.
-- App tests now run Vitest route/shell/theme smoke tests.
-- MattediWorks theme/language/loading files are present. Loading dependencies are installed, and task 8 wired the theme provider; language provider modules are still scheduled for later tasks.
+- App tests now run Vitest route/shell/theme/i18n smoke tests.
+- MattediWorks theme/language/loading files are present. Loading dependencies are installed, task 8 wired the theme provider, and task 9 wired the language provider.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -363,11 +373,12 @@ Task order should stay sequential:
 5. Fix imports/assets after Vite is in place.
 6. Build the app shell and canonical route map.
 7. Clean dependencies and developer scripts.
-8. Add theme and i18n infrastructure.
-9. Integrate MattediWorks branding and visual system.
-10. Clarify engine content before the home page claims are rewritten.
-11. Harden terminal wrappers after the shared terminal page shell exists.
-12. Finish metadata, docs, Docker/Stackport handoff, and release QA.
+8. Add theme infrastructure.
+9. Add i18n infrastructure.
+10. Integrate MattediWorks branding and visual system.
+11. Clarify engine content before the home page claims are rewritten.
+12. Harden terminal wrappers after the shared terminal page shell exists.
+13. Finish metadata, docs, Docker/Stackport handoff, and release QA.
 
 ## Must-Still-Work Checklist
 
@@ -387,6 +398,7 @@ Every later task should preserve or intentionally replace the following behavior
 - RTSim readme screenshots/assets remain available for future content model usage.
 - MattediWorks logo/font/loading assets continue to resolve through the Vite asset registry.
 - Theme switching persists and keeps the app readable in light/dark/system modes.
+- Language switching persists, updates `document.documentElement.lang`, and keeps current shell/home/terminal/not-found copy localized in `en` and `pt-BR`.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.

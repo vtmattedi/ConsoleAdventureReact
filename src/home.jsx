@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { terminalAssets } from './assets/terminalAssets';
+import { useI18n } from './MattediWorks/hooks/useI18n';
 
 const pic = terminalAssets.home.frontPhoto;
 const Home = () => {
     const nav = useNavigate();
+    const { t } = useI18n();
     const [hover, setHover] = React.useState("");
     const [width, setWidth] = React.useState(window.innerWidth);
     const mEnter = (e) => {
@@ -17,9 +19,9 @@ const Home = () => {
     const getDescription = (id) => {
         switch (id) {
             case 'ca':
-                return 'Turn based RPG game, where you can explore a world full of adventures and challenges.';
+                return t.home.consoleAdventureDescription;
             case 'rs':
-                return 'Discrete time preemptive scheduler simulator, where you can see the inner workings of many scheduler algorithms.';
+                return t.home.rtsimDescription;
             default:
                 return '';
         }
@@ -40,7 +42,7 @@ const Home = () => {
     return (
         <div>
             <div className='ca-title'>
-                <h3>Terminal Applications</h3>
+                <h3>{t.shell.productName}</h3>
             </div>
             <div
                 style={{
@@ -53,7 +55,7 @@ const Home = () => {
                     margin: '2vh 2vw',
                     textAlign: 'center',
                 }}>
-                These are some apps developped for node.js, that run on any terminal. such as xterm.js.
+                {t.home.intro}
             </div>
             <div className='home-container'>
                 <button
@@ -64,7 +66,7 @@ const Home = () => {
                             nav('/console-adventure');
                         }
                     }>
-                    Play Console Adventure
+                    {t.home.consoleAdventureCta}
                     <span className='bi bi-play'></span>
                 </button>
 
@@ -77,7 +79,7 @@ const Home = () => {
                             nav('/rtsim');
                         }
                     }>
-                    Scheduler Simulator
+                    {t.home.rtsimCta}
                     <span className='bi bi-pc-display-horizontal'></span>
                 </button>
                 <div
@@ -99,7 +101,7 @@ const Home = () => {
                         marginTop: '2vh',
                         gap: '2vw',
                     }}>
-                        <img src={pic} alt='terminal' className='home-terminal'
+                        <img src={pic} alt={t.home.photoAlt} className='home-terminal'
                             style={{
                                 width: 'auto',
                                 height: '24vh',
@@ -117,29 +119,37 @@ const Home = () => {
                             fontSize: '2em',
                             textAlign: 'center',
                         }}>
-                            <div
-                                onClick={() => { window.open('https://www.github.com/vtmattedi', '_blank'); }
-                                }
+                            <a
+                                href="https://www.github.com/vtmattedi"
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={t.home.githubProfileLabel}
                                 style={{
                                     fontSize: '2em',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
                                 }}>
 
-                                <span className='bi bi-github'></span>
-                            </div>
+                                <span className='bi bi-github' aria-hidden="true"></span>
+                            </a>
 
-                            <div
-                                onClick={() => { window.open('https://www.linkedin.com/in/vitor-mattedi-dev/', '_blank'); }
-                                }
+                            <a
+                                href="https://www.linkedin.com/in/vitor-mattedi-dev/"
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={t.home.linkedinProfileLabel}
                                 style={{
                                     fontSize: '2em',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
                                 }}
                             >
                                 <span className='bi bi-linkedin'
-                                    style={{ color: '#0e76a8' }}></span>
+                                    style={{ color: '#0e76a8' }} aria-hidden="true"></span>
 
 
 
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <span className='m_cardText'
@@ -154,7 +164,7 @@ const Home = () => {
                             fontSize: '1.5em',
                             textAlign: 'center',
                         }}>
-                        Dev | Engineering Student
+                        {t.home.profileRole}
                     </span>
                 </div>
             }

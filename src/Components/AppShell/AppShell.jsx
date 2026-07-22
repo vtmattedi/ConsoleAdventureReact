@@ -1,24 +1,26 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AssetPreload from '../AssetPreload/AssetPreload'
 import { terminalAssets } from '../../assets/terminalAssets'
+import LanguageSelector from '../../MattediWorks/Components/LanguageSelector'
 import ThemeSelector from '../../MattediWorks/Components/ThemeSelector'
+import { useI18n } from '../../MattediWorks/hooks/useI18n'
 import './AppShell.css'
 
 const navItems = [
   {
     to: '/',
-    label: 'Home',
+    labelKey: 'home',
     icon: 'bi bi-house-fill',
     end: true,
   },
   {
     to: '/console-adventure',
-    label: 'Console Adventure',
+    labelKey: 'consoleAdventure',
     icon: 'bi bi-play-fill',
   },
   {
     to: '/rtsim',
-    label: 'RTSim',
+    labelKey: 'rtsim',
     icon: 'bi bi-pc-display-horizontal',
   },
 ]
@@ -26,27 +28,37 @@ const navItems = [
 export default function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { locale, setLocale, t } = useI18n()
   const isHome = location.pathname === '/'
+  const getNavLabel = (labelKey) => {
+    const label = t.shell.nav[labelKey]
+
+    if (!label) {
+      throw new Error(`Missing navigation translation: ${labelKey}`)
+    }
+
+    return label
+  }
 
   return (
     <div className="app-shell">
-      <AssetPreload />
+      <AssetPreload loadingLabel={t.common.loading} />
       <header className="app-shell-header">
         <button
           type="button"
           className="app-shell-brand"
           onClick={() => navigate('/')}
-          aria-label="Terminal Applications home"
+          aria-label={t.shell.homeAria}
         >
           <img
             className="app-shell-logo"
             src={terminalAssets.mattediWorks.logo}
             alt=""
           />
-          <span className="app-shell-title">Terminal Applications</span>
+          <span className="app-shell-title">{t.shell.productName}</span>
         </button>
 
-        <nav className="app-shell-nav" aria-label="Primary">
+        <nav className="app-shell-nav" aria-label={t.shell.primaryNav}>
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -57,7 +69,7 @@ export default function AppShell() {
               )}
             >
               <span className={item.icon} aria-hidden="true" />
-              <span className="app-shell-link-label">{item.label}</span>
+              <span className="app-shell-link-label">{getNavLabel(item.labelKey)}</span>
             </NavLink>
           ))}
         </nav>
@@ -68,22 +80,14 @@ export default function AppShell() {
               type="button"
               className="app-shell-icon-button"
               onClick={() => navigate(-1)}
-              aria-label="Go back"
-              title="Back"
+              aria-label={t.shell.back}
+              title={t.shell.back}
             >
               <span className="bi bi-arrow-left" aria-hidden="true" />
             </button>
           )}
           <ThemeSelector />
-          <button
-            type="button"
-            className="app-shell-icon-button"
-            aria-label="Language controls"
-            title="Language"
-            disabled
-          >
-            <span className="bi bi-translate" aria-hidden="true" />
-          </button>
+          <LanguageSelector locale={locale} setLocale={setLocale} t={t} />
         </div>
       </header>
 

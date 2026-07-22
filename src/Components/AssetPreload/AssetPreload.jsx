@@ -21,13 +21,13 @@ const preloadStyle = {
   top: -9999,
 }
 
-export default function AssetPreload() {
+export default function AssetPreload({ loadingLabel = 'Loading' }) {
   return (
     <div aria-hidden="true" style={preloadStyle}>
       {preloadImages.map((asset) => (
         <img key={asset} src={asset} alt="" loading="eager" />
       ))}
-      <MWLoading show={false} />
+      <MWLoading show={false} label={loadingLabel} />
     </div>
   )
 }

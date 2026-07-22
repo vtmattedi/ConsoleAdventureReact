@@ -17,10 +17,12 @@
   },
   "include": [
     "src/vite-env.d.ts",
+    "src/MattediWorks/Components/LanguageSelector.tsx",
     "src/MattediWorks/Components/ThemeSelector.tsx",
     "src/MattediWorks/hooks/**/*.ts",
     "src/MattediWorks/hooks/**/*.tsx",
     "src/MattediWorks/MWLoading/**/*.ts",
-    "src/MattediWorks/MWLoading/**/*.tsx"
+    "src/MattediWorks/MWLoading/**/*.tsx",
+    "src/MattediWorks/translation/**/*.ts"
   ]
 }

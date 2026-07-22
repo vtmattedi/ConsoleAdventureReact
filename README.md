@@ -61,10 +61,16 @@ See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic s
 
 The root app keeps runtime dependencies focused on React, React Router, xterm.js with the Fit addon, `react-xtermjs`, Bootstrap Icons, and the MattediWorks loading/icon stack (`lucide-react`, `gsap`, `@gsap/react`). React is on the current stable major. `@xterm/xterm` intentionally stays on the `5.5.x` line because `react-xtermjs` currently peers on `@xterm/xterm ^5.5.0`.
 
-Lint covers the root Vite app and local MattediWorks integration files while ignoring the `src/ConsoleAdventure` and `src/RTSim` submodule sources. It currently exits successfully with two warnings for known `FitAddon` lifecycle cleanup in the terminal wrappers, which is scheduled for the terminal hardening tasks. TypeScript checking currently covers the active MattediWorks loading and theme TypeScript entries; the future i18n task will expand it after the missing language provider module is added.
+Lint covers the root Vite app and local MattediWorks integration files while ignoring the `src/ConsoleAdventure` and `src/RTSim` submodule sources. It currently exits successfully with two warnings for known `FitAddon` lifecycle cleanup in the terminal wrappers, which is scheduled for the terminal hardening tasks. TypeScript checking currently covers the active MattediWorks loading, theme, and i18n TypeScript entries.
 
 ## Theme System
 
 The app supports `light`, `dark`, and `system` theme preferences through the MattediWorks `ThemeSelector`. The selected preference is stored in `localStorage` under `terminal-applications-theme`. On load, `index.html` applies `data-theme`, `data-theme-preference`, and a `light`/`dark` class to `document.documentElement` before the React bundle runs, which keeps first paint readable and lets CSS plus `MWLoading` react to theme changes.
 
 Terminal emulator foreground/background palettes remain controlled inside the terminal wrappers for now, while the surrounding page and terminal frame use shared CSS variables.
+
+## I18n Baseline
+
+The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSelector`. The selected locale is stored in `localStorage` under `terminal-applications-locale`; when no saved preference exists, the app chooses `pt-BR` for Portuguese browser languages and `en` otherwise.
+
+`index.html` applies `document.documentElement.lang` before the React bundle runs, and the React `I18nProvider` keeps that value synchronized after language changes. Translation data lives in `src/MattediWorks/translation/i18n.ts` as a typed `Record<Locale, Translation>` so missing locale fields are caught by TypeScript. Current shell, home/catalog, terminal page, loading, source-link, and not-found copy reads from the translation provider while project names remain unchanged.
