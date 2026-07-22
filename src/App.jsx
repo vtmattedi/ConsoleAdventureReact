@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react"
 import H from './h';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';;
+import AssetPreload from './Components/AssetPreload/AssetPreload';
 function App({ children }) {
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -68,6 +69,7 @@ function App({ children }) {
 
   return (
     <div className='bgDiv'>
+      <AssetPreload />
       {children}
     </div>
   )

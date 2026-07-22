@@ -2,7 +2,9 @@ import React from 'react';
 import { useState } from 'react';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import './Header.css';
-import fphoto from './Frontphoto.png';
+import { terminalAssets } from '../../assets/terminalAssets';
+
+const fphoto = terminalAssets.header.frontPhoto;
 const Header = ({ title }) => {
 
     const [mouseHover, setMouseHover] = useState(false);

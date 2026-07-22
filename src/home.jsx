@@ -1,7 +1,9 @@
 import React from 'react';
 import Header from './Components/Header/Header';
 import { useNavigate } from 'react-router-dom';
-import pic from './Frontphoto.png';
+import { terminalAssets } from './assets/terminalAssets';
+
+const pic = terminalAssets.home.frontPhoto;
 const Home = () => {
     const nav = useNavigate();
     const [hover, setHover] = React.useState("");

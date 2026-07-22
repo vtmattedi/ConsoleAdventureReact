@@ -34,7 +34,7 @@ The repository currently contains two terminal app source trees as git submodule
   - Checked out at `3e5c571` during this audit.
   - `package.json` declares `"type": "module"` and version `0.2.2`.
 
-Root git status at the start of the audit showed `src/MattediWorks/` as untracked. Those files are present locally and look like future branding/theme/language/loading assets, but they are not part of the tracked root repository state yet.
+Root git status at the start of the audit showed `src/MattediWorks/` as untracked. Task 4 brought those files into the Vite app state, and task 5 added the runtime dependencies needed for the loading asset component to compile when imported.
 
 Task 2 source ownership decision is recorded in `docs/source-ownership.md`: keep the submodules as developer provenance, do not update them during `npm run build`, and require the later Docker build to fetch exact public commits for Stackport-style non-recursive checkouts.
 
@@ -119,7 +119,7 @@ This is the main place to create a real app shell in a later task.
 `src/Components/Header/Header.jsx` currently:
 
 - Uses `react-icons/fa` for GitHub and LinkedIn icons.
-- Uses CommonJS `require('./Frontphoto.png')`.
+- Uses the shared asset registry for `Frontphoto.png`.
 - Tracks width with a local `resize` listener.
 - Uses hover state to reveal a personal/profile card.
 - Uses fixed positioning for title layout in CSS.
@@ -129,7 +129,7 @@ This is the main place to create a real app shell in a later task.
 `src/Components/Info/Info.jsx` currently:
 
 - Provides the Console Adventure narrow-width fallback.
-- Uses CommonJS `require(...)` for five Console Adventure screenshots.
+- Uses the shared asset registry for five Console Adventure screenshots.
 - Links to `https://www.github.com/vtmattedi/consoleadventure`.
 - Contains old Console Adventure-focused publication copy.
 
@@ -224,7 +224,8 @@ Current tracked/public assets:
 - `src/Frontphoto.png` and `src/Components/Header/Frontphoto.png` support the current personal/header UI.
 - Console Adventure image assets live in the `src/ConsoleAdventure` submodule.
 - RTSim readme images live in the `src/RTSim` submodule.
-- MattediWorks assets exist under untracked `src/MattediWorks/`.
+- MattediWorks assets exist under `src/MattediWorks/`.
+- `src/assets/terminalAssets.js` is the shared browser asset registry for current/future route assets: home/header front photos, Console Adventure screenshots and logo art, RTSim readme screenshots, MattediWorks logos/photo/fonts, and public favicon/manifest URLs.
 
 Current styling:
 
@@ -237,7 +238,7 @@ Current styling:
 
 ## MattediWorks Local Assets
 
-The untracked `src/MattediWorks/` folder currently includes:
+The `src/MattediWorks/` folder currently includes:
 
 - `assets/fonts/Sansation_*.ttf`
 - `assets/images/logo.svg`
@@ -250,10 +251,10 @@ The untracked `src/MattediWorks/` folder currently includes:
 
 Integration risks:
 
-- `ThemeSelector.tsx` imports `lucide-react` and `../hooks/useTheme`; neither is available in the current root project.
+- `ThemeSelector.tsx` imports `lucide-react` and `../hooks/useTheme`; `lucide-react` is installed, but the theme hook is still a future task.
 - `LanguageSelector.tsx` imports `../translation/i18n`; that module is missing.
-- `MWLoading.tsx` imports `gsap`, `@gsap/react`, `lucide-react`, and `logoWithName.svg?raw`; those packages are not installed in the root project, and `?raw` is Vite-style asset syntax.
-- These assets should be treated as future integration inputs, not as active runtime code.
+- `MWLoading.tsx` imports `gsap`, `@gsap/react`, `lucide-react`, and `logoWithName.svg?raw`; task 5 installed those packages and added `src/vite-env.d.ts` so Vite raw/static asset imports have project-level type support.
+- These assets should still be treated as future integration inputs until the app shell/theme/i18n tasks wire them into visible UI.
 
 ## Dependency And Script Inventory
 
@@ -267,12 +268,7 @@ Current root dependencies:
 - Vite: `vite`, `@vitejs/plugin-react`
 - Test packages still present for later cleanup: `@testing-library/*`
 - Vercel: `@vercel/analytics`, `@vercel/speed-insights`
-
-Not currently installed but referenced by untracked MattediWorks code:
-
-- `lucide-react`
-- `gsap`
-- `@gsap/react`
+- MattediWorks loading/icons: `lucide-react`, `gsap`, `@gsap/react`
 
 Current scripts after task 4:
 
@@ -319,7 +315,8 @@ Stackport risk:
 - The old root `prebuild` could change submodule code unexpectedly during production builds; task 2 removed it, and future tasks should not reintroduce floating source fetches.
 - Submodule source may be missing in non-recursive clones and Stackport checkouts.
 - `src/App.js` contains unreachable/dead branches and unused imports.
-- `src/game.jsx` imports `{ use }` from React unnecessarily.
+- Task 5 removed the invalid unused `{ use }` import from `src/game.jsx`.
+- Task 5 added `src/assets/terminalAssets.js` to centralize browser image/font/SVG paths and keep Vite resolution explicit.
 - Vite migration replaced runtime `require(...)` image usage in active React components; remaining `require(...)` calls are in legacy/source files not imported by the site.
 - Both terminal wrappers assign `window.onresize` globally.
 - Both terminal wrappers add xterm key handlers without disposing them on unmount.
@@ -330,7 +327,7 @@ Stackport risk:
 - `/console-adventure` does not exist yet.
 - The active not-found behavior is only route-level `errorElement`, not a real catch-all route.
 - App tests are the default CRA placeholder and do not represent current UI.
-- MattediWorks theme/language/loading files are present but untracked and missing required dependencies/modules.
+- MattediWorks theme/language/loading files are present. Loading dependencies are installed; theme/language provider modules are still scheduled for later tasks.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 

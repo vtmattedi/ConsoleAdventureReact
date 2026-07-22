@@ -1,20 +1,10 @@
 import React from 'react';
 import "./Info.css";
-import adventureImage from '../../ConsoleAdventure/Game/Assets/Adventure.png';
-import adventure2Image from '../../ConsoleAdventure/Game/Assets/Adventure2.png';
-import geniesImage from '../../ConsoleAdventure/Game/Assets/Genies.png';
-import slainImage from '../../ConsoleAdventure/Game/Assets/Slain.png';
-import slain2Image from '../../ConsoleAdventure/Game/Assets/Slain2.png';
+import { consoleAdventureFallbackImages } from '../../assets/terminalAssets';
 
 const Info = ({styles}) => {
 
-    const imgs = [
-        adventureImage,
-        adventure2Image,
-        geniesImage,
-        slainImage,
-        slain2Image,
-      ];
+    const imgs = consoleAdventureFallbackImages;
     return (
         <div style={styles}>
          

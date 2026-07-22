@@ -1,6 +1,5 @@
 import React from 'react';
 import Info from './Components/Info/Info';
-import { use } from 'react';
 import ConsoleAdventure from './Components/ConsoleAdVentureWeb/ConsoleAdventureWeb';
 import H from './h';
 const Game = () => {

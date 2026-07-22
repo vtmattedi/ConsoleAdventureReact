@@ -1,7 +1,6 @@
 import { FitAddon } from '@xterm/addon-fit'
 import { useEffect, useRef } from 'react'
 import { useXTerm } from 'react-xtermjs'
-import Assets from '../../ConsoleAdventure/Game/Assets/Assets'
 import { BasicConsole, DefaultColors } from '../../ConsoleAdventure/Game/Base/ConsoleHelp'
 import { Game, GameStates } from '../../ConsoleAdventure/Game/Game'
 import { GameColors } from '../../ConsoleAdventure/Game/Base/GameColors'
