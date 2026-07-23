@@ -127,18 +127,18 @@ export const translations: Record<Locale, Translation> = {
         label: 'Core project',
         name: 'Terminal Engine',
         summary:
-          'A small console abstraction centered on a BasicConsole class for writing text, clearing the screen, managing cursor state, applying ANSI colors, and measuring terminal width.',
+          'A virtual VTI-style terminal built around BasicConsole, where apps wire in stdout, stdin, input events, and column measurement once and then run without knowing the host changed.',
         description:
-          'Terminal Engine is the reusable console surface: output, formatting, alignment, and viewport helpers behind a host-agnostic write/clear/cursor adapter.',
+          'Terminal Engine gives terminal applications a host-agnostic console boundary. After BasicConsole is connected to output, input, cursor, clear, and width hooks, app code can target the engine while Node terminals or xterm.js provide the actual screen.',
         highlights: [
-          'Write, clear, cursor, width, and formatting operations live behind one console API.',
-          'ANSI color helpers and alignment utilities keep render code independent from the host terminal implementation.',
+          'Stdout, stdin, input handling, cursor control, clearing, and column measurement live behind one virtual terminal API.',
+          'Apps written for a compiling or Node terminal can be ported to xterm.js by swapping the host hooks instead of rewriting render code.',
         ],
         tags: {
           ansiOutput: 'ANSI output',
-          xtermBridge: 'Host adapter',
-          runtimeBoundary: 'Console class',
-          resizeContract: 'Width-aware layout',
+          xtermBridge: 'xterm.js bridge',
+          runtimeBoundary: 'Virtual terminal',
+          resizeContract: 'Column-aware layout',
         },
       },
       consoleAdventure: {
@@ -237,18 +237,18 @@ export const translations: Record<Locale, Translation> = {
         label: 'Projeto central',
         name: 'Terminal Engine',
         summary:
-          'Uma pequena abstracao de console centrada na classe BasicConsole para escrever texto, limpar a tela, gerenciar cursor, aplicar cores ANSI e medir a largura do terminal.',
+          'Um terminal virtual no estilo VTI em torno do BasicConsole, onde apps conectam stdout, stdin, eventos de input e medicao de colunas uma vez e rodam sem perceber a troca de host.',
         description:
-          'Terminal Engine e a superficie reutilizavel de console: saida, formatacao, alinhamento e helpers de viewport por tras de um adaptador de escrita, limpeza e cursor agnostico ao host.',
+          'Terminal Engine entrega uma fronteira de console agnostica ao host para apps de terminal. Depois que BasicConsole recebe hooks de saida, input, cursor, limpeza e largura, o app mira no engine enquanto terminais Node ou xterm.js fornecem a tela real.',
         highlights: [
-          'Operacoes de escrita, limpeza, cursor, largura e formatacao ficam atras de uma unica API de console.',
-          'Helpers de cores ANSI e alinhamento mantem o codigo de renderizacao independente da implementacao de terminal.',
+          'Stdout, stdin, input, controle de cursor, limpeza e medicao de colunas ficam atras de uma unica API de terminal virtual.',
+          'Apps escritos para terminal compilado ou Node podem ser portados para xterm.js trocando os hooks do host, sem reescrever o codigo de renderizacao.',
         ],
         tags: {
           ansiOutput: 'Saida ANSI',
-          xtermBridge: 'Adaptador de host',
-          runtimeBoundary: 'Classe Console',
-          resizeContract: 'Layout por largura',
+          xtermBridge: 'Ponte xterm.js',
+          runtimeBoundary: 'Terminal virtual',
+          resizeContract: 'Layout por colunas',
         },
       },
       consoleAdventure: {

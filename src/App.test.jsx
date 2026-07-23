@@ -116,7 +116,8 @@ describe('app shell routing', () => {
     renderRoute('/')
 
     expect(screen.getByRole('heading', { name: 'Terminal Engine' })).toBeInTheDocument()
-    expect(screen.getByText(/basicconsole class/i)).toBeInTheDocument()
+    expect(screen.getByText(/virtual vti-style terminal/i)).toBeInTheDocument()
+    expect(screen.getByText(/xterm\.js by swapping the host hooks/i)).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /terminal engine/i })).not.toBeInTheDocument()
   })
 
