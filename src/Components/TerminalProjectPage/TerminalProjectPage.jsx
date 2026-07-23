@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
 import Info from '../Info/Info'
 import './TerminalProjectPage.css'
 
@@ -6,6 +7,8 @@ const defaultLabels = {
   overview: 'Overview',
   play: 'Play',
   viewLabel: 'view',
+  theatreOn: 'Dim everything but the terminal',
+  theatreOff: 'Restore page lighting',
 }
 
 const getViewportWidth = () => {
@@ -22,6 +25,7 @@ export default function TerminalProjectPage({ project, children, labels = defaul
   const [activeTab, setActiveTab] = useState(() => (
     getViewportWidth() >= minimumViewportWidth ? 'play' : 'overview'
   ))
+  const [isTheatreMode, setIsTheatreMode] = useState(false)
   const showTerminal = viewportWidth >= minimumViewportWidth
   const isOverview = activeTab === 'overview'
   const isPlay = activeTab === 'play'
@@ -31,6 +35,14 @@ export default function TerminalProjectPage({ project, children, labels = defaul
   }
   const overviewPanelId = `${project.id}-overview-panel`
   const playPanelId = `${project.id}-play-panel`
+  const showTheatreToggle = isPlay && showTerminal
+  const theatreMode = showTheatreToggle && isTheatreMode
+  const theatreLabel = isTheatreMode ? tabLabels.theatreOff : tabLabels.theatreOn
+  const pageClassName = [
+    'terminal-project-page',
+    isPlay && 'terminal-project-page--play',
+    theatreMode && 'terminal-project-page--theatre',
+  ].filter(Boolean).join(' ')
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,9 +56,15 @@ export default function TerminalProjectPage({ project, children, labels = defaul
     }
   }, [])
 
+  useEffect(() => {
+    if ((!isPlay || !showTerminal) && isTheatreMode) {
+      setIsTheatreMode(false)
+    }
+  }, [isPlay, isTheatreMode, showTerminal])
+
   return (
     <section
-      className={isPlay ? 'terminal-project-page terminal-project-page--play' : 'terminal-project-page'}
+      className={pageClassName}
       aria-labelledby={`${project.id}-page-title`}
     >
       <header className="terminal-project-page__header">
@@ -88,16 +106,34 @@ export default function TerminalProjectPage({ project, children, labels = defaul
           </button>
         </div>
 
-        <a
-          className="terminal-project-page__source"
-          href={project.sourceUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={project.sourceAria}
-        >
-          <span className="bi bi-github" aria-hidden="true"></span>
-          {project.sourceLabel}
-        </a>
+        <div className="terminal-project-page__actions">
+          {showTheatreToggle && (
+            <button
+              type="button"
+              className="terminal-project-page__theatre-toggle"
+              aria-label={theatreLabel}
+              aria-pressed={isTheatreMode}
+              title={theatreLabel}
+              onClick={() => setIsTheatreMode((current) => !current)}
+            >
+              {isTheatreMode ? (
+                <Sun size={18} strokeWidth={2.5} aria-hidden="true" />
+              ) : (
+                <Moon size={18} strokeWidth={2.5} aria-hidden="true" />
+              )}
+            </button>
+          )}
+          <a
+            className="terminal-project-page__source"
+            href={project.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={project.sourceAria}
+          >
+            <span className="bi bi-github" aria-hidden="true"></span>
+            {project.sourceLabel}
+          </a>
+        </div>
       </header>
 
       {isOverview && (

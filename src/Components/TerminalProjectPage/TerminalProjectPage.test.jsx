@@ -57,6 +57,33 @@ describe('TerminalProjectPage', () => {
     expect(screen.getAllByRole('img', { name: /Console Adventure screenshot/i }).length).toBeGreaterThan(0)
   })
 
+  it('toggles theatre mode on live play pages and clears it outside play', () => {
+    const project = getLocalizedProject(projectIds.consoleAdventure, translations.en)
+    setViewportWidth(1200)
+
+    render(
+      <TerminalProjectPage project={project}>
+        <div>Console Adventure live terminal</div>
+      </TerminalProjectPage>,
+    )
+
+    const page = screen.getByRole('heading', { name: 'Console Adventure' }).closest('.terminal-project-page')
+    const theatreToggle = screen.getByRole('button', { name: /dim everything but the terminal/i })
+
+    expect(theatreToggle).toHaveAttribute('aria-pressed', 'false')
+    expect(page).not.toHaveClass('terminal-project-page--theatre')
+
+    fireEvent.click(theatreToggle)
+
+    expect(screen.getByRole('button', { name: /restore page lighting/i })).toHaveAttribute('aria-pressed', 'true')
+    expect(page).toHaveClass('terminal-project-page--theatre')
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Overview' }))
+
+    expect(page).not.toHaveClass('terminal-project-page--theatre')
+    expect(screen.queryByRole('button', { name: /restore page lighting/i })).not.toBeInTheDocument()
+  })
+
   it('defaults to overview and does not mount the terminal stage below the threshold', () => {
     const project = getLocalizedProject(projectIds.rtsim, translations.en)
     setViewportWidth(500)
@@ -72,6 +99,7 @@ describe('TerminalProjectPage', () => {
     expect(screen.getByText(project.widthWarning).closest('.info-panel')).not.toHaveClass('info-panel--hidden')
     expect(screen.getByText(/60-column terminal scene/i)).toBeInTheDocument()
     expect(screen.queryByText('RTSim live terminal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /dim everything but the terminal/i })).not.toBeInTheDocument()
     expect(screen.getAllByRole('img', { name: /RTSim scheduler screenshot/i }).length).toBeGreaterThan(0)
   })
 })

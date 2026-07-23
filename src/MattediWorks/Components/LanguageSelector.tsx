@@ -1,3 +1,4 @@
+import { Info } from 'lucide-react'
 import { localeLabels, locales, type Locale, type Translation } from '../translation/i18n'
 import './LanguageSelector.css'
 
@@ -20,6 +21,15 @@ export default function LanguageSelector({ locale, setLocale, t }: LanguageSelec
           {localeLabels[option]}
         </button>
       ))}
+      <span
+        className="language-switcher__info"
+        tabIndex={0}
+        aria-label={t.languageAppNotice}
+        data-tooltip={t.languageAppNotice}
+        title={t.languageAppNotice}
+      >
+        <Info size={15} strokeWidth={2.5} aria-hidden="true" />
+      </span>
     </div>
   )
 }

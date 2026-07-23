@@ -18,6 +18,7 @@ type ProjectCopy = {
 
 export type Translation = {
   languageLabel: string
+  languageAppNotice: string
   common: {
     github: string
     loading: string
@@ -43,16 +44,21 @@ export type Translation = {
   home: {
     catalogLabel: string
     intro: string
-    brandPanelLabel: string
-    brandPanelCopy: string
     mattediWorksLogoAlt: string
     appsTitle: string
     appsIntro: string
+    footerLabel: string
+    footerSocialLabel: string
+    footerGithub: string
+    footerLinkedIn: string
+    footerWhatsApp: string
   }
   terminalPage: {
     overview: string
     play: string
     viewLabel: string
+    theatreOn: string
+    theatreOff: string
   }
   projects: {
     terminalEngine: ProjectCopy
@@ -74,6 +80,7 @@ export const localeLabels: Record<Locale, string> = {
 export const translations: Record<Locale, Translation> = {
   en: {
     languageLabel: 'Language',
+    languageAppNotice: 'The apps themselves run in English only.',
     common: {
       github: 'GitHub',
       loading: 'Booting up',
@@ -99,16 +106,21 @@ export const translations: Record<Locale, Translation> = {
     home: {
       catalogLabel: 'Published catalog',
       intro: 'These are console applications built for Node.js and ported to run in the browser with xterm.js.',
-      brandPanelLabel: 'MattediWorks brand',
-      brandPanelCopy: 'A compact systems catalog for terminal tools, browser ports, and automation experiments.',
       mattediWorksLogoAlt: 'MattediWorks logo',
       appsTitle: 'Terminal apps',
       appsIntro: 'Browser-hosted terminal apps with canonical source links and project previews.',
+      footerLabel: 'MattediWorks footer',
+      footerSocialLabel: 'MattediWorks social links',
+      footerGithub: 'MattediWorks on GitHub',
+      footerLinkedIn: 'MattediWorks on LinkedIn',
+      footerWhatsApp: 'Contact MattediWorks on WhatsApp',
     },
     terminalPage: {
       overview: 'Overview',
       play: 'Play',
       viewLabel: 'view',
+      theatreOn: 'Dim everything but the terminal',
+      theatreOff: 'Restore page lighting',
     },
     projects: {
       terminalEngine: {
@@ -178,6 +190,7 @@ export const translations: Record<Locale, Translation> = {
   },
   'pt-BR': {
     languageLabel: 'Idioma',
+    languageAppNotice: 'Os apps em si rodam apenas em ingles.',
     common: {
       github: 'GitHub',
       loading: 'Inicializando',
@@ -203,16 +216,21 @@ export const translations: Record<Locale, Translation> = {
     home: {
       catalogLabel: 'Catalogo publicado',
       intro: 'Estes sao aplicativos de console criados para Node.js e portados para rodar no navegador com xterm.js.',
-      brandPanelLabel: 'Marca MattediWorks',
-      brandPanelCopy: 'Um catalogo compacto de sistemas para ferramentas de terminal, ports no navegador e experimentos de automacao.',
       mattediWorksLogoAlt: 'Logo MattediWorks',
       appsTitle: 'Apps de terminal',
       appsIntro: 'Apps de terminal no navegador com links canonicos de codigo e previews dos projetos.',
+      footerLabel: 'Rodape MattediWorks',
+      footerSocialLabel: 'Links sociais MattediWorks',
+      footerGithub: 'MattediWorks no GitHub',
+      footerLinkedIn: 'MattediWorks no LinkedIn',
+      footerWhatsApp: 'Contato MattediWorks no WhatsApp',
     },
     terminalPage: {
       overview: 'Visao geral',
       play: 'Jogar',
       viewLabel: 'visualizacao',
+      theatreOn: 'Escurecer tudo menos o terminal',
+      theatreOff: 'Restaurar iluminacao da pagina',
     },
     projects: {
       terminalEngine: {

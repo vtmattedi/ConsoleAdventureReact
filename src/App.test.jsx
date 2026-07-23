@@ -88,7 +88,23 @@ describe('app shell routing', () => {
     renderRoute('/')
 
     expect(screen.getByRole('img', { name: 'MattediWorks logo' })).toBeInTheDocument()
-    expect(screen.getByText(/compact systems catalog/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/apps themselves run in english only/i)).toHaveAttribute(
+      'title',
+      'The apps themselves run in English only.',
+    )
+    expect(screen.getByRole('navigation', { name: /mattediworks social links/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /mattediworks on github/i })).toHaveAttribute(
+      'href',
+      'https://github.com/vtmattedi',
+    )
+    expect(screen.getByRole('link', { name: /mattediworks on linkedin/i })).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/vitor-mattedi-dev',
+    )
+    expect(screen.getByRole('link', { name: /contact mattediworks on whatsapp/i })).toHaveAttribute(
+      'href',
+      'https://wa.me/5571993152789',
+    )
     expect(screen.getByText('Booting up')).toBeInTheDocument()
 
     await waitFor(() => {

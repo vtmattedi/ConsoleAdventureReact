@@ -71,6 +71,41 @@
   line-height: 1.15;
 }
 
+.terminal-project-page__actions {
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.terminal-project-page__theatre-toggle {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  color: var(--app-muted);
+  background: var(--control-bg);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.terminal-project-page__theatre-toggle:hover,
+.terminal-project-page__theatre-toggle:focus-visible,
+.terminal-project-page__theatre-toggle[aria-pressed='true'] {
+  border-color: var(--brand-cyan);
+  color: var(--app-text);
+  background: rgba(107, 199, 216, 0.14);
+}
+
+.terminal-project-page__theatre-toggle:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
 .terminal-project-page__source {
   max-width: 100%;
   min-height: 42px;
@@ -164,6 +199,22 @@
   justify-items: center;
 }
 
+.terminal-project-page--theatre .terminal-project-page__stage {
+  position: relative;
+  z-index: 80;
+  isolation: isolate;
+}
+
+.terminal-project-page--theatre .terminal-project-page__stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 10px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.72);
+  pointer-events: none;
+}
+
 .terminal-project-page--play .terminal-project-page__header {
   align-items: center;
 }
@@ -199,8 +250,10 @@
     font-size: 2.35rem;
   }
 
-  .terminal-project-page__source {
+  .terminal-project-page__actions {
     justify-self: start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .terminal-project-page__tabs {
@@ -213,7 +266,7 @@
     flex: 1;
   }
 
-  .terminal-project-page__source {
+  .terminal-project-page__actions {
     order: 3;
   }
 

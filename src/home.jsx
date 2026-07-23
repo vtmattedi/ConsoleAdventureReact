@@ -8,6 +8,23 @@ const Home = () => {
     const { t } = useI18n();
     const engineProject = getLocalizedProject(projectIds.terminalEngine, t);
     const terminalProjects = getLocalizedProjects(terminalProjectIds, t);
+    const socialLinks = [
+        {
+            href: 'https://github.com/vtmattedi',
+            label: t.home.footerGithub,
+            iconClass: 'bi bi-github',
+        },
+        {
+            href: 'https://www.linkedin.com/in/vitor-mattedi-dev',
+            label: t.home.footerLinkedIn,
+            iconClass: 'bi bi-linkedin',
+        },
+        {
+            href: 'https://wa.me/5571993152789',
+            label: t.home.footerWhatsApp,
+            iconClass: 'bi bi-whatsapp',
+        },
+    ];
 
     return (
         <div className="home-page">
@@ -92,14 +109,28 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="home-brand-strip" aria-label={t.home.brandPanelLabel}>
+            <footer className="home-footer" aria-label={t.home.footerLabel}>
                 <MattediWorksLogo
-                    className="home-brand-strip__mark"
+                    className="home-footer__mark"
                     variant="wordmark"
                     decorative
                 />
-                <p>{t.home.brandPanelCopy}</p>
-            </section>
+                <nav className="home-footer__links" aria-label={t.home.footerSocialLabel}>
+                    {socialLinks.map((link) => (
+                        <a
+                            key={link.href}
+                            className="home-footer__link"
+                            href={link.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={link.label}
+                            title={link.label}
+                        >
+                            <span className={link.iconClass} aria-hidden="true"></span>
+                        </a>
+                    ))}
+                </nav>
+            </footer>
         </div>
     );
 };
