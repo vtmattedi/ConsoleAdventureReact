@@ -2,42 +2,56 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  min-height: 42px;
   padding: 4px;
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  background: var(--control-bg);
+  border: 1px solid rgba(16, 19, 23, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 250, 242, 0.72);
+  box-shadow: 0 14px 38px rgba(16, 19, 23, 0.12);
+  backdrop-filter: blur(16px);
 }
 
 .language-switcher button {
-  min-width: 34px;
-  height: 34px;
+  min-width: 42px;
+  height: 30px;
   border: 0;
-  border-radius: 6px;
-  color: var(--app-muted);
+  border-radius: 999px;
+  color: #4d5055;
   background: transparent;
+  display: inline-grid;
+  place-items: center;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0;
   cursor: pointer;
-  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  transition: background 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .language-switcher button:hover,
 .language-switcher button[aria-pressed='true'] {
-  color: var(--app-text);
-  background: var(--control-hover-bg);
-}
-
-.language-switcher button:hover {
-  transform: translateY(-1px);
+  color: #101317;
+  background: var(--brand-orange);
 }
 
 .language-switcher button[aria-pressed='true'] {
-  box-shadow: inset 0 0 0 1px var(--brand-orange);
+  box-shadow: 0 0 22px rgba(255, 152, 73, 0.28);
 }
 
 .language-switcher button:focus-visible {
-  outline: 3px solid var(--focus-ring);
+  outline: 3px solid rgba(48, 231, 255, 0.48);
   outline-offset: 2px;
+}
+
+:root[data-theme='dark'] .language-switcher {
+  border-color: rgba(255, 250, 242, 0.12);
+  background: rgba(16, 19, 23, 0.68);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.26);
+}
+
+:root[data-theme='dark'] .language-switcher button {
+  color: #c6c0b6;
+}
+
+:root[data-theme='dark'] .language-switcher button:hover,
+:root[data-theme='dark'] .language-switcher button[aria-pressed='true'] {
+  color: #0c1428;
 }

@@ -6,7 +6,7 @@ const Game = () => {
     const { t } = useI18n();
     const project = getLocalizedProject(projectIds.consoleAdventure, t);
     return (
-        <TerminalProjectPage project={project}>
+        <TerminalProjectPage project={project} labels={t.terminalPage}>
             <ConsoleAdventure />
         </TerminalProjectPage>
     );

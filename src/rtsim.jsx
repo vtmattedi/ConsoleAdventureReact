@@ -6,7 +6,7 @@ const Rtsim = () => {
     const { t } = useI18n();
     const project = getLocalizedProject(projectIds.rtsim, t);
     return (
-        <TerminalProjectPage project={project}>
+        <TerminalProjectPage project={project} labels={t.terminalPage}>
             <RTSim />
         </TerminalProjectPage>
     );

@@ -19,7 +19,7 @@ describe('project content model', () => {
     expect(project.sourceUrl).toBeNull()
     expect(homeProjectIds).toContain(projectIds.terminalEngine)
     expect(terminalProjectIds).not.toContain(projectIds.terminalEngine)
-    expect(localized.highlights.join(' ')).toMatch(/RTSim currently contains the scene engine/i)
+    expect(localized.highlights.join(' ')).toMatch(/one console API/i)
   })
 
   it('models Console Adventure as a routed xterm.js terminal app with source and screenshots', () => {

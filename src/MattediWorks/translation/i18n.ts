@@ -49,6 +49,11 @@ export type Translation = {
     appsTitle: string
     appsIntro: string
   }
+  terminalPage: {
+    overview: string
+    play: string
+    viewLabel: string
+  }
   projects: {
     terminalEngine: ProjectCopy
     consoleAdventure: ProjectCopy
@@ -100,23 +105,28 @@ export const translations: Record<Locale, Translation> = {
       appsTitle: 'Terminal apps',
       appsIntro: 'Browser-hosted terminal apps with canonical source links and project previews.',
     },
+    terminalPage: {
+      overview: 'Overview',
+      play: 'Play',
+      viewLabel: 'view',
+    },
     projects: {
       terminalEngine: {
         label: 'Core project',
         name: 'Terminal Engine',
         summary:
-          'Runtime and browser-porting work behind Terminal Applications, focused on a reliable bridge between ANSI terminal programs and xterm.js surfaces.',
+          'A small console abstraction centered on a BasicConsole class for writing text, clearing the screen, managing cursor state, applying ANSI colors, and measuring terminal width.',
         description:
-          'Terminal Engine is the shared engineering effort and porting contract behind this catalog. It is not yet one extracted package used by every app.',
+          'Terminal Engine is the reusable console surface: output, formatting, alignment, and viewport helpers behind a host-agnostic write/clear/cursor adapter.',
         highlights: [
-          'RTSim currently contains the scene engine; Console Adventure uses a separate game-state runtime.',
-          'Both ports share output, sizing, input, colors, rendering, and resize behavior requirements.',
+          'Write, clear, cursor, width, and formatting operations live behind one console API.',
+          'ANSI color helpers and alignment utilities keep render code independent from the host terminal implementation.',
         ],
         tags: {
           ansiOutput: 'ANSI output',
-          xtermBridge: 'xterm.js bridge',
-          runtimeBoundary: 'Runtime boundary',
-          resizeContract: 'Resize contract',
+          xtermBridge: 'Host adapter',
+          runtimeBoundary: 'Console class',
+          resizeContract: 'Width-aware layout',
         },
       },
       consoleAdventure: {
@@ -199,23 +209,28 @@ export const translations: Record<Locale, Translation> = {
       appsTitle: 'Apps de terminal',
       appsIntro: 'Apps de terminal no navegador com links canonicos de codigo e previews dos projetos.',
     },
+    terminalPage: {
+      overview: 'Visao geral',
+      play: 'Jogar',
+      viewLabel: 'visualizacao',
+    },
     projects: {
       terminalEngine: {
         label: 'Projeto central',
         name: 'Terminal Engine',
         summary:
-          'Trabalho de runtime e port para navegador por tras do Terminal Applications, focado em uma ponte confiavel entre programas ANSI de terminal e superficies xterm.js.',
+          'Uma pequena abstracao de console centrada na classe BasicConsole para escrever texto, limpar a tela, gerenciar cursor, aplicar cores ANSI e medir a largura do terminal.',
         description:
-          'Terminal Engine e o esforco compartilhado de engenharia e contrato de port por tras deste catalogo. Ainda nao e um pacote extraido usado por todos os apps.',
+          'Terminal Engine e a superficie reutilizavel de console: saida, formatacao, alinhamento e helpers de viewport por tras de um adaptador de escrita, limpeza e cursor agnostico ao host.',
         highlights: [
-          'RTSim contem hoje o engine de cenas; Console Adventure usa um runtime separado baseado em estados de jogo.',
-          'Os dois ports compartilham requisitos de saida, tamanho, entrada, cores, renderizacao e resize.',
+          'Operacoes de escrita, limpeza, cursor, largura e formatacao ficam atras de uma unica API de console.',
+          'Helpers de cores ANSI e alinhamento mantem o codigo de renderizacao independente da implementacao de terminal.',
         ],
         tags: {
           ansiOutput: 'Saida ANSI',
-          xtermBridge: 'Ponte xterm.js',
-          runtimeBoundary: 'Limite de runtime',
-          resizeContract: 'Contrato de resize',
+          xtermBridge: 'Adaptador de host',
+          runtimeBoundary: 'Classe Console',
+          resizeContract: 'Layout por largura',
         },
       },
       consoleAdventure: {

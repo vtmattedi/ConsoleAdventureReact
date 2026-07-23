@@ -40,22 +40,8 @@
 }
 
 .app-shell-logo {
-  grid-area: 1 / 1;
   width: 34px;
   height: 34px;
-  object-fit: contain;
-}
-
-.app-shell-logo--dark {
-  display: none;
-}
-
-:root[data-theme='dark'] .app-shell-logo--light {
-  display: none;
-}
-
-:root[data-theme='dark'] .app-shell-logo--dark {
-  display: block;
 }
 
 .app-shell-title {

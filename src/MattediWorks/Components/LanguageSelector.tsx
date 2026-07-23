@@ -14,10 +14,8 @@ export default function LanguageSelector({ locale, setLocale, t }: LanguageSelec
         <button
           key={option}
           type="button"
-          aria-label={`${t.languageLabel}: ${localeLabels[option]}`}
           aria-pressed={locale === option}
           onClick={() => setLocale(option)}
-          title={`${t.languageLabel}: ${localeLabels[option]}`}
         >
           {localeLabels[option]}
         </button>

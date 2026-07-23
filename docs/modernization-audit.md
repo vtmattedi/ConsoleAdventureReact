@@ -256,7 +256,7 @@ Key engine files:
 
 Important boundary: the current site should not claim both terminal apps use the same RTSim `ConsoleEngine`. RTSim does. Console Adventure uses its own `src/ConsoleAdventure/Game/Base/ConsoleHelp.js` and `GameStates` model. Both apps share a similar porting contract through a singleton `BasicConsole`, but they are not yet one shared engine.
 
-The home page now promotes Terminal Engine as the runtime/browser-porting effort behind the catalog while stating that RTSim currently contains the scene engine and Console Adventure uses a separate game-state runtime. No engine route was added.
+The home page now promotes Terminal Engine as the console abstraction centered on a `BasicConsole`-style API for write, clear, cursor, width, color, and layout helpers. No engine route was added.
 
 ## Project Content Model
 

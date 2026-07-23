@@ -9,7 +9,7 @@ The current public terminal apps are:
 - **Console Adventure**: a fantasy terminal RPG hosted through an xterm.js web port.
 - **RTSim**: a discrete-time preemptive scheduler simulator with an xterm.js scene renderer.
 
-The underlying runtime and browser-porting work is tracked as the **Terminal Engine** project. See [docs/terminal-engine.md](docs/terminal-engine.md) for the current boundary: RTSim contains the concrete `ConsoleEngine`, while Console Adventure still uses its own game-state runtime with the same console/xterm porting contract.
+The underlying console abstraction work is tracked as the **Terminal Engine** project. See [docs/terminal-engine.md](docs/terminal-engine.md) for the current boundary: a `BasicConsole`-style class owns write, clear, cursor, width, color, and layout helpers while host adapters bind that surface to Node, xterm.js, or tests.
 
 ## Routes
 

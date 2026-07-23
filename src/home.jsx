@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { terminalAssets } from './assets/terminalAssets';
 import { getLocalizedProject, getLocalizedProjects, projectIds, terminalProjectIds } from './content/projects';
+import MattediWorksLogo from './MattediWorks/Components/MattediWorksLogo';
 import { useI18n } from './MattediWorks/hooks/useI18n';
 
 const Home = () => {
@@ -13,10 +13,10 @@ const Home = () => {
         <div className="home-page">
             <section className="home-overview" aria-labelledby="home-title">
                 <div className="home-overview__brand">
-                    <img
+                    <MattediWorksLogo
                         className="home-brand-wordmark"
-                        src={terminalAssets.mattediWorks.logoWithName}
-                        alt={t.home.mattediWorksLogoAlt}
+                        variant="wordmark"
+                        label={t.home.mattediWorksLogoAlt}
                     />
                     <span className="home-kicker">{t.home.catalogLabel}</span>
                     <h1 id="home-title">{t.shell.productName}</h1>
@@ -93,11 +93,10 @@ const Home = () => {
             </section>
 
             <section className="home-brand-strip" aria-label={t.home.brandPanelLabel}>
-                <img
+                <MattediWorksLogo
                     className="home-brand-strip__mark"
-                    src={terminalAssets.mattediWorks.logoWithName}
-                    alt=""
-                    aria-hidden="true"
+                    variant="wordmark"
+                    decorative
                 />
                 <p>{t.home.brandPanelCopy}</p>
             </section>

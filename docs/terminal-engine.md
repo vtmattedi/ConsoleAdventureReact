@@ -1,129 +1,68 @@
 # Terminal Engine
 
-Terminal Engine is the project narrative for the terminal-runtime work behind Terminal Applications. It is not yet one extracted package used by every app in this repository.
+Terminal Engine is the console abstraction behind Terminal Applications. Its public description should be about the console class itself, not about which apps currently consume similar ideas.
 
-The current codebase has two related but separate terminal runtimes:
+The central concept is a `BasicConsole`-style API: render code asks one object to write text, clear the screen, show or hide the cursor, measure terminal dimensions, and format output. The host can then bind those operations to Node stdout, xterm.js, a test harness, or another terminal-like surface.
 
-- RTSim contains the concrete `ConsoleEngine` implementation under `src/RTSim/Simulator/Engine/`.
-- Console Adventure uses its own `GameStates` / `GameState` runtime and its own `src/ConsoleAdventure/Game/Base/ConsoleHelp.js`.
+## Console Class Responsibilities
 
-Both apps share the same porting idea: application code writes ANSI/text output through a singleton console helper, and the browser wrapper replaces the Node console functions with xterm.js functions.
+The console class owns the low-level terminal surface:
 
-## Current Boundary
+- `write(text)`: emit raw text and ANSI sequences.
+- `clear_screen()`: reset the visible terminal buffer.
+- `show_cursor(visible)`: control cursor visibility during rendered screens.
+- `getWidth()`: report the current column count for width-aware layout.
+- `getHeight()`: report the current row count when vertical layout needs it.
+- Color and decoration helpers: wrap text in ANSI formatting without tying render code to a browser or Node implementation.
+- Text layout helpers: center, merge, wrap, crop, and safely slice strings that may include ANSI escape sequences.
 
-RTSim is the app currently built on the `ConsoleEngine` implementation:
+That boundary lets application code focus on producing a frame, menu, prompt, or scene while the host adapter decides how bytes reach the terminal.
 
-- `src/RTSim/Simulator/Simulator.js` imports `ConsoleEngine` from `src/RTSim/Simulator/Engine/Engine.js`.
-- `Simulator` creates `new ConsoleEngine()`, sets a minimum terminal size with `setMinSize(60, 21)`, targets 60 FPS with `targetFPS(60)`, registers scenes, and delegates input through `Engine.handleInput(input, modifiers)`.
-- RTSim scenes under `src/RTSim/Simulator/Scenes/` import the engine `BasicConsole` helper and render frames through the engine scene contract.
+## Host Adapter Contract
 
-Console Adventure is separate:
+A browser adapter should bind the console methods to xterm.js:
 
-- `src/Components/ConsoleAdVentureWeb/ConsoleAdventureWeb.jsx` imports `BasicConsole` from `src/ConsoleAdventure/Game/Base/ConsoleHelp.js`, not from RTSim.
-- `src/ConsoleAdventure/Game/Game.js` owns `GameStates`, input handling, menu state, battle state, and render/rerender throttling.
-- `src/ConsoleAdventure/Game/GameState.js` defines the state object shape: `onCreate`, `render`, `changeState`, `onSelect`, and `rerender`.
+- `write(text)` forwards to the xterm instance.
+- `clear_screen()` clears the xterm instance in the way the application expects.
+- `getWidth()` and `getHeight()` return fitted terminal dimensions.
+- `show_cursor(false)` keeps rendered terminal UIs from exposing a browser caret when the app is drawing full frames.
 
-Public copy should therefore say that Terminal Engine is the shared engineering effort and porting contract behind the catalog. It should not say that both Console Adventure and RTSim are already powered by the same `ConsoleEngine` class.
+A Node adapter should bind the same methods to `process.stdout`, terminal control sequences, and terminal size APIs.
 
-## RTSim Engine Inventory
+The important rule is that render code should not know which host is active. It should only depend on the console class.
 
-`src/RTSim/Simulator/Engine/ConsoleHelp.js`
+## Input Boundary
 
-Provides the singleton `BasicConsole`, ANSI control helpers, default color constants, text decorations, centered text helpers, sprite merging, safe substring handling for ANSI-colored text, cursor movement, title setting, screen clearing, line clearing, figlet rendering, and width/height measurement. In Node it writes to `process.stdout`; in the browser, the wrapper overrides methods against xterm.js.
+Input normalization is adjacent to, but separate from, the console class. Browser key events should be converted into stable app-level strings such as:
 
-`src/RTSim/Simulator/Engine/Engine.js`
+- `enter`
+- `space`
+- `esc`
+- `arrowup`
+- `arrowdown`
+- `arrowleft`
+- `arrowright`
 
-Provides `ConsoleEngine`, a singleton scene renderer with scene registration, scene history, scene navigation, camera offset, minimum terminal-size checks, debug overlay support, message-box compositing, and a target-FPS render interval. It draws the current scene into a text frame, crops it to the terminal viewport, overlays message boxes when needed, and writes the final frame through `BasicConsole`.
+Modifier state can be passed alongside those strings when a runtime needs it.
 
-`src/RTSim/Simulator/Engine/Scenes.js`
+## Resize Boundary
 
-Provides the base `Scene` class. A scene owns ordered `SceneObject` instances, exposes lifecycle hooks (`onEnter`, `onExit`), handles input, can mark itself finished with a navigation target, and draws its objects into a frame.
+Resize handling should fit the host terminal first, then notify the runtime to redraw against the new dimensions. The console class remains the source of truth for width and height during rendering.
 
-`src/RTSim/Simulator/Engine/SceneObject.js`
-
-Provides positioned drawable objects with `x`, `y`, and `z` coordinates plus a `getValue` function returning a text sprite. It also includes a basic ASCII square helper.
-
-`src/RTSim/Simulator/Engine/messageBox.js`
-
-Provides the singleton `MsgBoxHandler`. It raises modal text boxes over the current frame, handles left/right/select input, supports option callbacks, and includes open/close animation state used by the engine during draw composition.
-
-`src/RTSim/Simulator/Engine/Symbols.js`
-
-Defines arrow, delta, and enter symbols with an ASCII-safe switch. The Unicode path currently displays mojibake in this environment, so encoding should be checked before release.
-
-`src/RTSim/Simulator/Engine/Assets/Assets.js`
-
-Contains console ASCII/ANSI logo and sprite helpers, including MattediWorks and Console Adventure logo text plus animated/painted variants.
-
-`src/RTSim/Simulator/Engine/Assets/Fonts.js` and `small.flf`
-
-Contain the custom small figlet data and text-rendering helpers consumed by `ConsoleHelp.getFigLet`.
-
-## Browser Port Contract
-
-The browser wrappers adapt the Node-oriented terminal helpers to xterm.js. A future shared port layer should make these requirements explicit instead of relying on ad hoc reassignment.
-
-Required output methods:
-
-- `BasicConsole.write(text)` must write raw ANSI/text output to xterm.
-- `BasicConsole.clear_screen()` must clear the xterm buffer/screen in the way the app expects.
-- `BasicConsole.getWidth()` must return the current terminal column count.
-- `BasicConsole.getHeight()` is required by RTSim and any engine scene using vertical layout.
-- `BasicConsole.show_cursor(false)` is used by both apps to hide the terminal cursor during rendered UI.
-
-Terminal setup:
-
-- Create one xterm instance per mounted wrapper.
-- Load `FitAddon` before measuring columns/rows.
-- Set xterm options for `convertEol`, font size, cursor style, cursor blink, scrollback, and readable foreground/background colors.
-- Fit once after setup and again after viewport resize.
-
-Input normalization:
-
-- Convert the browser/xterm key event into app-level strings such as `enter`, `space`, `esc`, `arrowup`, `arrowdown`, `arrowleft`, and `arrowright`.
-- Preserve modifier state where the app needs it. RTSim passes `{ ctrl, shift, alt }` to engine scenes.
-- RTSim currently handles shifted arrows, Ctrl+C for exit, and Ctrl+D/debug/current behavior.
-- Console Adventure currently keeps Ctrl+B for Dev Mode and sends lowercase `key.domEvent.key` values to `Game.handleInput`.
-
-Rendering:
-
-- RTSim uses `ConsoleEngine.targetFPS()` and an internal interval to redraw scenes.
-- Console Adventure renders on input through `GameStates.render()` / `GameStates.rerender()` with slow-running throttling.
-- A future shared layer should make render ownership explicit so remounting does not leave old intervals or singleton state active.
-
-Resize behavior:
-
-- The wrapper must call `FitAddon.fit()` and then tell the app runtime to redraw or resize.
-- RTSim calls `Engine.resize()`, which enforces the configured minimum terminal size and can lock rendering behind a warning.
-- Console Adventure calls `GameStates.rerender()` after fitting.
-- Both current wrappers assign `window.onresize` globally; later port-hardening tasks should replace this with scoped listeners and cleanup.
-
-Color and theme:
-
-- Terminal app colors are emitted as ANSI sequences and interpreted by xterm.
-- Page light/dark theme controls the surrounding frame, not the internal game palettes yet.
-- Any future xterm theme sync must preserve app readability and game-specific palettes.
-
-Lifecycle and cleanup:
-
-- `BasicConsole`, `ConsoleEngine`, `GameStates`, and `MsgBoxHandler` are singleton-oriented.
-- Current wrappers set up key listeners and resize handlers but do not yet dispose them on unmount.
-- Later hardening tasks should make initialization, disposal, and singleton reset behavior deterministic.
-
-## Home Page Copy Guidance
+## Public Copy Guidance
 
 Good copy:
 
-- "Terminal Engine is the runtime and browser-porting effort behind Terminal Applications."
-- "RTSim currently contains the scene engine; Console Adventure uses a separate game-state runtime with the same console/xterm porting contract."
-- "The shared direction is a reliable bridge between ANSI terminal applications and browser-hosted xterm surfaces."
+- "Terminal Engine is a console abstraction centered on a `BasicConsole` class."
+- "It provides write, clear, cursor, width, color, and layout helpers behind a host adapter."
+- "Render code can target one console API while Node, xterm.js, or tests supply the concrete output surface."
 
 Avoid:
 
-- "Both apps are built on the same RTSim ConsoleEngine."
-- "Terminal Engine is already an extracted package."
-- "Console Adventure has been migrated to the RTSim scene engine."
+- Naming a specific app as the definition of Terminal Engine.
+- Saying Terminal Engine is already one extracted package if that packaging has not happened.
+- Describing the engine as a catalog of the applications that use it.
 
 ## Route Boundary
 
-Terminal Engine has no user-facing route in the current site. It should be promoted on the home/catalog page as the core project and used by future content-model work, but `/console-adventure` and `/rtsim` remain the only app routes.
+Terminal Engine has no user-facing route in the current site. It is promoted on the home/catalog page as the core console abstraction; `/console-adventure` and `/rtsim` remain the app routes.

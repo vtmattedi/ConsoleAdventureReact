@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AssetPreload from '../AssetPreload/AssetPreload'
-import { terminalAssets } from '../../assets/terminalAssets'
 import LanguageSelector from '../../MattediWorks/Components/LanguageSelector'
+import MattediWorksLogo from '../../MattediWorks/Components/MattediWorksLogo'
 import MWLoading from '../../MattediWorks/MWLoading'
 import ThemeSelector from '../../MattediWorks/Components/ThemeSelector'
 import { useI18n } from '../../MattediWorks/hooks/useI18n'
@@ -63,16 +63,7 @@ export default function AppShell() {
           aria-label={t.shell.homeAria}
         >
           <span className="app-shell-logo-stack" aria-hidden="true">
-            <img
-              className="app-shell-logo app-shell-logo--light"
-              src={terminalAssets.mattediWorks.logo}
-              alt=""
-            />
-            <img
-              className="app-shell-logo app-shell-logo--dark"
-              src={terminalAssets.mattediWorks.logoWhite}
-              alt=""
-            />
+            <MattediWorksLogo className="app-shell-logo" decorative />
           </span>
           <span className="app-shell-title">{t.shell.productName}</span>
         </button>

@@ -87,7 +87,7 @@ describe('app shell routing', () => {
   it('renders MattediWorks branding and clears the initial boot overlay', async () => {
     renderRoute('/')
 
-    expect(screen.getByAltText('MattediWorks logo')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'MattediWorks logo' })).toBeInTheDocument()
     expect(screen.getByText(/compact systems catalog/i)).toBeInTheDocument()
     expect(screen.getByText('Booting up')).toBeInTheDocument()
 
@@ -100,7 +100,7 @@ describe('app shell routing', () => {
     renderRoute('/')
 
     expect(screen.getByRole('heading', { name: 'Terminal Engine' })).toBeInTheDocument()
-    expect(screen.getByText(/rtsim currently contains the scene engine/i)).toBeInTheDocument()
+    expect(screen.getByText(/basicconsole class/i)).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /terminal engine/i })).not.toBeInTheDocument()
   })
 
@@ -152,7 +152,7 @@ describe('app shell routing', () => {
   it('persists Portuguese and translates the visible shell and catalog copy', async () => {
     renderRoute('/')
 
-    fireEvent.click(screen.getByRole('button', { name: 'Language: PT' }))
+    fireEvent.click(screen.getByRole('button', { name: 'PT' }))
 
     expect(window.localStorage.getItem('terminal-applications-locale')).toBe('pt-BR')
     await waitFor(() => expect(document.documentElement.lang).toBe('pt-BR'))

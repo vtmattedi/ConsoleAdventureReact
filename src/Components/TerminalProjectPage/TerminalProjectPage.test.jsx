@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getLocalizedProject, projectIds } from '../../content/projects'
 import { translations } from '../../MattediWorks/translation/i18n'
@@ -12,7 +12,7 @@ function setViewportWidth(width) {
 }
 
 describe('TerminalProjectPage', () => {
-  it('renders project title, summary, tags, source link, and live terminal stage above the threshold', () => {
+  it('defaults to the play tab and gives the terminal the main viewport above the threshold', () => {
     const project = getLocalizedProject(projectIds.consoleAdventure, translations.en)
     setViewportWidth(1200)
 
@@ -23,17 +23,38 @@ describe('TerminalProjectPage', () => {
     )
 
     expect(screen.getByRole('heading', { name: 'Console Adventure' })).toBeInTheDocument()
-    expect(screen.getByText(project.summary)).toBeInTheDocument()
-    expect(screen.getByText('Fantasy RPG')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Play' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'false')
     expect(screen.getByText('Console Adventure live terminal')).toBeInTheDocument()
-    expect(screen.getByText(project.widthWarning).closest('.info-panel')).toHaveClass('info-panel--hidden')
+    expect(screen.queryByText(project.summary)).not.toBeInTheDocument()
+    expect(screen.queryByText(project.widthWarning)).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: /open console adventure source/i })).toHaveAttribute(
       'href',
       'https://github.com/vtmattedi/ConsoleAdventure',
     )
   })
 
-  it('renders the reusable narrow fallback and does not mount the terminal stage below the threshold', () => {
+  it('switches to the overview tab with project details and fallback screenshots', () => {
+    const project = getLocalizedProject(projectIds.consoleAdventure, translations.en)
+    setViewportWidth(1200)
+
+    render(
+      <TerminalProjectPage project={project}>
+        <div>Console Adventure live terminal</div>
+      </TerminalProjectPage>,
+    )
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Overview' }))
+
+    expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText(project.summary)).toBeInTheDocument()
+    expect(screen.getByText('Fantasy RPG')).toBeInTheDocument()
+    expect(screen.getByText(project.widthWarning)).toBeInTheDocument()
+    expect(screen.queryByText('Console Adventure live terminal')).not.toBeInTheDocument()
+    expect(screen.getAllByRole('img', { name: /Console Adventure screenshot/i }).length).toBeGreaterThan(0)
+  })
+
+  it('defaults to overview and does not mount the terminal stage below the threshold', () => {
     const project = getLocalizedProject(projectIds.rtsim, translations.en)
     setViewportWidth(500)
 
@@ -44,6 +65,7 @@ describe('TerminalProjectPage', () => {
     )
 
     expect(screen.getByRole('heading', { name: 'RTSim' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByText(project.widthWarning).closest('.info-panel')).not.toHaveClass('info-panel--hidden')
     expect(screen.getByText(/60-column terminal scene/i)).toBeInTheDocument()
     expect(screen.queryByText('RTSim live terminal')).not.toBeInTheDocument()
