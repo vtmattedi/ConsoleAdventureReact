@@ -1,28 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { terminalAssets } from './assets/terminalAssets';
+import { getLocalizedProject, getLocalizedProjects, projectIds, terminalProjectIds } from './content/projects';
 import { useI18n } from './MattediWorks/hooks/useI18n';
 
 const Home = () => {
     const nav = useNavigate();
     const { t } = useI18n();
     const [hover, setHover] = useState("");
-    const mEnter = (e) => {
-        setHover(e.target.id);
+    const engineProject = getLocalizedProject(projectIds.terminalEngine, t);
+    const terminalProjects = getLocalizedProjects(terminalProjectIds, t);
+    const mEnter = (projectId) => {
+        setHover(projectId);
     }
     const mLeave = () => {
         setHover("");
     }
 
     const getDescription = (id) => {
-        switch (id) {
-            case 'ca':
-                return t.home.consoleAdventureDescription;
-            case 'rs':
-                return t.home.rtsimDescription;
-            default:
-                return '';
-        }
+        return terminalProjects.find((project) => project.id === id)?.summary ?? '';
     };
 
     return (
@@ -42,43 +38,30 @@ const Home = () => {
                 <p>{t.home.brandPanelCopy}</p>
             </section>
             <section className="home-engine-summary" aria-labelledby="home-engine-title">
-                <span className="home-engine-summary__label">{t.home.engineLabel}</span>
-                <h2 id="home-engine-title">{t.home.engineTitle}</h2>
-                <p>{t.home.engineSummary}</p>
+                <span className="home-engine-summary__label">{engineProject.label}</span>
+                <h2 id="home-engine-title">{engineProject.name}</h2>
+                <p>{engineProject.summary}</p>
                 <ul>
-                    <li>{t.home.engineBoundary}</li>
-                    <li>{t.home.engineContract}</li>
+                    {engineProject.highlights.map((highlight) => (
+                        <li key={highlight}>{highlight}</li>
+                    ))}
                 </ul>
             </section>
             <div className="home-actions">
-                <button
-                    id={'ca'}
-                    type="button"
-                    className="home-action-button"
-                    onMouseEnter={mEnter}
-                    onMouseLeave={mLeave} onClick={
-                        () => {
-                            nav('/console-adventure');
-                        }
-                    }>
-                    {t.home.consoleAdventureCta}
-                    <span className='bi bi-play' aria-hidden="true"></span>
-                </button>
-
-                <button
-                    id={'rs'}
-                    type="button"
-                    className="home-action-button home-action-button--secondary"
-                    onMouseEnter={mEnter}
-                    onMouseLeave={mLeave}
-                    onClick={
-                        () => {
-                            nav('/rtsim');
-                        }
-                    }>
-                    {t.home.rtsimCta}
-                    <span className='bi bi-pc-display-horizontal' aria-hidden="true"></span>
-                </button>
+                {terminalProjects.map((project, index) => (
+                    <button
+                        key={project.id}
+                        id={project.id}
+                        type="button"
+                        className={index === 0 ? 'home-action-button' : 'home-action-button home-action-button--secondary'}
+                        onMouseEnter={() => mEnter(project.id)}
+                        onMouseLeave={mLeave}
+                        onClick={() => nav(project.routePath)}
+                    >
+                        {project.ctaLabel}
+                        <span className={project.iconClass} aria-hidden="true"></span>
+                    </button>
+                ))}
                 <p className="home-action-description" aria-live="polite">
                     {getDescription(hover)}
                 </p>

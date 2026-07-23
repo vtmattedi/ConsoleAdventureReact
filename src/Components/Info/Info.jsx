@@ -1,23 +1,23 @@
 import "./Info.css";
-import { consoleAdventureFallbackImages } from '../../assets/terminalAssets';
+import { getLocalizedProject, projectIds } from '../../content/projects';
 import { useI18n } from '../../MattediWorks/hooks/useI18n';
 
-const Info = ({ hidden = false }) => {
+const Info = ({ hidden = false, project: providedProject }) => {
     const { t } = useI18n();
+    const project = providedProject ?? getLocalizedProject(projectIds.consoleAdventure, t);
 
-    const imgs = consoleAdventureFallbackImages;
     return (
         <div className={hidden ? 'info-panel info-panel--hidden' : 'info-panel'}>
             <p className="noSize">
-                {t.consoleAdventure.widthWarning}
+                {project.widthWarning}
             </p>
             <p className="noSizeDescription">
-                {t.consoleAdventure.description}{' '}
-                <a href="https://www.github.com/vtmattedi/consoleadventure" target='_blank' rel="noreferrer" aria-label={t.consoleAdventure.sourceAria}>{t.common.github}</a>.
+                {project.description}{' '}
+                <a href={project.sourceUrl} target='_blank' rel="noreferrer" aria-label={project.sourceAria}>{t.common.github}</a>.
             </p>
             <div className='imageList'>
-                {imgs.map((img, index) => {
-                    return (<img className="info-panel__screenshot" key={index} src={img} alt={`${t.consoleAdventure.screenshotAlt} ${index + 1}`} />)
+                {project.screenshots.map((img, index) => {
+                    return (<img className="info-panel__screenshot" key={img} src={img} alt={`${project.screenshotAlt} ${index + 1}`} />)
                 })}
             </div>
         </div>

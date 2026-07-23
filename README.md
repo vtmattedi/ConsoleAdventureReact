@@ -75,6 +75,12 @@ The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSele
 
 `index.html` applies `document.documentElement.lang` before the React bundle runs, and the React `I18nProvider` keeps that value synchronized after language changes. Translation data lives in `src/MattediWorks/translation/i18n.ts` as a typed `Record<Locale, Translation>` so missing locale fields are caught by TypeScript. Current shell, home/catalog, terminal page, loading, source-link, and not-found copy reads from the translation provider while project names remain unchanged.
 
+## Project Content Model
+
+Reusable project metadata lives in `src/content/projects.js`. It defines Terminal Engine, Console Adventure, and RTSim ids, route paths, source links, screenshots, tags, and localization keys. Home/catalog content, terminal page titles/source links, the Console Adventure fallback panel, and asset preloading read from this model instead of duplicating project details in page components.
+
+Terminal Engine is modeled as a promoted home item with no route or source link. Console Adventure and RTSim are modeled as routed terminal applications with GitHub source links and screenshot assets. RTSim's content includes the supported scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
+
 ## Branding Assets
 
 MattediWorks branding is served from local repository assets. `src/index.css` defines `@font-face` rules for the Sansation font files under `src/MattediWorks/assets/fonts/` and exposes shared font tokens used by the shell, home page, legacy header, and loading overlay.
@@ -91,4 +97,4 @@ Terminal frames use bounded width/height constraints and 8px radii so the xterm 
 
 `docs/terminal-engine.md` documents the current source truth: RTSim contains the concrete `ConsoleEngine` implementation, while Console Adventure still uses its own `GameStates`/`GameState` runtime. Both apps share the same console/xterm porting contract for output, sizing, input, color handling, rendering, and resize behavior.
 
-The home page presents Terminal Engine as the core project without adding a separate engine route. Future content-model work should reuse that boundary instead of claiming both apps already share one extracted engine package.
+The home page presents Terminal Engine as the core project without adding a separate engine route. The project content model reuses that boundary instead of claiming both apps already share one extracted engine package.

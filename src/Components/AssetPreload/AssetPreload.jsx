@@ -1,13 +1,18 @@
 import MWLoading from '../../MattediWorks/MWLoading'
 import { terminalAssets } from '../../assets/terminalAssets'
+import { projectContent } from '../../content/projects'
 
-const preloadImages = [
-  terminalAssets.rtsim.readmeScreenshots,
+const projectImages = projectContent
+  .flatMap((project) => [project.primaryImage, ...project.screenshots])
+  .filter(Boolean)
+
+const preloadImages = [...new Set([
+  projectImages,
   terminalAssets.mattediWorks.logo,
   terminalAssets.mattediWorks.logoWithName,
   terminalAssets.mattediWorks.logoWhite,
   terminalAssets.mattediWorks.loadingLogo,
-].flat()
+].flat())]
 
 const preloadStyle = {
   position: 'fixed',

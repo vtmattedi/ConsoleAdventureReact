@@ -85,7 +85,7 @@ This is the main path for branding, theme, i18n, and loading integration.
 - Displays localized Terminal Applications catalog copy while keeping the product name unchanged.
 - Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
 - Shows a MattediWorks wordmark strip with localized brand-support copy.
-- Presents Terminal Engine as the core project without adding a route.
+- Presents Terminal Engine from the shared project content model without adding a route.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
 - Uses shared page/home/action classes and Bootstrap icon classes.
@@ -101,7 +101,7 @@ This is the main path for branding, theme, i18n, and loading integration.
 - Tracks width with a local `resize` listener.
 - Shows `Info` when width is `<= 1040`.
 - Shows the terminal wrapper when width is `> 1040`.
-- Shows a localized GitHub source link.
+- Shows title, narrow-width fallback content, and GitHub source link from the shared project content model.
 - Uses shared terminal page/source-link classes.
 - Uses `/console-adventure` as the canonical route while `/game` redirects to it.
 
@@ -109,9 +109,9 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 `src/rtsim.jsx` currently:
 
-- Renders title `RTSim`.
+- Renders title `RTSim` from the shared project content model.
 - Renders the RTSim terminal wrapper unconditionally.
-- Shows a localized GitHub source link.
+- Shows a localized GitHub source link from the shared project content model.
 - Uses shared terminal page/source-link classes.
 - Has no top-level narrow-width fallback equivalent to Console Adventure.
 
@@ -129,10 +129,10 @@ This is the main path for branding, theme, i18n, and loading integration.
 `src/Components/Info/Info.jsx` currently:
 
 - Provides the Console Adventure narrow-width fallback.
-- Uses the shared asset registry for five Console Adventure screenshots.
-- Links to `https://www.github.com/vtmattedi/consoleadventure`.
+- Uses the shared project content model for five Console Adventure screenshots.
+- Links to `https://github.com/vtmattedi/ConsoleAdventure`.
 - Uses class-driven panel and screenshot sizing.
-- Contains old Console Adventure-focused publication copy.
+- Contains localized Console Adventure fallback copy from the shared project content model.
 
 ### App Shell Navigation
 
@@ -249,6 +249,30 @@ Key engine files:
 Important boundary: the current site should not claim both terminal apps use the same RTSim `ConsoleEngine`. RTSim does. Console Adventure uses its own `src/ConsoleAdventure/Game/Base/ConsoleHelp.js` and `GameStates` model. Both apps share a similar porting contract through a singleton `BasicConsole`, but they are not yet one shared engine.
 
 The home page now promotes Terminal Engine as the runtime/browser-porting effort behind the catalog while stating that RTSim currently contains the scene engine and Console Adventure uses a separate game-state runtime. No engine route was added.
+
+## Project Content Model
+
+Task 13 added `src/content/projects.js` as the reusable content source for Terminal Engine, Console Adventure, and RTSim.
+
+The model currently stores:
+
+- Stable ids and localization copy keys.
+- Route paths and legacy route paths where applicable.
+- Canonical GitHub source URLs for Console Adventure and RTSim.
+- Screenshot assets from the Vite asset registry.
+- Tags/capability keys.
+- RTSim scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
+- Terminal Engine as a promoted home item with no route and no source link.
+
+Localized project names, summaries, descriptions, CTA labels, source labels, screenshot alt text, fallback warnings, highlights, and tag labels live under `projects` in `src/MattediWorks/translation/i18n.ts`.
+
+Current consumers:
+
+- `src/home.jsx` renders Terminal Engine highlights and terminal app actions from the model.
+- `src/game.jsx` renders Console Adventure title/source content from the model and passes the localized project to `Info`.
+- `src/rtsim.jsx` renders RTSim title/source content from the model.
+- `src/Components/Info/Info.jsx` renders Console Adventure fallback text, canonical source link, and screenshots from the model.
+- `src/Components/AssetPreload/AssetPreload.jsx` preloads project images from the model.
 
 ## Assets And Styling
 
@@ -379,6 +403,7 @@ Stackport risk:
 - Task 10 wired local MattediWorks fonts, public SVG icon metadata, visible shell/home logos, and the initial `MWLoading` boot overlay.
 - Task 11 moved active page layout styles out of inline JSX, normalized terminal/fallback frames, and replaced the old gradient-heavy page background with neutral theme surfaces plus orange/cyan accents.
 - Task 12 documented the Terminal Engine boundary and added a truthful no-route home presentation for the engine.
+- Task 13 added the shared project content model and moved home/terminal/source/screenshot project details onto it.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -424,13 +449,14 @@ Every later task should preserve or intentionally replace the following behavior
 - RTSim can resize without becoming unreadable.
 - Terminal wrapper unmount/remount does not accumulate key handlers, resize handlers, render intervals, or stale singleton state.
 - Console Adventure screenshots/assets still render in fallback/content areas.
-- RTSim readme screenshots/assets remain available for future content model usage.
+- RTSim readme screenshots/assets remain available through the project content model.
 - MattediWorks logo/font/loading assets continue to resolve through the Vite asset registry.
 - Theme switching persists and keeps the app readable in light/dark/system modes.
 - Language switching persists, updates `document.documentElement.lang`, and keeps current shell/home/terminal/not-found copy localized in `en` and `pt-BR`.
 - Initial MattediWorks loading treatment respects reduced-motion preferences and does not reappear on normal route navigation.
 - Shared page, home action, fallback panel, external-link, and terminal-frame classes keep controls and text inside their containers across mobile and desktop widths.
 - Terminal Engine appears on the home page as a core project narrative, but no standalone engine route exists.
+- Shared project metadata remains in `src/content/projects.js` and should stay the source for app routes, source links, screenshots, tags, and scheduler algorithm facts.
 - Root install/build scripts are deterministic and do not pull floating source during production builds.
 - Stackport-style non-recursive checkouts either contain required source or fetch exact pinned source during Docker build.
 - Public metadata names Terminal Applications at `terminal.mattediworks.com`.
