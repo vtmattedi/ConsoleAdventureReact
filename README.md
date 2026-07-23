@@ -120,4 +120,4 @@ Expected deployment direction:
 - Let Stackport/Nginx handle HTTPS and certificates.
 - Keep runtime secrets unnecessary unless a documented analytics/config provider is added later.
 
-Docker prep details live in [docs/docker-stackport.md](docs/docker-stackport.md). The final Stackport handoff will live in `docs/stackport.md` after deployment fields are finalized.
+Docker prep details live in [docs/docker-stackport.md](docs/docker-stackport.md). The Stackport onboarding handoff lives in [docs/stackport.md](docs/stackport.md).
