@@ -65,6 +65,29 @@ export default function TerminalProjectPage({ project, children, labels = defaul
           )}
         </div>
 
+        <div className="terminal-project-page__tabs" role="tablist" aria-label={`${project.name} ${tabLabels.viewLabel}`}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={isOverview}
+            aria-controls={overviewPanelId}
+            id={`${project.id}-overview-tab`}
+            onClick={() => setActiveTab('overview')}
+          >
+            {tabLabels.overview}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={isPlay}
+            aria-controls={playPanelId}
+            id={`${project.id}-play-tab`}
+            onClick={() => setActiveTab('play')}
+          >
+            {tabLabels.play}
+          </button>
+        </div>
+
         <a
           className="terminal-project-page__source"
           href={project.sourceUrl}
@@ -76,29 +99,6 @@ export default function TerminalProjectPage({ project, children, labels = defaul
           {project.sourceLabel}
         </a>
       </header>
-
-      <div className="terminal-project-page__tabs" role="tablist" aria-label={`${project.name} ${tabLabels.viewLabel}`}>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={isOverview}
-          aria-controls={overviewPanelId}
-          id={`${project.id}-overview-tab`}
-          onClick={() => setActiveTab('overview')}
-        >
-          {tabLabels.overview}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={isPlay}
-          aria-controls={playPanelId}
-          id={`${project.id}-play-tab`}
-          onClick={() => setActiveTab('play')}
-        >
-          {tabLabels.play}
-        </button>
-      </div>
 
       {isOverview && (
         <section

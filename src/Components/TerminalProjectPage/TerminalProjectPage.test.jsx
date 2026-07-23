@@ -23,6 +23,9 @@ describe('TerminalProjectPage', () => {
     )
 
     expect(screen.getByRole('heading', { name: 'Console Adventure' })).toBeInTheDocument()
+    expect(screen.getByRole('tablist', { name: /console adventure view/i }).closest('header')).toHaveClass(
+      'terminal-project-page__header',
+    )
     expect(screen.getByRole('tab', { name: 'Play' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'false')
     expect(screen.getByText('Console Adventure live terminal')).toBeInTheDocument()
