@@ -1,31 +1,33 @@
 # Terminal Applications
 
-This repository publishes **Terminal Applications** at [terminal.mattediworks.com](https://terminal.mattediworks.com/).
+**Terminal Applications** is the MattediWorks browser catalog for console applications ported to React and xterm.js.
 
-Terminal Applications is a MattediWorks web catalog for console applications ported to the browser with React and xterm.js. The current public apps are:
+Production domain: [https://terminal.mattediworks.com/](https://terminal.mattediworks.com/)
 
-- **Console Adventure**: a terminal fantasy RPG.
-- **RTSim**: a discrete-time preemptive scheduler simulator.
+The current public terminal apps are:
 
-The underlying terminal/runtime work is tracked as the **Terminal Engine** project. See [docs/terminal-engine.md](docs/terminal-engine.md) for the current engine boundary and browser/xterm port contract.
+- **Console Adventure**: a fantasy terminal RPG hosted through an xterm.js web port.
+- **RTSim**: a discrete-time preemptive scheduler simulator with an xterm.js scene renderer.
 
-## Current Routes
+The underlying runtime and browser-porting work is tracked as the **Terminal Engine** project. See [docs/terminal-engine.md](docs/terminal-engine.md) for the current boundary: RTSim contains the concrete `ConsoleEngine`, while Console Adventure still uses its own game-state runtime with the same console/xterm porting contract.
 
-- `/`: app catalog.
+## Routes
+
+- `/`: MattediWorks-branded app catalog.
 - `/console-adventure`: canonical Console Adventure route.
 - `/game`: legacy alias that redirects to `/console-adventure`.
 - `/rtsim`: RTSim route.
 
-## Local Development
+## Quick Start
 
-Install dependencies and initialize the pinned terminal app sources:
+Install root dependencies and initialize the pinned terminal app source submodules:
 
 ```sh
 npm install
 npm run sync:submodules
 ```
 
-Run the Vite dev server:
+Run the local Vite dev server:
 
 ```sh
 npm run dev
@@ -37,72 +39,85 @@ Build the production bundle:
 npm run build
 ```
 
-Run the quality gates used during modernization:
-
-```sh
-npm run lint
-npm run typecheck
-npm test
-```
-
-Preview the production bundle:
+Preview the production bundle locally:
 
 ```sh
 npm run preview
 ```
 
+## Verification
+
+Use these checks before committing app changes:
+
+```sh
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+The root checks cover the active Vite app, MattediWorks integration, route/content tests, and terminal page shell tests. ESLint intentionally ignores the separately owned `src/ConsoleAdventure` and `src/RTSim` submodule source trees.
+
 ## Source Ownership
 
-`src/ConsoleAdventure` and `src/RTSim` are git submodules pinned by the root repository. `npm run build` does not fetch moving submodule branches.
+`src/ConsoleAdventure` and `src/RTSim` are git submodules pinned by the root repository gitlinks. `npm run build` uses whatever source is already present at those paths; it does not fetch remote branches or move submodules.
 
-See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic source strategy that later Docker/Stackport work must follow.
+For local development, use:
 
-## Dependency Baseline
+```sh
+npm run sync:submodules
+```
 
-The root app keeps runtime dependencies focused on React, React Router, xterm.js with the Fit addon, `react-xtermjs`, Bootstrap Icons, and the MattediWorks loading/icon stack (`lucide-react`, `gsap`, `@gsap/react`). React is on the current stable major. `@xterm/xterm` intentionally stays on the `5.5.x` line because `react-xtermjs` currently peers on `@xterm/xterm ^5.5.0`.
+That command runs `git submodule update --init --recursive` and checks out the exact commits pinned by the root repository.
 
-Lint covers the root Vite app and local MattediWorks integration files while ignoring the `src/ConsoleAdventure` and `src/RTSim` submodule sources. It currently exits successfully with two warnings for known `FitAddon` lifecycle cleanup in the terminal wrappers, which is scheduled for the terminal hardening tasks. TypeScript checking currently covers the active MattediWorks loading, theme, and i18n TypeScript entries.
+See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic source strategy that Docker/Stackport work must follow.
 
-## Theme System
+Current note for deployment work: recent terminal port-hardening tasks advanced both submodule gitlinks to local task commits. Those commits must be pushed to their public upstream repositories, vendored, or otherwise made available through a deterministic Docker build strategy before Stackport can build from a non-recursive checkout.
 
-The app supports `light`, `dark`, and `system` theme preferences through the MattediWorks `ThemeSelector`. The selected preference is stored in `localStorage` under `terminal-applications-theme`. On load, `index.html` applies `data-theme`, `data-theme-preference`, and a `light`/`dark` class to `document.documentElement` before the React bundle runs, which keeps first paint readable and lets CSS plus `MWLoading` react to theme changes.
+## App Structure
 
-Terminal emulator foreground/background palettes remain controlled inside the terminal wrappers for now, while the surrounding page and terminal frame use shared CSS variables.
+The root React app is a Vite application using React Router. `src/index.jsx` defines the route map and wraps the app with the MattediWorks i18n and theme providers.
 
-## I18n Baseline
+Reusable project metadata lives in `src/content/projects.js`. It defines Terminal Engine, Console Adventure, and RTSim IDs, localized copy keys, routes, source URLs, screenshots, tags, and minimum viewport widths for live terminal mounting.
 
-The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSelector`. The selected locale is stored in `localStorage` under `terminal-applications-locale`; when no saved preference exists, the app chooses `pt-BR` for Portuguese browser languages and `en` otherwise.
+The shared terminal page shell lives at `src/Components/TerminalProjectPage/TerminalProjectPage.jsx`. It renders project headers, tags, source links, bounded terminal stages, and screenshot fallbacks. Console Adventure mounts at 1040 px and wider; RTSim mounts at 720 px and wider.
 
-`index.html` applies `document.documentElement.lang` before the React bundle runs, and the React `I18nProvider` keeps that value synchronized after language changes. Translation data lives in `src/MattediWorks/translation/i18n.ts` as a typed `Record<Locale, Translation>` so missing locale fields are caught by TypeScript. Current shell, home/catalog, terminal page, loading, source-link, and not-found copy reads from the translation provider while project names remain unchanged.
+## Theme And I18n
 
-## Project Content Model
+The app supports `light`, `dark`, and `system` theme preferences through `ThemeSelector`. The selected preference is stored in `localStorage` under `terminal-applications-theme`; `index.html` applies the resolved theme before the React bundle runs to avoid a mismatched first paint.
 
-Reusable project metadata lives in `src/content/projects.js`. It defines Terminal Engine, Console Adventure, and RTSim ids, route paths, source links, screenshots, tags, localization keys, and minimum viewport widths for live terminal mounting. Home/catalog content, terminal page titles/source links, narrow fallback panels, and asset preloading read from this model instead of duplicating project details in page components.
+The app supports `en` and `pt-BR` locales through `LanguageSelector`. The selected locale is stored under `terminal-applications-locale`; when no preference exists, Portuguese browser languages resolve to `pt-BR` and all others resolve to `en`.
 
-Terminal Engine is modeled as a promoted home item with no route or source link. Console Adventure and RTSim are modeled as routed terminal applications with GitHub source links and screenshot assets. RTSim's content includes the supported scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
+Visible shell, home/catalog, terminal page, loading, source-link, fallback, and not-found copy reads from `src/MattediWorks/translation/i18n.ts`.
 
-## Terminal Page Shell
+## Branding And Metadata
 
-`src/Components/TerminalProjectPage/TerminalProjectPage.jsx` provides the shared page shell used by `/console-adventure` and `/rtsim`. It renders project title, summary, tags, source link, a bounded terminal stage, and the reusable screenshot fallback. Console Adventure mounts the live terminal at 1040 px and wider; RTSim mounts at 720 px and wider because its engine requires at least a 60-column terminal scene.
+MattediWorks branding is served from local repository assets. Sansation font files live under `src/MattediWorks/assets/fonts/` and are wired through `src/index.css`.
 
-## Home Catalog
+Browser, install, and social metadata is maintained in:
 
-The root route renders a MattediWorks-branded Terminal Applications catalog. The first screen identifies the product, presents Terminal Engine as the core runtime/porting project without linking to a separate route, and shows Console Adventure plus RTSim as actionable project cards with descriptions, tags, previews, route buttons, and canonical source links.
+- `index.html`
+- `public/manifest.json`
+- `public/site.webmanifest`
+- `public/robots.txt`
+- `public/sitemap.xml`
+- [docs/metadata-seo.md](docs/metadata-seo.md)
 
-## Branding Assets
+The active browser/app icon set uses MattediWorks assets from `public/mattediworks-icon.svg`, `public/favicon-*`, `public/apple-touch-icon.png`, `public/logo192.png`, and `public/logo512.png`.
 
-MattediWorks branding is served from local repository assets. `src/index.css` defines `@font-face` rules for the Sansation font files under `src/MattediWorks/assets/fonts/` and exposes shared font tokens used by the shell, home page, legacy header, and loading overlay.
+No analytics or speed-insight provider is bundled in the app. Any future analytics provider must be documented with its Stackport configuration and environment needs before deployment.
 
-The shell uses the MattediWorks mark, the home catalog includes the MattediWorks wordmark, and browser/manifest icons point to `/mattediworks-icon.svg`. The initial app boot uses `MWLoading` briefly on first render, with reduced-motion users receiving a static logo treatment instead of the SVG drawing animation. Old personal photo branding is no longer imported by the active shell/home asset graph.
+## Deployment
 
-## Visual System
+The intended production host is Stackport at `terminal.mattediworks.com`.
 
-The active app uses shared CSS variables for neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent. Common home controls, terminal project pages, source links, narrow-width fallback panels, and terminal frames are class-driven rather than inline-styled.
+This repository currently builds a static Vite bundle with `npm run build`. The later Docker/Stackport tasks must add the production container and Compose configuration. Stackport does not initialize git submodules on pull, so Docker deployment must follow the source strategy in [docs/source-ownership.md](docs/source-ownership.md): fetch exact reachable commits during the build stage or replace that strategy with another deterministic, documented source path.
 
-Terminal frames use bounded width/height constraints and 8px radii so the xterm surfaces remain predictable across desktop and supported terminal viewports.
+Expected deployment direction:
 
-## Terminal Engine Boundary
+- Serve the built `dist/` output from a small static HTTP server.
+- Expose one HTTP entrypoint from Compose.
+- Let Stackport/Nginx handle HTTPS and certificates.
+- Keep runtime secrets unnecessary unless a documented analytics/config provider is added later.
 
-`docs/terminal-engine.md` documents the current source truth: RTSim contains the concrete `ConsoleEngine` implementation, while Console Adventure still uses its own `GameStates`/`GameState` runtime. Both apps share the same console/xterm porting contract for output, sizing, input, color handling, rendering, and resize behavior.
-
-The home page presents Terminal Engine as the core project without adding a separate engine route. The project content model reuses that boundary instead of claiming both apps already share one extracted engine package.
+The final Stackport handoff will live in `docs/stackport.md` after Docker validation is complete.
