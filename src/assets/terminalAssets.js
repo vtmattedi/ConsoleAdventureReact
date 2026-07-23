@@ -26,9 +26,10 @@ import sansationRegular from '../MattediWorks/assets/fonts/Sansation_Regular.ttf
 export const terminalAssets = {
   public: {
     icon: '/mattediworks-icon.svg',
-    appleTouchIcon: '/mattediworks-icon.svg',
+    appleTouchIcon: '/apple-touch-icon.png',
     favicon: '/mattediworks-icon.svg',
-    manifest: '/manifest.json',
+    manifest: '/site.webmanifest',
+    legacyManifest: '/manifest.json',
     siteManifest: '/site.webmanifest',
   },
   consoleAdventure: {
