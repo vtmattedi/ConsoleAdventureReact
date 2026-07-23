@@ -82,16 +82,17 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 `src/home.jsx` currently:
 
-- Displays localized Terminal Applications catalog copy while keeping the product name unchanged.
-- Uses the shared app shell for global navigation and keeps a local page title in the catalog content.
-- Shows a MattediWorks wordmark strip with localized brand-support copy.
-- Presents Terminal Engine from the shared project content model without adding a route.
+- Renders the MattediWorks-branded Terminal Applications catalog from the shared project content model.
+- Makes the first viewport identify the product and show actionable app choices.
+- Presents Terminal Engine as the core project with tags and boundary highlights, but no route or source link.
+- Shows Console Adventure and RTSim cards with descriptions, tags, preview images, route buttons, and canonical source links.
 - Navigates to `/console-adventure` for Console Adventure.
 - Navigates to `/rtsim` for the scheduler simulator.
-- Uses shared page/home/action classes and Bootstrap icon classes.
+- Uses shared home catalog classes and Bootstrap icon classes.
 - Task 9 moved visible catalog copy into the i18n baseline and removed the old `developped` typo from the active page.
 - Task 10 removed the old active mobile personal photo/profile block from the home page.
 - Task 11 removed the active home inline layout styles and moved the old hover-button layout onto stable CSS classes.
+- Task 14 replaced the hover-button home page with the responsive catalog card layout.
 
 ### Console Adventure Page
 
@@ -404,6 +405,7 @@ Stackport risk:
 - Task 11 moved active page layout styles out of inline JSX, normalized terminal/fallback frames, and replaced the old gradient-heavy page background with neutral theme surfaces plus orange/cyan accents.
 - Task 12 documented the Terminal Engine boundary and added a truthful no-route home presentation for the engine.
 - Task 13 added the shared project content model and moved home/terminal/source/screenshot project details onto it.
+- Task 14 rebuilt `/` as a MattediWorks-branded project catalog with Terminal Engine promoted and Console Adventure/RTSim project cards.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -438,7 +440,7 @@ Task order should stay sequential:
 
 Every later task should preserve or intentionally replace the following behavior:
 
-- `/` renders a usable home/catalog.
+- `/` renders the responsive MattediWorks-branded home/catalog.
 - `/console-adventure` reaches Console Adventure.
 - `/game` still reaches Console Adventure through the legacy redirect.
 - `/rtsim` renders RTSim.

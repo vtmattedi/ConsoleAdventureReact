@@ -41,10 +41,13 @@ export type Translation = {
     }
   }
   home: {
+    catalogLabel: string
     intro: string
     brandPanelLabel: string
     brandPanelCopy: string
     mattediWorksLogoAlt: string
+    appsTitle: string
+    appsIntro: string
   }
   projects: {
     terminalEngine: ProjectCopy
@@ -89,10 +92,13 @@ export const translations: Record<Locale, Translation> = {
       },
     },
     home: {
+      catalogLabel: 'Published catalog',
       intro: 'These are console applications built for Node.js and ported to run in the browser with xterm.js.',
       brandPanelLabel: 'MattediWorks brand',
       brandPanelCopy: 'A compact systems catalog for terminal tools, browser ports, and automation experiments.',
       mattediWorksLogoAlt: 'MattediWorks logo',
+      appsTitle: 'Terminal apps',
+      appsIntro: 'Browser-hosted terminal apps with canonical source links and project previews.',
     },
     projects: {
       terminalEngine: {
@@ -180,10 +186,13 @@ export const translations: Record<Locale, Translation> = {
       },
     },
     home: {
+      catalogLabel: 'Catalogo publicado',
       intro: 'Estes sao aplicativos de console criados para Node.js e portados para rodar no navegador com xterm.js.',
       brandPanelLabel: 'Marca MattediWorks',
       brandPanelCopy: 'Um catalogo compacto de sistemas para ferramentas de terminal, ports no navegador e experimentos de automacao.',
       mattediWorksLogoAlt: 'Logo MattediWorks',
+      appsTitle: 'Apps de terminal',
+      appsIntro: 'Apps de terminal no navegador com links canonicos de codigo e previews dos projetos.',
     },
     projects: {
       terminalEngine: {

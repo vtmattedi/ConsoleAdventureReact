@@ -81,6 +81,10 @@ Reusable project metadata lives in `src/content/projects.js`. It defines Termina
 
 Terminal Engine is modeled as a promoted home item with no route or source link. Console Adventure and RTSim are modeled as routed terminal applications with GitHub source links and screenshot assets. RTSim's content includes the supported scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
 
+## Home Catalog
+
+The root route renders a MattediWorks-branded Terminal Applications catalog. The first screen identifies the product, presents Terminal Engine as the core runtime/porting project without linking to a separate route, and shows Console Adventure plus RTSim as actionable project cards with descriptions, tags, previews, route buttons, and canonical source links.
+
 ## Branding Assets
 
 MattediWorks branding is served from local repository assets. `src/index.css` defines `@font-face` rules for the Sansation font files under `src/MattediWorks/assets/fonts/` and exposes shared font tokens used by the shell, home page, legacy header, and loading overlay.

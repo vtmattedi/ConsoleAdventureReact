@@ -61,6 +61,27 @@ describe('app shell routing', () => {
     expect(screen.getAllByText('Terminal Applications')).not.toHaveLength(0)
     expect(screen.getByRole('button', { name: /play console adventure/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /scheduler simulator/i })).toBeInTheDocument()
+    expect(screen.getByText(/explore the magical lands/i)).toBeInTheDocument()
+    expect(screen.getByText(/simulate scheduler behavior/i)).toBeInTheDocument()
+    expect(screen.getAllByText('xterm.js web port')).toHaveLength(2)
+    expect(screen.getByRole('img', { name: /console adventure screenshot preview/i })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /rtsim scheduler screenshot preview/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /open console adventure source/i })).toHaveAttribute(
+      'href',
+      'https://github.com/vtmattedi/ConsoleAdventure',
+    )
+    expect(screen.getByRole('link', { name: /open rtsim source/i })).toHaveAttribute(
+      'href',
+      'https://github.com/vtmattedi/rtsim',
+    )
+  })
+
+  it('navigates from the home catalog project actions', async () => {
+    renderRoute('/')
+
+    fireEvent.click(screen.getByRole('button', { name: /scheduler simulator/i }))
+
+    expect(await screen.findByText('RTSim Route')).toBeInTheDocument()
   })
 
   it('renders MattediWorks branding and clears the initial boot overlay', async () => {
@@ -137,6 +158,8 @@ describe('app shell routing', () => {
     await waitFor(() => expect(document.documentElement.lang).toBe('pt-BR'))
     expect(screen.getByRole('button', { name: /jogar console adventure/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /simulador escalonador/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /apps de terminal/i })).toBeInTheDocument()
+    expect(screen.getByText(/apps de terminal no navegador/i)).toBeInTheDocument()
     expect(screen.getByRole('navigation', { name: /principal/i })).toBeInTheDocument()
     expect(screen.getByRole('group', { name: /tema/i })).toBeInTheDocument()
   })
