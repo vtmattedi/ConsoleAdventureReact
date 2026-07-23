@@ -56,7 +56,7 @@ npm test
 npm run build
 ```
 
-The root checks cover the active Vite app, MattediWorks integration, route/content tests, and terminal page shell tests. ESLint intentionally ignores the separately owned `src/ConsoleAdventure` and `src/RTSim` submodule source trees.
+The root checks cover the active Vite app, MattediWorks integration, route/content tests, and terminal page shell tests. ESLint intentionally ignores the separately owned `src/ConsoleAdventure` and `src/RTSim` submodule source trees plus the Docker vendor snapshots copied from them.
 
 ## Source Ownership
 
@@ -72,7 +72,7 @@ That command runs `git submodule update --init --recursive` and checks out the e
 
 See [docs/source-ownership.md](docs/source-ownership.md) for the deterministic source strategy that Docker/Stackport work must follow.
 
-Current note for deployment work: recent terminal port-hardening tasks advanced both submodule gitlinks to local task commits. Those commits must be pushed to their public upstream repositories, vendored, or otherwise made available through a deterministic Docker build strategy before Stackport can build from a non-recursive checkout.
+Current Docker/Stackport builds use committed source snapshots under `docker/vendor/`, copied into the app's existing `src/ConsoleAdventure` and `src/RTSim` import paths during the container build. This lets Stackport build from a non-recursive checkout without fetching submodules.
 
 ## App Structure
 
@@ -111,13 +111,13 @@ No analytics or speed-insight provider is bundled in the app. Any future analyti
 
 The intended production host is Stackport at `terminal.mattediworks.com`.
 
-This repository currently builds a static Vite bundle with `npm run build`. The later Docker/Stackport tasks must add the production container and Compose configuration. Stackport does not initialize git submodules on pull, so Docker deployment must follow the source strategy in [docs/source-ownership.md](docs/source-ownership.md): fetch exact reachable commits during the build stage or replace that strategy with another deterministic, documented source path.
+This repository builds a static Vite bundle and ships a production Docker/Compose setup for Stackport. Stackport does not initialize git submodules on pull, so the Dockerfile follows the source strategy in [docs/source-ownership.md](docs/source-ownership.md): committed vendor snapshots are copied into the submodule import paths before `npm run build`.
 
 Expected deployment direction:
 
-- Serve the built `dist/` output from a small static HTTP server.
-- Expose one HTTP entrypoint from Compose.
+- Serve the built `dist/` output from Nginx.
+- Expose one HTTP entrypoint from Compose: host port `3001` to container port `80`.
 - Let Stackport/Nginx handle HTTPS and certificates.
 - Keep runtime secrets unnecessary unless a documented analytics/config provider is added later.
 
-The final Stackport handoff will live in `docs/stackport.md` after Docker validation is complete.
+Docker prep details live in [docs/docker-stackport.md](docs/docker-stackport.md). The final Stackport handoff will live in `docs/stackport.md` after deployment fields are finalized.

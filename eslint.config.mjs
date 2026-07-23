@@ -10,6 +10,7 @@ export default tseslint.config(
       'build/**',
       'coverage/**',
       'dist/**',
+      'docker/vendor/**',
       'node_modules/**',
       'src/ConsoleAdventure/**',
       'src/RTSim/**',

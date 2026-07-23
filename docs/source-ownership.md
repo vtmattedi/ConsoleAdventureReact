@@ -1,18 +1,24 @@
 # Source Ownership Strategy
 
-Project: Terminal Engine / Terminal Applications  
+Project: Terminal Engine / Terminal Applications
 Decision date: 2026-07-22
 Last updated: 2026-07-23
 
 ## Decision
 
-Keep `src/ConsoleAdventure` and `src/RTSim` as git submodules for developer source provenance, pinned by the root repository gitlinks. Do not vendor the source during this task.
+Keep `src/ConsoleAdventure` and `src/RTSim` as git submodules for developer source provenance, pinned by the root repository gitlinks.
 
-For production deployment, do not depend on Stackport initializing submodules and do not depend on the host checkout's `.git` directory being present in the Docker build context. The later Docker task must provide the exact source revisions listed below before running the frontend build, either by fetching reachable commits in the Docker build stage or by choosing another deterministic documented strategy.
+For Docker and Stackport, use committed source snapshots under `docker/vendor/` as the deterministic build input. The production Dockerfile ignores live submodule working trees, copies the vendor snapshots into the existing `src/ConsoleAdventure` and `src/RTSim` import paths inside the build container, and then runs the Vite build.
 
-The root `prebuild` script that ran `git submodule update --recursive --remote` has been removed. `npm run build` must not move terminal app source code by following remote branches.
+This strategy avoids relying on:
 
-## Current Source Ownership
+- Stackport initializing git submodules.
+- A recursive host clone.
+- The host checkout's `.git` directory.
+- Floating branches or `git submodule update --remote`.
+- Submodule commits being reachable from public GitHub during Docker build.
+
+## Current Developer Source Pins
 
 Both terminal app folders are real git submodules. The root tree records them as `160000` gitlinks:
 
@@ -23,94 +29,64 @@ Both terminal app folders are real git submodules. The root tree records them as
 
 The submodule URLs are declared in `.gitmodules`.
 
-## Local Developer Workflow
-
 For a normal local checkout, initialize the pinned submodules explicitly:
 
-```powershell
+```sh
 npm run sync:submodules
 ```
 
 This runs:
 
-```powershell
+```sh
 git submodule update --init --recursive
 ```
 
 That command checks out the exact commits pinned by the root repository. It does not move to remote branch tips.
 
-To intentionally update a terminal app source:
+## Docker Source Snapshots
 
-1. Enter the submodule folder.
-2. Fetch/check out the desired commit or branch.
-3. Run the app/build checks relevant to the change.
-4. Commit the updated gitlink in the root repository.
-5. Update this document if the pinned commit changes.
+The Docker build uses these committed source snapshots:
 
-Do not use `git submodule update --remote` in root build scripts. Remote branch advancement must be a deliberate source update, not a side effect of `npm run build`.
+| Vendor path | Copied to build path | Contents |
+| --- | --- | --- |
+| `docker/vendor/ConsoleAdventure` | `src/ConsoleAdventure` | Tracked `Game/` runtime and image assets imported by the React app. |
+| `docker/vendor/RTSim` | `src/RTSim` | Tracked `Simulator/` runtime plus `image/Readme/` screenshots imported by the React app. |
+
+The snapshots were copied from the current submodule working trees after tasks 16 and 17. They include the lifecycle fixes needed by the browser wrappers.
+
+When intentionally updating terminal app source:
+
+1. Update and test the submodule source.
+2. Commit inside the submodule if needed.
+3. Refresh the matching `docker/vendor/` snapshot from tracked submodule files.
+4. Run root checks and Docker validation.
+5. Commit the root gitlink and vendor snapshot together.
+6. Update this document if the source strategy changes.
 
 ## Stackport And Docker Workflow
 
 Stackport will not initialize git submodules when it pulls the repository. A Stackport-style non-recursive checkout may contain empty submodule directories or no usable submodule contents.
 
-The Docker task should fetch the pinned public source into `src/ConsoleAdventure` and `src/RTSim` during the build stage, before `npm install` / `npm run build` needs imports from those folders. The Docker build should install only the minimal Git tooling needed for this source fetch.
+The production Dockerfile handles this by:
 
-Suggested build-stage commands:
+1. Installing root npm dependencies with `npm ci`.
+2. Copying the repository context while `.dockerignore` excludes `src/ConsoleAdventure` and `src/RTSim`.
+3. Copying `docker/vendor/ConsoleAdventure` into `src/ConsoleAdventure`.
+4. Copying `docker/vendor/RTSim` into `src/RTSim`.
+5. Running `npm run build`.
+6. Serving `dist/` from Nginx.
 
-```sh
-git clone --no-checkout --filter=blob:none https://github.com/vtmattedi/ConsoleAdventure src/ConsoleAdventure
-git -C src/ConsoleAdventure fetch --depth=1 origin ea33111dea4fd0fd0d8a139280c8ebcd96350df6
-git -C src/ConsoleAdventure checkout --detach ea33111dea4fd0fd0d8a139280c8ebcd96350df6
-
-git clone --no-checkout --filter=blob:none https://github.com/vtmattedi/rtsim.git src/RTSim
-git -C src/RTSim fetch --depth=1 origin eb5f1901c792074ecf0b44f0e6f3099d97c6ff5d
-git -C src/RTSim checkout --detach eb5f1901c792074ecf0b44f0e6f3099d97c6ff5d
-```
-
-These commands are the intended shape once the pinned commits are reachable from their remotes. As of 2026-07-23, the current pins are local task commits and `git ls-remote origin <sha>` returned no match for both repositories. Docker/Stackport deployment is blocked until task 20 resolves this with one deterministic path:
-
-- Push the pinned commits to their public upstream repositories.
-- Vendor the needed source into this repository with attribution.
-- Publish the terminal app source as package/workspace dependencies.
-- Change the root pins and app imports to reachable public commits that contain the required lifecycle fixes.
-
-The Docker task may choose equivalent commands or a different documented strategy, but the important constraints are:
-
-- Fetch exact commits, not floating branch names.
-- Do not run `git submodule update --remote`.
-- Do not assume the host checkout was cloned with `--recursive`.
-- Do not assume `.git` is available in the Docker build context.
-- Do not require runtime secrets for source retrieval.
-
-## Credentials And Network Requirements
-
-The selected source repositories are public GitHub repositories, but the current root pins are not yet reachable from those remotes.
-
-Verification on 2026-07-23:
-
-- `git -C src/ConsoleAdventure ls-remote origin ea33111dea4fd0fd0d8a139280c8ebcd96350df6` returned no match.
-- `git -C src/RTSim ls-remote origin eb5f1901c792074ecf0b44f0e6f3099d97c6ff5d` returned no match.
-
-No GitHub credential is required if the current commits are pushed to the public upstream repositories. Docker builds will need outbound HTTPS access to GitHub and Git installed in the build stage if the build-stage fetch strategy remains selected.
-
-If either repository becomes private or a pinned commit stops being fetchable by SHA, deployment is blocked until one of these happens:
-
-- A safe Stackport/Docker credential path is defined.
-- The needed source is vendored into this repository with attribution.
-- The terminal app is published as a package/workspace dependency available during `npm install`.
-- The pin is moved to a reachable public commit/tag and committed in the root repository.
+The Docker build does not fetch external repositories and does not need source credentials.
 
 ## Build Behavior
 
-Root build behavior after this decision:
+Root build behavior:
 
 - `npm run build` builds whatever source is already present in `src/ConsoleAdventure` and `src/RTSim`.
 - `npm run build` does not fetch remote branches.
 - `npm run sync:submodules` is the explicit developer command for local source initialization.
-- Production Docker must populate the submodule paths with the pinned commits before invoking the frontend build.
+- `docker compose build` uses committed `docker/vendor/` snapshots and does not require initialized submodules.
 
 ## Follow-Up Responsibilities
 
-Task 20, Docker Stackport Prep, must implement this source strategy in the Dockerfile or update this document if a different deterministic strategy is chosen before Docker work begins.
-
-Task 21, Stackport Handoff, must state that Stackport does not initialize submodules and must document how the final Docker build obtains these exact sources.
+Task 21, Stackport Handoff, must state that Stackport does not initialize submodules and must document that this repository uses committed Docker vendor snapshots for terminal app source during deployment.
