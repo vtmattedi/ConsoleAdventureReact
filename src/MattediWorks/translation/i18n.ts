@@ -120,6 +120,7 @@ export const translations: Record<Locale, Translation> = {
         },
       },
       consoleAdventure: {
+        label: 'Terminal app',
         name: 'Console Adventure',
         summary:
           'Terminal fantasy RPG for Node.js, ported to React and xterm.js so it can run in the browser.',
@@ -129,7 +130,8 @@ export const translations: Record<Locale, Translation> = {
         sourceLabel: 'Source: vtmattedi/ConsoleAdventure',
         sourceAria: 'Open Console Adventure source on GitHub',
         screenshotAlt: 'Console Adventure screenshot',
-        widthWarning: 'You need at least 1040 px of width to see the terminal.',
+        widthWarning:
+          'Console Adventure needs at least 1040 px of width for the live terminal.',
         tags: {
           fantasyRpg: 'Fantasy RPG',
           nodeRuntime: 'Node.js runtime',
@@ -138,6 +140,7 @@ export const translations: Record<Locale, Translation> = {
         },
       },
       rtsim: {
+        label: 'Terminal app',
         name: 'RTSim',
         summary:
           'Discrete-time preemptive scheduler simulator for one or more CPUs, ported to xterm.js for the browser.',
@@ -147,6 +150,8 @@ export const translations: Record<Locale, Translation> = {
         sourceLabel: 'Source: vtmattedi/rtsim',
         sourceAria: 'Open RTSim source on GitHub',
         screenshotAlt: 'RTSim scheduler screenshot',
+        widthWarning:
+          'RTSim needs a wider viewport for its 60-column terminal scene.',
         tags: {
           schedulerSimulator: 'Scheduler simulator',
           nodeRuntime: 'Node.js runtime',
@@ -214,6 +219,7 @@ export const translations: Record<Locale, Translation> = {
         },
       },
       consoleAdventure: {
+        label: 'App de terminal',
         name: 'Console Adventure',
         summary:
           'RPG de fantasia em terminal criado para Node.js e portado para React e xterm.js para rodar no navegador.',
@@ -223,7 +229,8 @@ export const translations: Record<Locale, Translation> = {
         sourceLabel: 'Codigo: vtmattedi/ConsoleAdventure',
         sourceAria: 'Abrir codigo do Console Adventure no GitHub',
         screenshotAlt: 'Captura de tela do Console Adventure',
-        widthWarning: 'Voce precisa de pelo menos 1040 px de largura para ver o terminal.',
+        widthWarning:
+          'Console Adventure precisa de pelo menos 1040 px de largura para o terminal ao vivo.',
         tags: {
           fantasyRpg: 'RPG de fantasia',
           nodeRuntime: 'Runtime Node.js',
@@ -232,6 +239,7 @@ export const translations: Record<Locale, Translation> = {
         },
       },
       rtsim: {
+        label: 'App de terminal',
         name: 'RTSim',
         summary:
           'Simulador de escalonamento preemptivo em tempo discreto para uma ou mais CPUs, portado para xterm.js no navegador.',
@@ -241,6 +249,8 @@ export const translations: Record<Locale, Translation> = {
         sourceLabel: 'Codigo: vtmattedi/rtsim',
         sourceAria: 'Abrir codigo do RTSim no GitHub',
         screenshotAlt: 'Captura de tela do RTSim',
+        widthWarning:
+          'RTSim precisa de uma viewport mais larga para a cena de terminal com 60 colunas.',
         tags: {
           schedulerSimulator: 'Simulador de escalonamento',
           nodeRuntime: 'Runtime Node.js',

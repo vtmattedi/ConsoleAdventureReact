@@ -11,8 +11,8 @@
     border-radius: 8px;
     box-shadow: 0 18px 34px var(--terminal-frame-shadow);
     width: min(100%, 1120px);
-    height: min(68vh, 711px);
-    min-height: 520px;
+    height: 100%;
+    min-height: 0;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -22,12 +22,5 @@
 .terminal {
     width: 100%;
     height: 100%;
-}
-
-@media screen and (max-width: 720px) {
-    .terminalDiv {
-        height: 62vh;
-        min-height: 420px;
-    }
 }
 

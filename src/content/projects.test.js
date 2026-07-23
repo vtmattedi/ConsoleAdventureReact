@@ -27,6 +27,7 @@ describe('project content model', () => {
 
     expect(project.routePath).toBe('/console-adventure')
     expect(project.legacyRoutePath).toBe('/game')
+    expect(project.minimumViewportWidth).toBe(1040)
     expect(project.sourceUrl).toBe('https://github.com/vtmattedi/ConsoleAdventure')
     expect(project.summary).toMatch(/Terminal fantasy RPG/i)
     expect(project.tags).toEqual(expect.arrayContaining(['Node.js runtime', 'xterm.js web port']))
@@ -37,6 +38,7 @@ describe('project content model', () => {
     const project = getLocalizedProject(projectIds.rtsim, translations.en)
 
     expect(project.routePath).toBe('/rtsim')
+    expect(project.minimumViewportWidth).toBe(720)
     expect(project.sourceUrl).toBe('https://github.com/vtmattedi/rtsim')
     expect(project.algorithms).toEqual(schedulerAlgorithms)
     expect(project.algorithms).toEqual(['EDF', 'FCFS', 'HRRN', 'Priority', 'Round Robin', 'SJF'])

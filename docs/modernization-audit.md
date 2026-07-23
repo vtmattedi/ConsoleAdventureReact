@@ -98,23 +98,22 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 `src/game.jsx` currently:
 
-- Imports `Info` and `ConsoleAdventure`.
-- Tracks width with a local `resize` listener.
-- Shows `Info` when width is `<= 1040`.
-- Shows the terminal wrapper when width is `> 1040`.
-- Shows title, narrow-width fallback content, and GitHub source link from the shared project content model.
-- Uses shared terminal page/source-link classes.
+- Imports `TerminalProjectPage` and `ConsoleAdventure`.
+- Gets the localized Console Adventure project from the shared project content model.
+- Mounts the live terminal through the shared shell when the viewport is at least 1040 px wide.
+- Shows the shared screenshot fallback below that threshold.
+- Shows title, description, tags, and GitHub source link from the shared project content model.
 - Uses `/console-adventure` as the canonical route while `/game` redirects to it.
 
 ### RTSim Page
 
 `src/rtsim.jsx` currently:
 
-- Renders title `RTSim` from the shared project content model.
-- Renders the RTSim terminal wrapper unconditionally.
-- Shows a localized GitHub source link from the shared project content model.
-- Uses shared terminal page/source-link classes.
-- Has no top-level narrow-width fallback equivalent to Console Adventure.
+- Imports `TerminalProjectPage` and the RTSim terminal wrapper.
+- Gets the localized RTSim project from the shared project content model.
+- Mounts the live terminal through the shared shell when the viewport is at least 720 px wide.
+- Shows the shared screenshot fallback below that threshold. RTSim needs this because `Simulator` sets the engine minimum size to 60x21 terminal cells.
+- Shows title, description, tags, and GitHub source link from the shared project content model.
 
 ### Header
 
@@ -129,11 +128,19 @@ This is the main path for branding, theme, i18n, and loading integration.
 
 `src/Components/Info/Info.jsx` currently:
 
-- Provides the Console Adventure narrow-width fallback.
-- Uses the shared project content model for five Console Adventure screenshots.
-- Links to `https://github.com/vtmattedi/ConsoleAdventure`.
+- Provides the reusable narrow-width fallback used by `TerminalProjectPage`.
+- Renders localized project fallback text and screenshots from the localized project object passed by the shared shell.
 - Uses class-driven panel and screenshot sizing.
-- Contains localized Console Adventure fallback copy from the shared project content model.
+
+### Terminal Project Page
+
+`src/Components/TerminalProjectPage/TerminalProjectPage.jsx` currently:
+
+- Provides the shared terminal app page shell for Console Adventure and RTSim.
+- Renders project title, summary, tags, source link, terminal stage, and fallback from the content model.
+- Tracks viewport width with a scoped `resize` listener and removes it on unmount.
+- Mounts the xterm wrapper only when the viewport is at or above `project.minimumViewportWidth`.
+- Leaves theme/language/home/back controls to the surrounding `AppShell`.
 
 ### App Shell Navigation
 
@@ -262,6 +269,7 @@ The model currently stores:
 - Canonical GitHub source URLs for Console Adventure and RTSim.
 - Screenshot assets from the Vite asset registry.
 - Tags/capability keys.
+- Minimum viewport widths for live terminal mounting: 1040 px for Console Adventure and 720 px for RTSim.
 - RTSim scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
 - Terminal Engine as a promoted home item with no route and no source link.
 
@@ -270,9 +278,10 @@ Localized project names, summaries, descriptions, CTA labels, source labels, scr
 Current consumers:
 
 - `src/home.jsx` renders Terminal Engine highlights and terminal app actions from the model.
-- `src/game.jsx` renders Console Adventure title/source content from the model and passes the localized project to `Info`.
-- `src/rtsim.jsx` renders RTSim title/source content from the model.
-- `src/Components/Info/Info.jsx` renders Console Adventure fallback text, canonical source link, and screenshots from the model.
+- `src/game.jsx` passes Console Adventure content from the model into `TerminalProjectPage`.
+- `src/rtsim.jsx` passes RTSim content from the model into `TerminalProjectPage`.
+- `src/Components/TerminalProjectPage/TerminalProjectPage.jsx` renders terminal page headers, source links, responsive stage visibility, and fallbacks from the model.
+- `src/Components/Info/Info.jsx` renders fallback text and screenshots from the localized project object.
 - `src/Components/AssetPreload/AssetPreload.jsx` preloads project images from the model.
 
 ## Assets And Styling
@@ -289,8 +298,9 @@ Current tracked/public assets:
 
 Current styling:
 
-- `src/index.css` owns global theme tokens plus shared page, home, terminal-page, and source-link classes.
-- Terminal wrappers have duplicated `Terminal.css` files, now normalized to the same bounded terminal-frame constraints.
+- `src/index.css` owns global theme tokens plus shared home/catalog classes.
+- `src/Components/TerminalProjectPage/TerminalProjectPage.css` owns the shared terminal page shell and terminal stage sizing.
+- Terminal wrappers have duplicated `Terminal.css` files, now normalized to fill the shared terminal stage.
 - `Header` and `Info` have separate CSS/module files; the old floating `H` component is no longer part of the active shell.
 - The current palette uses neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent.
 - Active home, Console Adventure, RTSim, Info, and legacy Header layout styles are class-driven rather than inline layout blocks.
@@ -406,6 +416,7 @@ Stackport risk:
 - Task 12 documented the Terminal Engine boundary and added a truthful no-route home presentation for the engine.
 - Task 13 added the shared project content model and moved home/terminal/source/screenshot project details onto it.
 - Task 14 rebuilt `/` as a MattediWorks-branded project catalog with Terminal Engine promoted and Console Adventure/RTSim project cards.
+- Task 15 added the shared terminal project page shell and reusable narrow-width fallbacks for Console Adventure and RTSim.
 - `src/RTSim/Simulator/Engine/Symbols.js` displays mojibake in this environment, so text encoding should be checked before release.
 - Source submodule readmes still contain their own historical web links; root metadata has been moved to Terminal Applications at `terminal.mattediworks.com`.
 
@@ -444,11 +455,12 @@ Every later task should preserve or intentionally replace the following behavior
 - `/console-adventure` reaches Console Adventure.
 - `/game` still reaches Console Adventure through the legacy redirect.
 - `/rtsim` renders RTSim.
+- `/console-adventure` and `/rtsim` share `TerminalProjectPage` for project header, tags, source link, terminal stage, and fallback.
 - Console Adventure starts in xterm, renders the main menu, accepts keyboard input, supports arrow/WASD-style navigation, accepts space/enter, and keeps Ctrl+B Dev Mode behavior.
-- Console Adventure narrow-width fallback appears below the supported width threshold until a better responsive treatment replaces it.
+- Console Adventure narrow-width fallback appears below 1040 px.
 - Console Adventure exit/goodbye path remains understandable.
 - RTSim starts in xterm, renders simulator UI, accepts arrows, shifted arrows, escape, enter, space, Ctrl+C, and Ctrl+D/current debug behavior.
-- RTSim can resize without becoming unreadable.
+- RTSim narrow-width fallback appears below 720 px; the live terminal can resize above that threshold without becoming unreadable.
 - Terminal wrapper unmount/remount does not accumulate key handlers, resize handlers, render intervals, or stale singleton state.
 - Console Adventure screenshots/assets still render in fallback/content areas.
 - RTSim readme screenshots/assets remain available through the project content model.

@@ -77,9 +77,13 @@ The app supports `en` and `pt-BR` locales through the MattediWorks `LanguageSele
 
 ## Project Content Model
 
-Reusable project metadata lives in `src/content/projects.js`. It defines Terminal Engine, Console Adventure, and RTSim ids, route paths, source links, screenshots, tags, and localization keys. Home/catalog content, terminal page titles/source links, the Console Adventure fallback panel, and asset preloading read from this model instead of duplicating project details in page components.
+Reusable project metadata lives in `src/content/projects.js`. It defines Terminal Engine, Console Adventure, and RTSim ids, route paths, source links, screenshots, tags, localization keys, and minimum viewport widths for live terminal mounting. Home/catalog content, terminal page titles/source links, narrow fallback panels, and asset preloading read from this model instead of duplicating project details in page components.
 
 Terminal Engine is modeled as a promoted home item with no route or source link. Console Adventure and RTSim are modeled as routed terminal applications with GitHub source links and screenshot assets. RTSim's content includes the supported scheduler algorithms: EDF, FCFS, HRRN, Priority, Round Robin, and SJF.
+
+## Terminal Page Shell
+
+`src/Components/TerminalProjectPage/TerminalProjectPage.jsx` provides the shared page shell used by `/console-adventure` and `/rtsim`. It renders project title, summary, tags, source link, a bounded terminal stage, and the reusable screenshot fallback. Console Adventure mounts the live terminal at 1040 px and wider; RTSim mounts at 720 px and wider because its engine requires at least a 60-column terminal scene.
 
 ## Home Catalog
 
@@ -93,9 +97,9 @@ The shell uses the MattediWorks mark, the home catalog includes the MattediWorks
 
 ## Visual System
 
-The active app uses shared CSS variables for neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent. Common page headings, home action controls, terminal page layout, source links, narrow-width fallback panels, and terminal frames are class-driven rather than inline-styled.
+The active app uses shared CSS variables for neutral light/dark surfaces, MattediWorks orange, and a secondary cyan accent. Common home controls, terminal project pages, source links, narrow-width fallback panels, and terminal frames are class-driven rather than inline-styled.
 
-Terminal frames use bounded width/height constraints and 8px radii so the xterm surfaces remain predictable across desktop and narrow viewports. The home and terminal pages intentionally stay modest until the later content-model and home-page revamp tasks.
+Terminal frames use bounded width/height constraints and 8px radii so the xterm surfaces remain predictable across desktop and supported terminal viewports.
 
 ## Terminal Engine Boundary
 

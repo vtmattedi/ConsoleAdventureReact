@@ -1,0 +1,129 @@
+.terminal-project-page {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.terminal-project-page__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.terminal-project-page__summary {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.terminal-project-page__kicker {
+  color: var(--brand-orange);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.terminal-project-page__summary h1 {
+  margin: 0;
+  color: var(--app-text);
+  font-family: var(--font-brand);
+  font-size: 3.1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.terminal-project-page__summary p {
+  max-width: 58rem;
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 1.03rem;
+  line-height: 1.5;
+}
+
+.terminal-project-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.terminal-project-page__tags li {
+  min-height: 30px;
+  padding: 5px 9px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  color: var(--app-text);
+  background: rgba(107, 199, 216, 0.08);
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.86rem;
+  line-height: 1.15;
+}
+
+.terminal-project-page__source {
+  max-width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--link-color);
+  background: var(--control-bg);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.terminal-project-page__source:hover,
+.terminal-project-page__source:focus-visible {
+  border-color: var(--brand-cyan);
+  background: rgba(107, 199, 216, 0.14);
+}
+
+.terminal-project-page__source:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.terminal-project-page__stage {
+  width: 100%;
+  height: min(68vh, 711px);
+  min-height: 520px;
+  display: grid;
+  justify-items: center;
+}
+
+@media screen and (max-width: 760px) {
+  .terminal-project-page {
+    gap: 16px;
+  }
+
+  .terminal-project-page__header {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .terminal-project-page__summary h1 {
+    font-size: 2.35rem;
+  }
+
+  .terminal-project-page__source {
+    justify-self: start;
+  }
+
+  .terminal-project-page__stage {
+    min-height: 420px;
+  }
+}
